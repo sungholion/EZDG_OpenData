@@ -1,9 +1,28 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'd201.ezdg'
 version = '1.0-SNAPSHOT'
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "https://lab.ssafy.com/api/v4/projects/823781/packages/maven"
+            credentials {
+                username = "kyoungmop" // Deploy Token의 username
+                password = "gldt-3pDCB-ixBg9KcyRyYzXs" // Deploy Token의 token
+            }
+        }
+    }
+}
+
 
 repositories {
     mavenCentral()
