@@ -83,12 +83,14 @@ public class CustomStringUtil {
         return result;
     }
 
+
+
     /**
      * 파일의 확장자 제거
      * @param str
      * @return 확장자가 제거된 파일 이름
      */
-    private String deleteExtract(String str) {
+    public String deleteExtract(String str) {
         int extractInd = str.indexOf(".");
         return str.substring(0, extractInd);
     }
@@ -98,7 +100,7 @@ public class CustomStringUtil {
      * @param str
      * @return 마지막 언더스코어가 제거된 문자열
      */
-    private String deleteLastUnderScore(String str) {
+    public String deleteLastUnderScore(String str) {
         if(str.endsWith("_")) {
             return str.substring(0, str.length() - 1);
         }
@@ -136,4 +138,6 @@ public class CustomStringUtil {
     public boolean isSnakeCase(String snakeCaseStr) {
         return snakeCaseStr.matches("^[a-z]+(_[a-z]+)*$");
     }
+
+
 }
