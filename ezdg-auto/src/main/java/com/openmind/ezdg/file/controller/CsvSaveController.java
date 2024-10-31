@@ -1,8 +1,10 @@
 package com.openmind.ezdg.file.controller;
 
+import com.openmind.ezdg.file.dto.filesave.AutoLibraryInfoDto;
 import com.openmind.ezdg.file.dto.filesave.MongoBsonValueDto;
 import com.openmind.ezdg.file.dto.filesave.ValidateDuplicateCodeDto;
 import com.openmind.ezdg.file.service.CsvSaveService;
+import com.openmind.ezdg.file.service.SendAutoLibraryInfoService;
 import com.openmind.ezdg.file.util.CsvUtil;
 import com.openmind.ezdg.file.util.ObjectMapperUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.List;
 public class CsvSaveController {
 
     private final CsvSaveService csvSaveService;
+    private final SendAutoLibraryInfoService sendAutoLibraryInfoService;
     private final CsvUtil csvUtil;
     private final ObjectMapperUtil objectMapperUtil;
 
@@ -111,8 +114,13 @@ public class CsvSaveController {
         // mongoDB에 저장
         csvSaveService.saveFile(datas, translatedFileName, translatedColumns);
 
+
         // public data code 저장
         csvSaveService.insertCode(code);
+
+        // library 자동화로 send
+        AutoLibraryInfoDto autoLibraryInfoDto = sendAutoLibraryInfoService.makeAutoLibraryInfo(translatedFileName, translatedColumns);
+        sendAutoLibraryInfoService.sendAutoLibraryInfo(autoLibraryInfoDto);
 
         // view 전달 파라미터
         redirectAttributes.addFlashAttribute("collection", translatedFileName);
