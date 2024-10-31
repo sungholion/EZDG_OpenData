@@ -1,4 +1,4 @@
-package com.example.common;
+package com.openmind.ezdg.generate.library.openapi;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +20,7 @@ public class CodeGenerator {
     public CodeGenerator() throws IOException {
         // Freemarker 설정
         cfg = new Configuration(Configuration.VERSION_2_3_30);
-        cfg.setDirectoryForTemplateLoading(new File("src/main/resources/templates"));  // 템플릿 파일 경로 설정
+        cfg.setDirectoryForTemplateLoading(new File("src/main/resources/templates/generate/library/openapi"));  // 템플릿 파일 경로 설정
     }
 
     public void generateCode(String jsonFilePath) throws IOException, TemplateException {
