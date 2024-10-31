@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 500px;
+            margin-top: 30vh;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .input-group-text, .form-control {
+            background-color: #e9ecef;
+        }
+
+        .input-group-text {
+            /* color: #007bff; */
+            font-weight: bold;
+            width: 95px;
+        }
+
+        .input-group-text-file {
+            font-weight: bold;
+            min-width: 80px;
+        }
+
+        .form-control {
+            min-width: 150px;
+        }
+
+        .btn-info {
+            width: 100%;
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex justify-content-center">
+        <div class="row flex-fill">
+            <form action="/file" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control input-group-text-file" id="file" name="file" accept=".csv" >
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">코드</span>
+                    <input type="text" class="form-control" id="code" name="code">
+                </div>
+                <div class="input-group mb-3">
+                    <button type="submit" class="btn btn-info">변환</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function validateForm() {
+            const fileInput = document.getElementById('file');
+            const codeInput = document.getElementById('code');
+
+            if(!fileInput.files.length) {
+                alert("파일을 선택해주세요!");
+                return false;
+            }
+
+            if(!codeInput.value.trim()) {
+                alert("코드를 입력해주세요!");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
