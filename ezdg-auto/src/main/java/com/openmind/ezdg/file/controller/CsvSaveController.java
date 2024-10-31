@@ -7,6 +7,8 @@ import com.openmind.ezdg.file.service.CsvSaveService;
 import com.openmind.ezdg.file.service.SendAutoLibraryInfoService;
 import com.openmind.ezdg.file.util.CsvUtil;
 import com.openmind.ezdg.file.util.ObjectMapperUtil;
+import com.openmind.ezdg.generate.library.file.service.JavaFileLibraryGenerateService;
+import com.openmind.ezdg.generate.server.service.APIServerGenerateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,8 @@ public class CsvSaveController {
 
     private final CsvSaveService csvSaveService;
     private final SendAutoLibraryInfoService sendAutoLibraryInfoService;
+    private final JavaFileLibraryGenerateService javaFileLibraryGenerateService;
+    private final APIServerGenerateService apiServerGenerateService;
     private final CsvUtil csvUtil;
     private final ObjectMapperUtil objectMapperUtil;
 
@@ -48,7 +52,7 @@ public class CsvSaveController {
 
         // 중복 코드 검증
         ValidateDuplicateCodeDto validateDuplicateCode = csvSaveService.validateDuplicateCode(code);
-        if(validateDuplicateCode.getIsDuplicate()) {
+        if (validateDuplicateCode.getIsDuplicate()) {
             model.addAttribute("isDuplicateCode", true);
             model.addAttribute("regDate", validateDuplicateCode.getRegDate());
             return "views/filesave/duplicate";
@@ -120,7 +124,9 @@ public class CsvSaveController {
 
         // library 자동화로 send
         AutoLibraryInfoDto autoLibraryInfoDto = sendAutoLibraryInfoService.makeAutoLibraryInfo(translatedFileName, translatedColumns);
-        sendAutoLibraryInfoService.sendAutoLibraryInfo(autoLibraryInfoDto);
+
+        apiServerGenerateService.generate(autoLibraryInfoDto);
+        javaFileLibraryGenerateService.generate(autoLibraryInfoDto);
 
         // view 전달 파라미터
         redirectAttributes.addFlashAttribute("collection", translatedFileName);
