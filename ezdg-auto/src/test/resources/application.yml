@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://S11P21D207:7rPaud@ssafy.ngivl.mongodb.net/S11P21D207?authSource=admin&retryWrites=true&w=majority
+
+external:
+  api:
+    naver:
+      papago:
+        id: w1ubyxiw4q
+        key: JISEq1G20RgIET2knEvLtukH5EM3Jy1gEmvg39WT
+        glossarykey: cc5c5d62-3762-4069-acbf-8dc01a7819b9
