@@ -1,4 +1,2 @@
-package com.example.common;
-
-public class AbstractAPI {
+package com.openmind.ezdg.generate.library.openapi;public class AbstractAPI {
 }
