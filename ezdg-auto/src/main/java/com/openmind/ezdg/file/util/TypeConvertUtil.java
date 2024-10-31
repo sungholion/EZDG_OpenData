@@ -25,7 +25,7 @@ public class TypeConvertUtil {
      * @param input
      * @return String
      */
-    public static String getDataTypeFromString(String input) {
+    public String getDataTypeFromString(String input) {
         if (isInteger(input)) {
             return "Long";
         } else if (isFloatingPoint(input)) {
