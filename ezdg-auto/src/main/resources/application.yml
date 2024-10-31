@@ -1,5 +1,5 @@
 spring:
-  data: 
+  data:
     mongodb:
       url: mongodb+srv://S11P21D207:7rPaud@ssafy.ngivl.mongodb.net/S11P21D207?authSource=admin&retryWrites=true&w=majority
 
@@ -11,3 +11,7 @@ springdoc:
     groups-order: DESC
     tags-sorter: alpha
     operations-sorter: alpha
+
+path:
+  java-library-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
+  api-server-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
