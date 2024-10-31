@@ -1,0 +1,29 @@
+{
+  "packageName": "weather",
+  "className": "Weather",
+  "endpoint": "/weather",
+  "requestFields": [
+    {"type": "String", "name": "ServiceKey", "description": "공공데이터포털에서 받은 인증키"},
+    {"type": "int", "name": "pageNo", "description": "페이지 번호"},
+    {"type": "int", "name": "numOfRows", "description": "한 페이지 결과 수"},
+    {"type": "String", "name": "dataType", "description": "요청자료형식(XML/JSON) Default: XML"},
+    {"type": "String", "name": "base_date", "description": "‘21년 6월 28일 발표"},
+    {"type": "String", "name": "base_time", "description": "06시 발표(정시단위)"},
+    {"type": "int", "name": "nx", "description": "예보지점의 X 좌표값"},
+    {"type": "int", "name": "ny", "description": "예보지점의 Y 좌표값"}
+  ],
+  "responseFields": [
+    {"type": "String", "name": "resultCode", "description": "결과코드"},
+    {"type": "String", "name": "resultMsg", "description": "결과메시지"},
+    {"type": "int", "name": "numOfRows", "description": "한 페이지 결과 수"},
+    {"type": "int", "name": "pageNo", "description": "페이지 번호"},
+    {"type": "int", "name": "totalCount", "description": "전체 결과 수"},
+    {"type": "String", "name": "dataType", "description": "응답자료형식 (XML/JSON)"},
+    {"type": "String", "name": "baseDate", "description": "‘21년 6월 28일 발표"},
+    {"type": "String", "name": "baseTime", "description": "06시 발표(매 정시)"},
+    {"type": "int", "name": "nx", "description": "입력한 예보지점 X 좌표"},
+    {"type": "int", "name": "ny", "description": "입력한 예보지점 Y 좌표"},
+    {"type": "String", "name": "category", "description": "자료구분코드"},
+    {"type": "String", "name": "obsrValue", "description": "실황 값"}
+  ]
+}
