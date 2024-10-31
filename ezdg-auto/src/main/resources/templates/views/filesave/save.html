@@ -16,6 +16,12 @@
         .input-group-text {
             font-weight: bold;
         }
+
+        .guide {
+            background-color: rgb(245, 241, 241);
+            font-weight: bold;
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -42,6 +48,9 @@
             </div>
         </div>
         <hr>
+        <div class="input-group mb-3">
+            <textarea class="form-control guide" aria-label="With textarea">※ 칼럼명의 숫자는 모두 사라집니다. 숫자가 모두 사라졌을 때, 중복된 칼럼이 생기지 않게 주의하세요.</textarea>
+        </div>
         <div th:each="origin, iterStat : ${originalColumns}">
             <div class="row">
                 <div class="input-group mb-3">
