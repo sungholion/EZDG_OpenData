@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+
+        .btn-info {
+            width: 100%;
+        }
+
+        .input-group-text {
+            font-weight: bold;
+        }
+
+        .guide {
+            background-color: rgb(245, 241, 241);
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-2">
+    <div class="row">
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="input-group mb-3">
+                <input type="text" readonly="readonly" class="form-control" id="file" name="file" th:placeholder="${originFileName}">
+            </div>
+        </form>
+    </div>
+    <hr>
+    <form action="/file/save" method="post">
+        <input type="hidden" name="datas" th:value="${datas}">
+        <input type="hidden" name="code" th:value="${code}">
+        <div class="row">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="originFileName">선택된 파일명</span>
+                <input type="text" name="originFileName" th:value="${originFileName}" readonly="readonly" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">저장할 객체명</span>
+                <input type="text" name="translatedFileName" th:value="${translatedFileName}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+        </div>
+        <hr>
+        <div class="input-group mb-3">
+            <textarea class="form-control guide" aria-label="With textarea">※ 칼럼명의 숫자는 모두 사라집니다. 숫자가 모두 사라졌을 때, 중복된 칼럼이 생기지 않게 주의하세요.</textarea>
+        </div>
+        <div th:each="origin, iterStat : ${originalColumns}">
+            <div class="row">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control input-group-text text-start" name="originColumns" th:value="${origin}" readonly="readonly" placeholder="원본 칼럼명" aria-label="Username">
+                    <span class="input-group-text">→</span>
+                    <input type="text" class="form-control" name="translatedColumns" th:value="${translatedColumns[iterStat.index]}" placeholder="변경 칼럼명" aria-label="Server">
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-info">등록</button>
+    </form>
+</div>
+</body>
+</html>
