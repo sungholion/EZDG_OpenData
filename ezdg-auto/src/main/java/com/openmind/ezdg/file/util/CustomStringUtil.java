@@ -4,6 +4,7 @@ import org.bson.BsonValue;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
 @Component
 public class CustomStringUtil {
@@ -102,5 +103,37 @@ public class CustomStringUtil {
             return str.substring(0, str.length() - 1);
         }
         return str;
+    }
+
+    /**
+     * snakeCase가 맞는지 검증하고, 맞다면 camel case로 변환
+     * @param snakeCaseStr
+     * @return 카멜케이스로 변환된 string 반환
+     */
+    public String snakeCaseToCamelCase(String snakeCaseStr) {
+        if(!isSnakeCase(snakeCaseStr)) {
+            throw new RuntimeException("input string is not snake case -> " + snakeCaseStr);
+        }
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st = new StringTokenizer(snakeCaseStr, "_");
+
+        sb.append(st.nextToken());
+
+        while(st.hasMoreTokens()) {
+            String word = st.nextToken();
+            sb.append(word.substring(0, 1).toUpperCase());
+            sb.append(word.substring(1).toLowerCase());
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * snakeCase가 맞는지 검증
+     * @param snakeCaseStr
+     * @return snakeCase가 맞다면 true, 아니라면 false 반환
+     */
+    public boolean isSnakeCase(String snakeCaseStr) {
+        return snakeCaseStr.matches("^[a-z]+(_[a-z]+)*$");
     }
 }

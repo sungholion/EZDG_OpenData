@@ -119,7 +119,8 @@ public class CsvSaveController {
         csvSaveService.insertCode(code);
 
         // library 자동화로 send
-        AutoLibraryInfoDto autoLibraryInfoDto = sendAutoLibraryInfoService.sendAutoLibraryInfo(translatedFileName, translatedColumns);
+        AutoLibraryInfoDto autoLibraryInfoDto = sendAutoLibraryInfoService.makeAutoLibraryInfo(translatedFileName, translatedColumns);
+        sendAutoLibraryInfoService.sendAutoLibraryInfo(autoLibraryInfoDto);
 
         // view 전달 파라미터
         redirectAttributes.addFlashAttribute("collection", translatedFileName);

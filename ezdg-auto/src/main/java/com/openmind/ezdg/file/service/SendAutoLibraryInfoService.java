@@ -1,6 +1,7 @@
 package com.openmind.ezdg.file.service;
 
 import com.openmind.ezdg.file.dto.filesave.AutoLibraryInfoDto;
+import com.openmind.ezdg.file.util.CustomStringUtil;
 import com.openmind.ezdg.file.util.TypeConvertUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,18 +14,22 @@ import java.util.List;
 public class SendAutoLibraryInfoService {
 
     private final TypeConvertUtil typeConvertUtil;
+    private final CustomStringUtil customStringUtil;
 
-    public AutoLibraryInfoDto sendAutoLibraryInfo(String translatedFileName, List<String> translatedColumns) {
+    public AutoLibraryInfoDto makeAutoLibraryInfo(String translatedFileName, List<String> translatedColumns) {
         AutoLibraryInfoDto autoLibraryInfoDto = new AutoLibraryInfoDto();
 
-        autoLibraryInfoDto.setClassInfo(translatedFileName);
+        String convertClassName = customStringUtil.snakeCaseToCamelCase(translatedFileName);
+
+        autoLibraryInfoDto.setClassInfo(convertClassName);
 
         List<AutoLibraryInfoDto.ColumnInfo> columnInfoList = new ArrayList<>();
 
         // translatedColumns를 순회하며 데이터 타입을 알아내고 ColumnInfo를 생성
         for (String column : translatedColumns) {
             String dataType = typeConvertUtil.getDataTypeFromString(column); // 데이터 타입 확인
-            AutoLibraryInfoDto.ColumnInfo columnInfo = new AutoLibraryInfoDto.ColumnInfo(dataType, column); // ColumnInfo 객체 생성
+            String convertColumnName = customStringUtil.snakeCaseToCamelCase(column);
+            AutoLibraryInfoDto.ColumnInfo columnInfo = new AutoLibraryInfoDto.ColumnInfo(dataType, convertColumnName); // ColumnInfo 객체 생성
             columnInfoList.add(columnInfo); // 리스트에 추가
         }
 
@@ -32,6 +37,10 @@ public class SendAutoLibraryInfoService {
         autoLibraryInfoDto.setColumnInfo(columnInfoList);
 
         return autoLibraryInfoDto;
+    }
+
+    public void sendAutoLibraryInfo(AutoLibraryInfoDto autoLibraryInfo) {
+
     }
 
 }
