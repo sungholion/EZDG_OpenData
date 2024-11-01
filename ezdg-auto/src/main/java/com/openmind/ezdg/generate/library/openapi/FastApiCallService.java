@@ -1,7 +1,5 @@
-package com.nomz.doctorstudy.api;
+package com.openmind.ezdg.generate.library.openapi;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +10,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 @Slf4j
 @Service
-public class FastApiCallService implements ExternalApiCallService{
+public class FastApiCallService implements ExternalApiCallService {
 
-    @Value("${fast-api.url}")
-    private String baseUrl;
+    //@Value("${fast-api.url}")
+    private String baseUrl = "http://192.168.100.149:8000";
+
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private RestTemplate restTemplate;
@@ -32,86 +36,54 @@ public class FastApiCallService implements ExternalApiCallService{
     }
 
     @Override
-    public String gpt(String s) {
-        String url = baseUrl + "/gpt/";
+    public String tableFormApi(String s) {
+        String url = baseUrl + "/table";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String requestJson =  "{\"text\":\"" + s + "\"}";
+        String requestJson = "{\"url\":\"" + s + "\"}";
         HttpEntity<String> entity = new HttpEntity<>(requestJson, headers);
 
-        try{
-            log.debug("sent gpt request to FastAPI server, url={}", url);
+        try {
+            log.debug("Sent request to FastAPI server, URL={}", url);
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-            log.debug("received gpt response from FastAPI server, response={}", response);
+            log.debug("Received response from FastAPI server, response={}", response);
+
             String responseBody = response.getBody();
             if (responseBody != null) {
-                JsonNode jsonNode = objectMapper.readTree(responseBody);
-                String answer = jsonNode.get("answer").asText();
-                answer = answer.replaceAll("\n", "[Line Feed]");
-                return answer;
+                // JSON 파일로 저장할 경로와 파일 이름 설정
+                String packagePath = this.getClass().getPackage().getName().replace('.', '/');
+                String filePath = "src/main/resources/" + "api_spec_generated.json";
+
+                // 경로가 존재하지 않으면 생성
+//                Path path = Path.of("path/to/your/directory");
+//                if (!Files.exists(path)) {
+//                    Files.createDirectories(path);
+//                }
+
+                // JSON 응답을 파일에 쓰기
+                try (FileWriter fileWriter = new FileWriter(filePath)) {
+                    fileWriter.write(responseBody);
+                    log.info("Response saved as JSON file at {}", filePath);
+                } catch (IOException e) {
+                    log.error("Error writing JSON to file: {}", e.getMessage());
+                }
+
+                return filePath; // 저장된 파일 경로를 반환하거나 필요시 null 반환
             } else {
+                log.warn("Empty response body received from FastAPI server.");
                 return null;
             }
-        } catch (ResourceAccessException e){
-            System.err.println("ResourceAccessException: " + e.getMessage());
+        } catch (ResourceAccessException e) {
+            log.error("ResourceAccessException: {}", e.getMessage());
             return null;
         } catch (Exception e) {
-            System.err.println("Exception: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    @Override
-    public byte[] tts(String s, VoiceType type) {
-        String url = baseUrl + "/tts/";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Voice-Type", type.getToken());
-
-        String requestJson = "{\"text\":\"" + s + "\"}";
-        HttpEntity<String> entity = new HttpEntity<>(requestJson, headers);
-
-        try{
-            log.debug("sent tts request to FastAPI server, url={}", url);
-            ResponseEntity<byte[]> response = restTemplate.exchange(url, HttpMethod.POST, entity, byte[].class);
-            log.debug("received tts response from FastAPI server, response={}", response);
-            return response.getBody();
-        }catch (ResourceAccessException e) {
-            System.err.println("ResourceAccessException: " + e.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public String stt(byte[] audio) {
-        String url = baseUrl + "/stt/";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-
-        HttpEntity<byte[]> entity = new HttpEntity<>(audio, headers);
-
-        try{
-            log.debug("sent stt request to FastAPI server, url={}", url);
-            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-            log.debug("received stt response from FastAPI server, response={}", response);
-
-            String responseBody = response.getBody();
-            if (responseBody != null) {
-                JsonNode jsonNode = objectMapper.readTree(responseBody);
-                return jsonNode.get("transcribed_fixed_text").asText();
-            } else {
-                return null;
-            }
-        }catch(ResourceAccessException e) {
-            System.err.println("ResourceAccessException: " + e.getMessage());
-            return null;
-        } catch (JsonProcessingException e) {
+            log.error("Exception while calling FastAPI: {}", e.getMessage());
             throw new RuntimeException(e);
         }
     }
 }
+
+
+

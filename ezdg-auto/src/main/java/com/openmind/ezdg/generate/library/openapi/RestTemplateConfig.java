@@ -1,4 +1,4 @@
-package com.nomz.doctorstudy.api;
+package com.openmind.ezdg.generate.library.openapi;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

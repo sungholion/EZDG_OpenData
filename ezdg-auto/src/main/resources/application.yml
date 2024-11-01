@@ -11,3 +11,7 @@ springdoc:
     groups-order: DESC
     tags-sorter: alpha
     operations-sorter: alpha
+
+fast-api:
+  url:
+   http://192.168.100.149:8000

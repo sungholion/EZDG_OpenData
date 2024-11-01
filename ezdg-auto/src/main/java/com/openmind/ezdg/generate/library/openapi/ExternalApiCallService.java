@@ -1,7 +1,6 @@
-package com.nomz.doctorstudy.api;
+package com.openmind.ezdg.generate.library.openapi;
 
 public interface ExternalApiCallService {
-    String gpt(String s);
-    byte[] tts(String s, VoiceType type);
-    String stt(byte[] audio);
+    String tableFormApi(String url);
+    //String swaggerFormApi(String url);
 }
