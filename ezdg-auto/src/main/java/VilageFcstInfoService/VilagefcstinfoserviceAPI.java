@@ -1,73 +1,109 @@
 package VilageFcstInfoService;
 
-import com.openmind.ezdg.generate.library.openapi.AbstractAPI;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
-public class VilagefcstinfoserviceAPI extends AbstractAPI<VilagefcstinfoserviceResponse> {
+public class VilagefcstinfoserviceAPI {
 
-    public VilagefcstinfoserviceAPI() {
-    super("/getUltraSrtNcst");
+private static final String BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst";
+private StringBuilder queryParams = new StringBuilder();
+
+    /**
+    * 공공데이터포털에서 받은 인증키
+    */
+    public VilagefcstinfoserviceAPI ServiceKey(String ServiceKey) {
+    if(queryParams.length() == 0) queryParams.append("?");
+    else queryParams.append("&");
+    queryParams.append("ServiceKey=").append(ServiceKey);
+    return this;
+    }
+    /**
+    * 페이지번호
+    */
+    public VilagefcstinfoserviceAPI pageNo(Integer pageNo) {
+    if(queryParams.length() == 0) queryParams.append("?");
+    else queryParams.append("&");
+    queryParams.append("pageNo=").append(pageNo);
+    return this;
+    }
+    /**
+    * 한 페이지 결과 수
+    */
+    public VilagefcstinfoserviceAPI numOfRows(Integer numOfRows) {
+    if(queryParams.length() == 0) queryParams.append("?");
+    else queryParams.append("&");
+    queryParams.append("numOfRows=").append(numOfRows);
+    return this;
+    }
+    /**
+    * 요청자료형식(XML/JSON) Default: XML
+    */
+    public VilagefcstinfoserviceAPI dataType(String dataType) {
+    if(queryParams.length() == 0) queryParams.append("?");
+    else queryParams.append("&");
+    queryParams.append("dataType=").append(dataType);
+    return this;
+    }
+    /**
+    * ‘21년 6월 28일 발표
+    */
+    public VilagefcstinfoserviceAPI base_date(Integer base_date) {
+    if(queryParams.length() == 0) queryParams.append("?");
+    else queryParams.append("&");
+    queryParams.append("base_date=").append(base_date);
+    return this;
+    }
+    /**
+    * 06시 발표(정시단위)
+    */
+    public VilagefcstinfoserviceAPI base_time(String base_time) {
+    if(queryParams.length() == 0) queryParams.append("?");
+    else queryParams.append("&");
+    queryParams.append("base_time=").append(base_time);
+    return this;
+    }
+    /**
+    * 예보지점의 X 좌표값
+    */
+    public VilagefcstinfoserviceAPI nx(Integer nx) {
+    if(queryParams.length() == 0) queryParams.append("?");
+    else queryParams.append("&");
+    queryParams.append("nx=").append(nx);
+    return this;
+    }
+    /**
+    * 예보지점의 Y 좌표값
+    */
+    public VilagefcstinfoserviceAPI ny(Integer ny) {
+    if(queryParams.length() == 0) queryParams.append("?");
+    else queryParams.append("&");
+    queryParams.append("ny=").append(ny);
+    return this;
     }
 
-        /**
-        * 공공데이터포털에서 받은 인증키
-        */
-        public VilagefcstinfoserviceAPI ServiceKey(String ServiceKey) {
-        uriBuilder.setParameter("ServiceKey", String.valueOf(ServiceKey));
-        return this;
-        }
-        /**
-        * 페이지번호
-        */
-        public VilagefcstinfoserviceAPI pageNo(Integer pageNo) {
-        uriBuilder.setParameter("pageNo", String.valueOf(pageNo));
-        return this;
-        }
-        /**
-        * 한 페이지 결과 수
-        */
-        public VilagefcstinfoserviceAPI numOfRows(Integer numOfRows) {
-        uriBuilder.setParameter("numOfRows", String.valueOf(numOfRows));
-        return this;
-        }
-        /**
-        * 요청자료형식(XML/JSON) Default: XML
-        */
-        public VilagefcstinfoserviceAPI dataType(String dataType) {
-        uriBuilder.setParameter("dataType", String.valueOf(dataType));
-        return this;
-        }
-        /**
-        * ‘21년 6월 28일 발표
-        */
-        public VilagefcstinfoserviceAPI base_date(Integer base_date) {
-        uriBuilder.setParameter("base_date", String.valueOf(base_date));
-        return this;
-        }
-        /**
-        * 06시 발표(정시단위)
-        */
-        public VilagefcstinfoserviceAPI base_time(Integer base_time) {
-        uriBuilder.setParameter("base_time", String.valueOf(base_time));
-        return this;
-        }
-        /**
-        * 예보지점의 X 좌표값
-        */
-        public VilagefcstinfoserviceAPI nx(Integer nx) {
-        uriBuilder.setParameter("nx", String.valueOf(nx));
-        return this;
-        }
-        /**
-        * 예보지점의 Y 좌표값
-        */
-        public VilagefcstinfoserviceAPI ny(Integer ny) {
-        uriBuilder.setParameter("ny", String.valueOf(ny));
-        return this;
-        }
+public List<VilagefcstinfoserviceResponse> fetch() throws Exception {
+    URL url = new URL(BASE_URL + queryParams.toString());
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    conn.setRequestMethod("GET");
+    conn.setRequestProperty("Content-Type", "application/json");
 
-    // fetch 메서드는 예외를 던지지 않도록 수정
-    public List<VilagefcstinfoserviceResponse> fetch() {
-        return super.fetch();
+    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+    String inputLine;
+    StringBuilder content = new StringBuilder();
+    while ((inputLine = in.readLine()) != null) {
+    content.append(inputLine);
+    }
+
+    in.close();
+    conn.disconnect();
+
+    List<VilagefcstinfoserviceResponse> responseList = new ArrayList<>();
+        System.out.println("Response: " + content.toString());
+
+        return responseList;
         }
         }

@@ -28,7 +28,7 @@ public class VilagefcstinfoserviceResponse {
     /**
     * ‘21년 6월 28일 발표
     */
-    private Integer baseDate;
+    private String baseDate;
     /**
     * 06시 발표(매 정시)
     */
@@ -92,11 +92,11 @@ public class VilagefcstinfoserviceResponse {
     public void setDataType(String dataType) {
     this.dataType = dataType;
     }
-    public Integer getBaseDate() {
+    public String getBaseDate() {
     return baseDate;
     }
 
-    public void setBaseDate(Integer baseDate) {
+    public void setBaseDate(String baseDate) {
     this.baseDate = baseDate;
     }
     public Integer getBaseTime() {
