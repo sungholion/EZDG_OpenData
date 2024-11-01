@@ -61,14 +61,8 @@ public class SendAutoLibraryInfoService {
             }
         }
 
-        // columnInfo 리스트를 AutoLibraryInfoDto에 설정
         autoLibraryInfoDto.setColumnInfo(columnInfoList);
-
         return autoLibraryInfoDto;
-    }
-
-    public void sendAutoLibraryInfo(AutoLibraryInfoDto autoLibraryInfo) {
-
     }
 
 }

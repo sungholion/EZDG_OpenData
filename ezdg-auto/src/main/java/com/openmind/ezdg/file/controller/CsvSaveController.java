@@ -122,7 +122,7 @@ public class CsvSaveController {
         // public data code 저장
         csvSaveService.insertCode(code);
 
-        // library 자동화로 send
+        // library 자동화를 위한 정보를 담은 Dto
         AutoLibraryInfoDto autoLibraryInfoDto = sendAutoLibraryInfoService.makeAutoLibraryInfo(translatedFileName, translatedColumns, datas);
 
         apiServerGenerateService.generate(autoLibraryInfoDto);
