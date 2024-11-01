@@ -152,7 +152,7 @@ public class CustomStringUtil {
      * @param str
      * @return 첫 글자 대문자로 변환된 문자열
      */
-    public String CapitalizeFirstLetter(String str) {
+    public String capitalizeFirstLetter(String str) {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }
