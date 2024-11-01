@@ -25,8 +25,8 @@ public List<${className}> search(
         @RequestParam(required = false) ${field.type} ${field.name}Containing,
     </#if>
     <#if field.type == "Date">
-        @RequestParam(required = false) ${field.type} ${field.name}After
-        @RequestParam(required = false) ${field.type} ${field.name}Before
+        @RequestParam(required = false) ${field.type} ${field.name}After,
+        @RequestParam(required = false) ${field.type} ${field.name}Before,
     </#if>
     <#if field.type == "Long" || field.type == "Double" || field.type == "Integer">
         @RequestParam(required = false) ${field.type} ${field.name}Lt,
