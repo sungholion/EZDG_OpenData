@@ -19,9 +19,8 @@ public class SendAutoLibraryInfoService {
     public AutoLibraryInfoDto makeAutoLibraryInfo(String translatedFileName, List<String> translatedColumns) {
         AutoLibraryInfoDto autoLibraryInfoDto = new AutoLibraryInfoDto();
 
-        String convertClassName = customStringUtil.snakeCaseToCamelCase(translatedFileName);
-
-        autoLibraryInfoDto.setClassInfo(convertClassName);
+        // 파일명을 클래스명으로 설정
+        autoLibraryInfoDto.setClassInfo(translatedFileName);
 
         List<AutoLibraryInfoDto.ColumnInfo> columnInfoList = new ArrayList<>();
 
