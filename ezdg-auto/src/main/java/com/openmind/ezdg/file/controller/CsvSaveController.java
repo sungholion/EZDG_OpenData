@@ -123,7 +123,7 @@ public class CsvSaveController {
         csvSaveService.insertCode(code);
 
         // library 자동화로 send
-        AutoLibraryInfoDto autoLibraryInfoDto = sendAutoLibraryInfoService.makeAutoLibraryInfo(translatedFileName, translatedColumns);
+        AutoLibraryInfoDto autoLibraryInfoDto = sendAutoLibraryInfoService.makeAutoLibraryInfo(translatedFileName, translatedColumns, datas);
 
         apiServerGenerateService.generate(autoLibraryInfoDto);
         javaFileLibraryGenerateService.generate(autoLibraryInfoDto);
