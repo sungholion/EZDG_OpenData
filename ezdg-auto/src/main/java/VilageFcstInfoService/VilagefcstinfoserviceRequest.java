@@ -24,7 +24,7 @@ public class VilagefcstinfoserviceRequest {
     /**
     * 06시 발표(정시단위)
     */
-    private Integer base_time;
+    private String base_time;
     /**
     * 예보지점의 X 좌표값
     */
@@ -69,11 +69,11 @@ public class VilagefcstinfoserviceRequest {
     public void setBase_date(Integer base_date) {
     this.base_date = base_date;
     }
-    public Integer getBase_time() {
+    public String getBase_time() {
     return base_time;
     }
 
-    public void setBase_time(Integer base_time) {
+    public void setBase_time(String base_time) {
     this.base_time = base_time;
     }
     public Integer getNx() {
