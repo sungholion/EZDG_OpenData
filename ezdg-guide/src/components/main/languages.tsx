@@ -5,7 +5,7 @@ const languages = [
   {
     id: "spring",
     name: "spring",
-    logo: "/Spring.png",
+    logo: "/Java.png",
   },
   {
     id: "nodejs",
@@ -23,7 +23,7 @@ export default function Languages() {
           <Card
             key={language.id}
             className="flex items-center justfiy-center p-12 bg-white hover:shadow-lg transition-shadow">
-            <div className="relative w-full h-32 content-center overflow-hidden">
+            <div className="relative w-full h-auto content-center overflow-hidden">
               <Image
                 src={language.logo}
                 alt={`$(language.name) Logo`}
