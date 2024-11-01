@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,6 +39,14 @@ public class JavaFileLibraryGenerateService {
             fields.add(field);
         });
         data.put("fields", fields);
+
+        File directory = new File(javaLibraryProjectPath + data.get("collectionName"));
+
+        // 폴더가 존재하지 않으면 생성
+        if (!directory.exists()) {
+            directory.mkdirs(); // 중첩된 디렉토리 구조도 생성
+        }
+
         generateDTOFile(data);
         generateAPIFile(data);
     }
@@ -51,8 +60,17 @@ public class JavaFileLibraryGenerateService {
 
         try {
             Template dtoTemplate = cfg.getTemplate("dtoTemplate.ftl");
-            String dtoPath = javaLibraryProjectPath + data.get("className") + "DTO.java";
-            dtoTemplate.process(data, new FileWriter(dtoPath));
+            String dtoPath = new StringBuilder()
+                    .append(javaLibraryProjectPath)
+                    .append(data.get("collectionName"))
+                    .append(System.getProperty("os.name").startsWith("Windows") ? "\\" : "/")
+                    .append(data.get("className"))
+                    .append("DTO.java")
+                    .toString();
+
+            FileWriter writer = new FileWriter(dtoPath);
+            dtoTemplate.process(data, writer);
+            writer.close();
         } catch (IOException | TemplateException e) {
             throw new RuntimeException(e);
         }
@@ -67,8 +85,17 @@ public class JavaFileLibraryGenerateService {
         data.put("packageName", "com.openmind.ezdg." + data.get("collectionName"));
         try {
             Template apiTemplate = cfg.getTemplate("apiTemplate.ftl");
-            String apiPath = javaLibraryProjectPath + data.get("className") + "API.java";
-            apiTemplate.process(data, new FileWriter(apiPath));
+            String apiPath = new StringBuilder()
+                    .append(javaLibraryProjectPath)
+                    .append(data.get("collectionName"))
+                    .append(System.getProperty("os.name").startsWith("Windows") ? "\\" : "/")
+                    .append(data.get("className"))
+                    .append("API.java")
+                    .toString();
+
+            FileWriter writer = new FileWriter(apiPath);
+            apiTemplate.process(data, writer);
+            writer.close();
         } catch (IOException | TemplateException e) {
             throw new RuntimeException(e);
         }
