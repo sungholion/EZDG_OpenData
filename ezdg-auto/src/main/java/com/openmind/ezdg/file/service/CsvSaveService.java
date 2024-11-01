@@ -175,7 +175,7 @@ public class CsvSaveService {
 
         MongoCollection<Document> collection = csvSaveRepository.getCollection(collectionName);
 
-        try (MongoCursor<Document> cursor = collection.find().limit(5).iterator()) {
+        try (MongoCursor<Document> cursor = collection.find().limit(1).iterator()) {
             List<MongoBsonValueDto> documents = new ArrayList<>();
             while(cursor.hasNext()) {
                 Document document = cursor.next();
