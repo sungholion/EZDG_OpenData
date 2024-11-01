@@ -1,7 +1,7 @@
 spring:
-  data: 
+  data:
     mongodb:
-      url: mongodb+srv://S11P21D207:7rPaud@ssafy.ngivl.mongodb.net/S11P21D207?authSource=admin&retryWrites=true&w=majority
+      uri: mongodb+srv://S11P21D207:7rPaud@ssafy.ngivl.mongodb.net/S11P21D207?authSource=admin&retryWrites=true&w=majority
 
 springdoc:
   api-docs:
@@ -12,11 +12,6 @@ springdoc:
     tags-sorter: alpha
     operations-sorter: alpha
 
-fast-api:
-  url:
-   http://192.168.100.149:8000
-
-
-external:
-  api:
-    serviceKey=FNEiXVDs8uhQ7bHEeW%2Bou2xekuNtjIVurFi%2Fvp6nfH3Ky4eIQwCGLgoxF%2BoQZisPqm02pYf0M5u9xu1fjbJMMQ%3D%3D:
+path:
+  java-library-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
+  api-server-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
