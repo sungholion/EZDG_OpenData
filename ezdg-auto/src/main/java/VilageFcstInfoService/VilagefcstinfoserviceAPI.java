@@ -1,5 +1,8 @@
 package VilageFcstInfoService;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -85,25 +88,34 @@ private StringBuilder queryParams = new StringBuilder();
     return this;
     }
 
-public List<VilagefcstinfoserviceResponse> fetch() throws Exception {
-    URL url = new URL(BASE_URL + queryParams.toString());
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-    conn.setRequestMethod("GET");
-    conn.setRequestProperty("Content-Type", "application/json");
+    public VilagefcstinfoserviceResponse fetch() throws Exception {
+        // API 호출
+        URL url = new URL(BASE_URL + queryParams.toString());
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Content-Type", "application/json");
 
-    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-    String inputLine;
-    StringBuilder content = new StringBuilder();
-    while ((inputLine = in.readLine()) != null) {
-    content.append(inputLine);
-    }
+        // 응답 읽기
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String inputLine;
+        StringBuilder content = new StringBuilder();
 
-    in.close();
-    conn.disconnect();
-
-    List<VilagefcstinfoserviceResponse> responseList = new ArrayList<>();
+        while ((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        conn.disconnect();
         System.out.println("Response: " + content.toString());
 
-        return responseList;
+        // JSON 파싱
+        ObjectMapper mapper = new ObjectMapper();
+        VilagefcstinfoserviceResponse response;
+        try {
+            response = mapper.readValue(content.toString(), VilagefcstinfoserviceResponse.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to parse JSON response", e);
         }
-        }
+        return response;
+    }
+}
