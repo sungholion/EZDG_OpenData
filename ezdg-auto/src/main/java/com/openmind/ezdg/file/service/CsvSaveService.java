@@ -65,6 +65,7 @@ public class CsvSaveService {
                 String columnName = translatedColumns.get(j);
                 String value = row[j];
                 String dataType = typeConvertUtil.getDataTypeFromString(value);
+                log.info("dataType:" + dataType + " value:" + value);
 
                 // 결정된 타입으로 map에 put
                 putDocumentByDataType(dataType, documentMap, columnName, value);
