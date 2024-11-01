@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0165d833-371c-496d-9cd8-488cf39a8c5e" name="Changes" comment="be-develop: 라이브러리 배포 코드 작성">
+      <change afterPath="$PROJECT_DIR$/ezdg-auto/src/main/java/VilageFcstInfoService/VilagefcstinfoserviceAPI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ezdg-auto/src/main/java/VilageFcstInfoService/VilagefcstinfoserviceRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ezdg-auto/src/main/java/VilageFcstInfoService/VilagefcstinfoserviceResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ezdg-auto/src/main/resources/api_spec_generated.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ezdg-auto/src/main/java/com/openmind/ezdg/generate/library/openapi/ExternalApiCallService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ezdg-auto/src/main/java/com/openmind/ezdg/generate/library/openapi/ExternalApiCallService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ezdg-auto/src/main/java/com/openmind/ezdg/generate/library/openapi/FastApiCallService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ezdg-auto/src/main/java/com/openmind/ezdg/generate/library/openapi/FastApiCallService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ezdg-auto/src/main/java/com/openmind/ezdg/generate/library/openapi/RestTemplateConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/ezdg-auto/src/main/java/com/openmind/ezdg/generate/library/openapi/RestTemplateConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ezdg-auto/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ezdg-auto/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ezdg-auto/src/test/java/com/openmind/ezdg/generate/library/openapi/FastApiCallServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ezdg-auto/src/test/java/com/openmind/ezdg/generate/library/openapi/FastApiCallServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ezdg-auto/src/test/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ezdg-auto/src/test/resources/application.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/ezdg">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/ezdg-auto">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitLabMergeRequestFiltersHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPENED&quot;,
+    &quot;assignee&quot;: {
+      &quot;type&quot;: &quot;org.jetbrains.plugins.gitlab.mergerequest.ui.filters.GitLabMergeRequestsFiltersValue.MergeRequestsMemberFilterValue.MergeRequestsAssigneeFilterValue&quot;,
+      &quot;username&quot;: &quot;kyoungmop&quot;,
+      &quot;fullname&quot;: &quot;박경모&quot;
+    }
+  }
+}</component>
+  <component name="GitLabMergeRequestsSettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;first&quot;: &quot;https://lab.ssafy.com/s11-final/S11P31D201.git&quot;,
+    &quot;second&quot;: &quot;8842a96e-1e6b-4b1d-8d96-f5ad233f3755&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2o2t0ZOYHqSmQdZRI7kLce0KumU" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build ezdg.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.FastApiCallServiceTest.tableFormApi.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ezdg [:test.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ezdg.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat-auto/openapi&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Kyoungmo/3.Github/S11P31D201/ezdg-auto/build.gradle&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editing.templates&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.openmind.ezdg.generate.library.openapi" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="FastApiCallServiceTest.tableFormApi" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/ezdg-auto" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.openmind.ezdg.generate.library.openapi.FastApiCallServiceTest.tableFormApi&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.FastApiCallServiceTest.tableFormApi" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0165d833-371c-496d-9cd8-488cf39a8c5e" name="Changes" comment="" />
+      <created>1730079275828</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1730079275828</updated>
+    </task>
+    <task id="LOCAL-00001" summary="be-develop: 라이브러리 배포 코드 작성">
+      <option name="closed" value="true" />
+      <created>1730090261321</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1730090261321</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="be-develop: 라이브러리 배포 코드 작성" />
+    <option name="LAST_COMMIT_MESSAGE" value="be-develop: 라이브러리 배포 코드 작성" />
+  </component>
+</project>
