@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      url: mongodb+srv://S11P21D207:7rPaud@ssafy.ngivl.mongodb.net/S11P21D207?authSource=admin&retryWrites=true&w=majority
+      uri: mongodb+srv://S11P21D207:7rPaud@ssafy.ngivl.mongodb.net/S11P21D207?authSource=admin&retryWrites=true&w=majority
 
 springdoc:
   api-docs:
