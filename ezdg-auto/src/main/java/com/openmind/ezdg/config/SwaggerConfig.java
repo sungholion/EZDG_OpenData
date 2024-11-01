@@ -13,9 +13,9 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI OpenAPI() {
         Info info = new Info()
-                .title("ezdg API")
+                .title("EZDG API")
                 .version("1.0")
-                .description("ezdg");
+                .description("EZDG");
 
         String jwtSchemeName = "jwtAuth";
 

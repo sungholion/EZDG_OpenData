@@ -20,7 +20,8 @@ public class SendAutoLibraryInfoService {
 
     public AutoLibraryInfoDto makeAutoLibraryInfo(String translatedFileName, List<String> translatedColumns, List<String[]> datas) {
         AutoLibraryInfoDto autoLibraryInfoDto = new AutoLibraryInfoDto();
-        String convertClassName = customStringUtil.snakeCaseToCamelCase(translatedFileName);
+
+        String convertClassName = customStringUtil.snakeCaseToCamelCase(translatedFileName);    // javaClassName으로 사용하기 위해, snakeCase -> CamelCase
         autoLibraryInfoDto.setClassInfo(convertClassName);
 
         List<AutoLibraryInfoDto.ColumnInfo> columnInfoList = new ArrayList<>();
@@ -63,7 +64,5 @@ public class SendAutoLibraryInfoService {
         autoLibraryInfoDto.setColumnInfo(columnInfoList);
         return autoLibraryInfoDto;
     }
-
-
 
 }
