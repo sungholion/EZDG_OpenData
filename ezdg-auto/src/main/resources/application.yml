@@ -15,3 +15,8 @@ springdoc:
 fast-api:
   url:
    http://192.168.100.149:8000
+
+
+external:
+  api:
+    serviceKey=FNEiXVDs8uhQ7bHEeW%2Bou2xekuNtjIVurFi%2Fvp6nfH3Ky4eIQwCGLgoxF%2BoQZisPqm02pYf0M5u9xu1fjbJMMQ%3D%3D:
