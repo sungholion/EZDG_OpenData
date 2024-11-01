@@ -12,50 +12,51 @@ import java.util.Map;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("${className?lower_case}")
+@RequestMapping("${collectionName}")
 @RequiredArgsConstructor
 public class ${className}Controller {
-    private final ${className}Service service;
+private final ${className}Service service;
 
-    @GetMapping("")
-    public List<${className}> search(
-        <#list fields as field>
-        @RequestParam(required = false) ${field.type} ${field.name},
-        <#if field.type == "String">
+@GetMapping("")
+public List<${className}> search(
+<#list fields as field>
+    @RequestParam(required = false) ${field.type} ${field.name},
+    <#if field.type == "String">
         @RequestParam(required = false) ${field.type} ${field.name}Containing,
-        </#if>
-        <#if field.type == "Date">
+    </#if>
+    <#if field.type == "Date">
         @RequestParam(required = false) ${field.type} ${field.name}After
         @RequestParam(required = false) ${field.type} ${field.name}Before
-        </#if>
-        <#if field.type == "Long" || field.type == "Double" || field.type == "Integer">
+    </#if>
+    <#if field.type == "Long" || field.type == "Double" || field.type == "Integer">
         @RequestParam(required = false) ${field.type} ${field.name}Lt,
         @RequestParam(required = false) ${field.type} ${field.name}Lte,
         @RequestParam(required = false) ${field.type} ${field.name}Gt,
         @RequestParam(required = false) ${field.type} ${field.name}Gte,
-        </#if>
-        </#list>
-        @RequestParam(required = false, defaultValue = "0") int page,
-        @RequestParam(required = false, defaultValue = "10") int perPage
-    ) {
-        Map<String, Object> params = new HashMap<>();
-        <#list fields as field>
-        params.put("${field.name}", ${field.name});
-        <#if field.type == "String">
+    </#if>
+</#list>
+@RequestParam(required = false, defaultValue = "0") int page,
+@RequestParam(required = false, defaultValue = "10") int perPage
+) {
+Map
+<String, Object> params = new HashMap<>();
+<#list fields as field>
+    params.put("${field.name}", ${field.name});
+    <#if field.type == "String">
         params.put("${field.name}Containing", ${field.name}Containing);
-        </#if>
-        <#if field.type == "Date">
+    </#if>
+    <#if field.type == "Date">
         params.put("${field.name}After", ${field.name}After);
         params.put("${field.name}Before", ${field.name}Before);
-        </#if>
-        <#if field.type == "Long" || field.type == "Double" || field.type == "Integer">
+    </#if>
+    <#if field.type == "Long" || field.type == "Double" || field.type == "Integer">
         params.put("${field.name}Lt", ${field.name}Lt);
         params.put("${field.name}Lte", ${field.name}Lte);
         params.put("${field.name}Gt", ${field.name}Gt);
         params.put("${field.name}Gte", ${field.name}Gte);
-        </#if>
-        </#list>
+    </#if>
+</#list>
 
-        return service.search(params, page, perPage);
-    }
+return service.search(params, page, perPage);
+}
 }

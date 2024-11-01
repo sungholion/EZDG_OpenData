@@ -1,9 +1,11 @@
 package com.openmind.ezdg.generate.server.service;
 
 import com.openmind.ezdg.file.dto.filesave.AutoLibraryInfoDto;
+import com.openmind.ezdg.file.util.CustomStringUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +16,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Service
 public class APIServerGenerateService {
+
+    private final CustomStringUtil customStringUtil;
     @Value("${path.api-server-project-path}")
     private String apiServerProjectPath;
 
     public void generate(AutoLibraryInfoDto dto) {
         Map<String, Object> data = new HashMap<>();
-        data.put("className", dto.getClassInfo());
+        data.put("collectionName", dto.getClassInfo());
+        data.put("className", customStringUtil.capitalizeFirstLetter(customStringUtil.snakeCaseToCamelCase(dto.getClassInfo())));
+
         List<Map<String, String>> fields = new ArrayList<>();
         dto.getColumnInfo().forEach(columnInfo -> {
             Map<String, String> field = new HashMap<>();
@@ -41,7 +48,7 @@ public class APIServerGenerateService {
         cfg.setClassForTemplateLoading(APIServerGenerateService.class, "/templates/generate/server");
 
         // java library 프로젝트의 패키지명
-        data.put("packageName", "com.ssafy.ezdg." + data.get("className"));
+        data.put("packageName", "com.ssafy.ezdg." + data.get("collectionName"));
 
 
         Template controllerTemplate = null;
@@ -60,7 +67,7 @@ public class APIServerGenerateService {
         cfg.setClassForTemplateLoading(APIServerGenerateService.class, "/templates/generate/server");
 
         // java library 프로젝트의 패키지명
-        data.put("packageName", "com.ssafy.ezdg." + data.get("className"));
+        data.put("packageName", "com.ssafy.ezdg." + data.get("collectionName"));
 
         try {
             Template serviceTemplate = cfg.getTemplate("serviceTemplate.ftl");
@@ -78,7 +85,7 @@ public class APIServerGenerateService {
         cfg.setClassForTemplateLoading(APIServerGenerateService.class, "/templates/generate/server");
 
         // java library 프로젝트의 패키지명
-        data.put("packageName", "com.ssafy.ezdg." + data.get("className"));
+        data.put("packageName", "com.ssafy.ezdg." + data.get("collectionName"));
 
         try {
             Template entityTemplate = cfg.getTemplate("entityTemplate.ftl");
