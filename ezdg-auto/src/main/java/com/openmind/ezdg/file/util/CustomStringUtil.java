@@ -3,7 +3,6 @@ package com.openmind.ezdg.file.util;
 import org.bson.BsonValue;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 @Component
@@ -11,6 +10,7 @@ public class CustomStringUtil {
 
     /**
      * 파일 이름 정규화
+     *
      * @param originalFileName
      * @return 정규화된 파일 이름
      */
@@ -24,6 +24,7 @@ public class CustomStringUtil {
 
     /**
      * 칼럼 이름 정규화
+     *
      * @param columnNames
      * @return 정규화된 칼럼 이름
      */
@@ -37,6 +38,7 @@ public class CustomStringUtil {
 
     /**
      * value를 감싸고 있는 BsonValue에서 value만 추출
+     *
      * @param value
      * @return 추출된 value
      */
@@ -49,6 +51,7 @@ public class CustomStringUtil {
 
     /**
      * 공통 정규화
+     *
      * @param str
      * @return 정규화된 문자열
      */
@@ -84,9 +87,9 @@ public class CustomStringUtil {
     }
 
 
-
     /**
      * 파일의 확장자 제거
+     *
      * @param str
      * @return 확장자가 제거된 파일 이름
      */
@@ -97,11 +100,12 @@ public class CustomStringUtil {
 
     /**
      * 마지막 언더스코어 제거
+     *
      * @param str
      * @return 마지막 언더스코어가 제거된 문자열
      */
     public String deleteLastUnderScore(String str) {
-        if(str.endsWith("_")) {
+        if (str.endsWith("_")) {
             return str.substring(0, str.length() - 1);
         }
         return str;
@@ -109,11 +113,12 @@ public class CustomStringUtil {
 
     /**
      * snakeCase가 맞는지 검증하고, 맞다면 camel case로 변환
+     *
      * @param snakeCaseStr
      * @return 카멜케이스로 변환된 string 반환
      */
     public String snakeCaseToCamelCase(String snakeCaseStr) {
-        if(!isSnakeCase(snakeCaseStr)) {
+        if (!isSnakeCase(snakeCaseStr)) {
             throw new RuntimeException("input string is not snake case -> " + snakeCaseStr);
         }
         StringBuilder sb = new StringBuilder();
@@ -121,7 +126,7 @@ public class CustomStringUtil {
 
         sb.append(st.nextToken());
 
-        while(st.hasMoreTokens()) {
+        while (st.hasMoreTokens()) {
             String word = st.nextToken();
             sb.append(word.substring(0, 1).toUpperCase());
             sb.append(word.substring(1).toLowerCase());
@@ -132,6 +137,7 @@ public class CustomStringUtil {
 
     /**
      * snakeCase가 맞는지 검증
+     *
      * @param snakeCaseStr
      * @return snakeCase가 맞다면 true, 아니라면 false 반환
      */
@@ -140,4 +146,13 @@ public class CustomStringUtil {
     }
 
 
+    /**
+     * 첫 글자 대문자로 변환
+     *
+     * @param str
+     * @return 첫 글자 대문자로 변환된 문자열
+     */
+    public String CapitalizeFirstLetter(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
 }
