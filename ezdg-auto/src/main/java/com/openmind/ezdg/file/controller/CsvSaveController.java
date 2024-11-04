@@ -6,7 +6,10 @@ import com.openmind.ezdg.file.dto.filesave.ValidateDuplicateCodeDto;
 import com.openmind.ezdg.file.service.CsvSaveService;
 import com.openmind.ezdg.file.service.SendAutoLibraryInfoService;
 import com.openmind.ezdg.file.util.CsvUtil;
+import com.openmind.ezdg.file.util.FileUtil;
 import com.openmind.ezdg.file.util.ObjectMapperUtil;
+import com.openmind.ezdg.generate.library.file.service.JavaFileLibraryGenerateService;
+import com.openmind.ezdg.generate.server.service.APIServerGenerateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -26,8 +29,11 @@ public class CsvSaveController {
 
     private final CsvSaveService csvSaveService;
     private final SendAutoLibraryInfoService sendAutoLibraryInfoService;
+    private final JavaFileLibraryGenerateService javaFileLibraryGenerateService;
+    private final APIServerGenerateService apiServerGenerateService;
     private final CsvUtil csvUtil;
     private final ObjectMapperUtil objectMapperUtil;
+    private final FileUtil fileUtil;
 
     /**
      * 파일 업로드 페이지 호출
@@ -48,10 +54,15 @@ public class CsvSaveController {
 
         // 중복 코드 검증
         ValidateDuplicateCodeDto validateDuplicateCode = csvSaveService.validateDuplicateCode(code);
-        if(validateDuplicateCode.getIsDuplicate()) {
+        if (validateDuplicateCode.getIsDuplicate()) {
             model.addAttribute("isDuplicateCode", true);
             model.addAttribute("regDate", validateDuplicateCode.getRegDate());
             return "views/filesave/duplicate";
+        }
+
+        boolean isSuccessFileSaveToTempPath = fileUtil.saveFileToTempPath(file);
+        if(!isSuccessFileSaveToTempPath) {
+            return "views/filesave/error";
         }
 
         // 파일 이름 한<->영 번역 및 컨벤션 적용
@@ -77,9 +88,11 @@ public class CsvSaveController {
         redirectAttributes.addFlashAttribute("translatedColumns", translatedColumns);
 
         // List<String[]> 타입을 view로 전달하고, 다른 컨트롤러로 전달하기 위해 json String type으로 변경
-        String dataToJson = objectMapperUtil.dataToString(datas);
+//        String dataToJson = objectMapperUtil.dataToString(datas);
 
-        redirectAttributes.addFlashAttribute("datas", dataToJson);
+//        redirectAttributes.addFlashAttribute("datas", dataToJson);
+//        redirectAttributes.addFlashAttribute("file", file);
+        redirectAttributes.addFlashAttribute("fileName", file.getOriginalFilename());
         redirectAttributes.addFlashAttribute("code", code);
 
         return "redirect:/file/save";
@@ -90,7 +103,9 @@ public class CsvSaveController {
      */
     @GetMapping("/save")
     public String getFileSavePage(Model model) {
-        model.addAttribute("datas", model.getAttribute("datas"));
+        log.info("파일 저장 페이지 호출");
+//        model.addAttribute("file", model.getAttribute("file"));
+        model.addAttribute("fileName", model.getAttribute("fileName"));
         model.addAttribute("code", model.getAttribute("code"));
 
         return "views/filesave/save";
@@ -102,25 +117,34 @@ public class CsvSaveController {
     @PostMapping("/save")
     public String saveFile(@RequestParam(value = "translatedFileName") String translatedFileName,
                            @RequestParam(value = "translatedColumns") List<String> translatedColumns,
-                           @RequestParam(value = "datas") String dataToJson,
+//                           @RequestParam(value = "file") MultipartFile file,
+                           @RequestParam(value = "fileName") String fileName,
                            @RequestParam(value = "code") String code,
                            RedirectAttributes redirectAttributes) {
         log.info("save file request for {}", translatedFileName);
         log.info("translatedColumns = {}", translatedColumns);
 
         // 파일 변환 단계에서 json String으로 변환한 데이터를 다시 List<String[]> 타입으로 변환
-        List<String[]> datas = objectMapperUtil.stringToData(dataToJson);
+//        List<String[]> datas = objectMapperUtil.stringToData(dataToJson);
+        MultipartFile file = fileUtil.readFileFromTempPath(fileName);
+
+        // read csv
+        List<String[]> datas = csvUtil.readCsvFile(file);
+
+        // 파일 삭제
+        fileUtil.deleteFileFromTempPath(fileName);
 
         // mongoDB에 저장
         csvSaveService.saveFile(datas, translatedFileName, translatedColumns);
 
-
         // public data code 저장
         csvSaveService.insertCode(code);
 
-        // library 자동화로 send
-        AutoLibraryInfoDto autoLibraryInfoDto = sendAutoLibraryInfoService.makeAutoLibraryInfo(translatedFileName, translatedColumns);
-        sendAutoLibraryInfoService.sendAutoLibraryInfo(autoLibraryInfoDto);
+        // library 자동화를 위한 정보를 담은 Dto
+        AutoLibraryInfoDto autoLibraryInfoDto = sendAutoLibraryInfoService.makeAutoLibraryInfo(translatedFileName, translatedColumns, datas);
+
+        apiServerGenerateService.generate(autoLibraryInfoDto);
+        javaFileLibraryGenerateService.generate(autoLibraryInfoDto);
 
         // view 전달 파라미터
         redirectAttributes.addFlashAttribute("collection", translatedFileName);
