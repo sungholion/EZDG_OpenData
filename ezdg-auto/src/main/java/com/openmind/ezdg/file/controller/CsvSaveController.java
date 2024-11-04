@@ -74,7 +74,8 @@ public class CsvSaveController {
         redirectAttributes.addFlashAttribute("translatedFileName", translatedFileName);
 
         // read csv
-        List<String[]> datas = csvUtil.readCsvFile(file);
+        String filePath = fileUtil.getFullPath(file.getOriginalFilename());
+        List<String[]> datas = csvUtil.readCsvFile(filePath);
 
         // 칼럼 이름 한<->영 번역 및 컨벤션 적용
         List<String> originalColumns = csvSaveService.getOriginalColumns(datas);
@@ -129,7 +130,8 @@ public class CsvSaveController {
         MultipartFile file = fileUtil.readFileFromTempPath(fileName);
 
         // read csv
-        List<String[]> datas = csvUtil.readCsvFile(file);
+        String filePath = fileUtil.getFullPath(file.getOriginalFilename());
+        List<String[]> datas = csvUtil.readCsvFile(filePath);
 
         // 파일 삭제
         fileUtil.deleteFileFromTempPath(fileName);
