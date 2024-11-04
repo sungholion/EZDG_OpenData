@@ -98,7 +98,6 @@ public class CsvSaveService {
                 String value = row[j];
                 String dataType = columnDataTypes.get(columnName); // 최종 타입 가져오기
 
-                log.info("dataType:" + dataType + " value:" + value);
 
                 // 결정된 타입으로 map에 put
                 putDocumentByDataType(dataType, documentMap, columnName, value);
