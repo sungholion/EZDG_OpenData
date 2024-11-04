@@ -1,6 +1,7 @@
 "use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
@@ -13,29 +14,21 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import type { NavDataItem } from "@/types/sidebar";
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon?: LucideIcon;
-    isActive?: boolean;
-    items?: {
-      title: string;
-      url: string;
-    }[];
-  }[];
-}) {
+interface NavDataProps {
+  items: NavDataItem[];
+}
+
+export function NavData({ items }: NavDataProps) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Data</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
-            {item.items && item.items.length > 0 ? (
-              // items가 있는 경우 Collapsible 메뉴로 렌더링
+            {item.items && item.items.length > 1 ? (
+              // items가 2개 이상일 때만 Collapsible 메뉴로 표시
               <Collapsible asChild defaultOpen={item.isActive} className="group/collapsible">
                 <>
                   <CollapsibleTrigger asChild>
@@ -50,9 +43,13 @@ export function NavMain({
                       {item.items.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton asChild>
-                            <a href={subItem.url}>
+                            <Link
+                              href={subItem.url}
+                              onClick={(e) => {
+                                e.stopPropagation(); // 이벤트 전파 중단
+                              }}>
                               <span>{subItem.title}</span>
-                            </a>
+                            </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}
@@ -61,13 +58,18 @@ export function NavMain({
                 </>
               </Collapsible>
             ) : (
-              // items가 없는 경우 단일 링크로 렌더링
-              <a href={item.url}>
-                <SidebarMenuButton tooltip={item.title}>
+              // items가 없거나 1개일 경우 직접 링크로 처리
+              <Link
+                href={item.items?.length === 1 ? item.items[0].url : item.url}
+                onClick={(e) => {
+                  e.stopPropagation(); // 이벤트 전파 중단
+                }}
+                className="block">
+                <SidebarMenuButton tooltip={item.items?.length === 1 ? item.items[0].title : item.title}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </SidebarMenuButton>
-              </a>
+              </Link>
             )}
           </SidebarMenuItem>
         ))}
