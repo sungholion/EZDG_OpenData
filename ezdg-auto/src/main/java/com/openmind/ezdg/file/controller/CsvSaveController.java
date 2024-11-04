@@ -142,8 +142,8 @@ public class CsvSaveController {
         // public data code 저장
         csvSaveService.insertCode(code);
 
-        // library 자동화를 위한 정보를 담은 Dto
-        AutoLibraryInfoDto autoLibraryInfoDto = sendAutoLibraryInfoService.makeAutoLibraryInfo(translatedFileName, translatedColumns, datas);
+        // library 자동화를 위해 DTO 생성
+        AutoLibraryInfoDto autoLibraryInfoDto = sendAutoLibraryInfoService.makeAutoLibraryInfo(translatedFileName, fileName, translatedColumns, datas);
 
         apiServerGenerateService.generate(autoLibraryInfoDto);
         javaFileLibraryGenerateService.generate(autoLibraryInfoDto);
