@@ -1,4 +1,4 @@
-package VilageFcstInfoService;
+package ${packageName};
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class VilagefcstinfoserviceResponse{
+public class ${className}{
 private Response response;
 
 @Getter
@@ -19,8 +19,13 @@ private Body body;
 @Getter
 @Setter
 public static class Header {
-            private Integer resultCode;
-            private String resultMsg;
+<#if responseFields??>
+    <#list responseFields as field>
+        <#if field.name == "resultCode" || field.name == "resultMsg">
+            private ${field.type} ${field.name};
+        </#if>
+    </#list>
+</#if>
 }
 
 @Getter
@@ -42,15 +47,12 @@ private List<Item> item;
     @Getter
     @Setter
     public static class Item {
-                private Integer numOfRows;
-                private Integer pageNo;
-                private Integer totalCount;
-                private String dataType;
-                private String baseDate;
-                private Integer baseTime;
-                private Integer nx;
-                private Integer ny;
-                private String category;
-                private Integer obsrValue;
+    <#if responseFields??>
+        <#list responseFields as field>
+            <#if field.name != "resultCode" && field.name != "resultMsg">
+                private ${field.type} ${field.name};
+            </#if>
+        </#list>
+    </#if>
     }
     }

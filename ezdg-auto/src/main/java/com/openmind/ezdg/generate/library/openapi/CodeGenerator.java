@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +29,12 @@ public class CodeGenerator {
         JsonNode rootNode = mapper.readTree(new File(jsonFilePath));
 
         // JSON 데이터 모델로 변환
+        String packageName = rootNode.get("packageName").asText();
+        String className = rootNode.get("className").asText();
+
         Map<String, Object> dataModel = new HashMap<>();
-        dataModel.put("packageName", rootNode.get("packageName").asText());
-        dataModel.put("className", rootNode.get("className").asText());
+        dataModel.put("packageName", packageName);
+        dataModel.put("className", className);
         dataModel.put("baseUrl", rootNode.get("baseUrl").asText());
         dataModel.put("endpoint", rootNode.get("endpoint").asText());
 
@@ -38,37 +42,46 @@ public class CodeGenerator {
         dataModel.put("apiUrl", rootNode.get("baseUrl").asText() + rootNode.get("endpoint").asText());
 
         // DTO 및 API 클래스 생성 경로 설정
-        String basePackagePath = "src/main/java/" + dataModel.get("packageName").toString().replace(".", "/") + "/";
+        String basePackagePath = "src/main/java/" + packageName.replace(".", "/") + "/";
         new File(basePackagePath).mkdirs();
 
         // 요청 DTO 클래스 생성
         Map<String, Object> requestModel = new HashMap<>(dataModel);
-        requestModel.put("className", dataModel.get("className") + "Request");
+        requestModel.put("className", className + "Request");
         requestModel.put("fields", mapper.convertValue(rootNode.get("requestFields"), List.class));
 
-        Template dtoTemplate = cfg.getTemplate("dto_template.ftl");
-        try (Writer requestWriter = new FileWriter(new File(basePackagePath + requestModel.get("className") + ".java"))) {
-            dtoTemplate.process(requestModel, requestWriter);
+        Template requestDtoTemplate = cfg.getTemplate("dto_request_template.ftl");
+        try (Writer requestWriter = new FileWriter(new File(basePackagePath + className + "Request.java"))) {
+            requestDtoTemplate.process(requestModel, requestWriter);
         }
 
         // 응답 DTO 클래스 생성
         Map<String, Object> responseModel = new HashMap<>(dataModel);
-        responseModel.put("className", dataModel.get("className") + "Response");
-        responseModel.put("fields", mapper.convertValue(rootNode.get("responseFields"), List.class));
+        responseModel.put("className", className + "Response");
 
-        try (Writer responseWriter = new FileWriter(new File(basePackagePath + responseModel.get("className") + ".java"))) {
-            dtoTemplate.process(responseModel, responseWriter);
+        // JSON에서 responseFields를 가져오고, 없을 경우 빈 리스트로 설정
+        List<Map<String, Object>> responseFields = mapper.convertValue(rootNode.get("responseFields"), List.class);
+        if (responseFields == null) {
+            responseFields = new ArrayList<>();
+        }
+        responseModel.put("responseFields", responseFields);
+
+        Template responseDtoTemplate = cfg.getTemplate("dto_response_template.ftl");
+        try (Writer responseWriter = new FileWriter(new File(basePackagePath + className + "Response.java"))) {
+            responseDtoTemplate.process(responseModel, responseWriter);
         }
 
         // API 호출 클래스 생성
         Map<String, Object> apiModel = new HashMap<>(dataModel);
         apiModel.put("requestFields", mapper.convertValue(rootNode.get("requestFields"), List.class));
-        apiModel.put("responseFields", mapper.convertValue(rootNode.get("responseFields"), List.class));
+        apiModel.put("responseFields", responseFields);
 
-        Template apiTemplate = cfg.getTemplate("api_template_no_abstract.ftl");
-        try (Writer apiWriter = new FileWriter(new File(basePackagePath + dataModel.get("className") + "API.java"))) {
+        Template apiTemplate = cfg.getTemplate("api_template.ftl");
+        try (Writer apiWriter = new FileWriter(new File(basePackagePath + className + "API.java"))) {
             apiTemplate.process(apiModel, apiWriter);
         }
+
+        System.out.println("Generated files in: " + new File(basePackagePath).getAbsolutePath());
     }
 
     public static void main(String[] args) {

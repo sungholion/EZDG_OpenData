@@ -1,19 +1,15 @@
 package VilageFcstInfoService;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 public class VilagefcstinfoserviceAPI {
-
 private static final String BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst";
 private StringBuilder queryParams = new StringBuilder();
+private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
     * 공공데이터포털에서 받은 인증키
@@ -24,6 +20,7 @@ private StringBuilder queryParams = new StringBuilder();
     queryParams.append("ServiceKey=").append(ServiceKey);
     return this;
     }
+
     /**
     * 페이지번호
     */
@@ -33,6 +30,7 @@ private StringBuilder queryParams = new StringBuilder();
     queryParams.append("pageNo=").append(pageNo);
     return this;
     }
+
     /**
     * 한 페이지 결과 수
     */
@@ -42,6 +40,7 @@ private StringBuilder queryParams = new StringBuilder();
     queryParams.append("numOfRows=").append(numOfRows);
     return this;
     }
+
     /**
     * 요청자료형식(XML/JSON) Default: XML
     */
@@ -51,6 +50,7 @@ private StringBuilder queryParams = new StringBuilder();
     queryParams.append("dataType=").append(dataType);
     return this;
     }
+
     /**
     * ‘21년 6월 28일 발표
     */
@@ -60,6 +60,7 @@ private StringBuilder queryParams = new StringBuilder();
     queryParams.append("base_date=").append(base_date);
     return this;
     }
+
     /**
     * 06시 발표(정시단위)
     */
@@ -69,6 +70,7 @@ private StringBuilder queryParams = new StringBuilder();
     queryParams.append("base_time=").append(base_time);
     return this;
     }
+
     /**
     * 예보지점의 X 좌표값
     */
@@ -78,6 +80,7 @@ private StringBuilder queryParams = new StringBuilder();
     queryParams.append("nx=").append(nx);
     return this;
     }
+
     /**
     * 예보지점의 Y 좌표값
     */
@@ -88,34 +91,32 @@ private StringBuilder queryParams = new StringBuilder();
     return this;
     }
 
-    public VilagefcstinfoserviceResponse fetch() throws Exception {
-        // API 호출
-        URL url = new URL(BASE_URL + queryParams.toString());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-Type", "application/json");
+public VilagefcstinfoserviceResponse fetch() throws Exception {
+// API 호출
+URL url = new URL(BASE_URL + queryParams.toString());
+HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+conn.setRequestMethod("GET");
+conn.setRequestProperty("Content-Type", "application/json");
 
-        // 응답 읽기
-        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        String inputLine;
-        StringBuilder content = new StringBuilder();
+// 응답 읽기
+BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+String inputLine;
+StringBuilder content = new StringBuilder();
 
-        while ((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
-        }
-        in.close();
-        conn.disconnect();
-        System.out.println("Response: " + content.toString());
+while ((inputLine = in.readLine()) != null) {
+content.append(inputLine);
+}
+in.close();
+conn.disconnect();
 
-        // JSON 파싱
-        ObjectMapper mapper = new ObjectMapper();
-        VilagefcstinfoserviceResponse response;
-        try {
-            response = mapper.readValue(content.toString(), VilagefcstinfoserviceResponse.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to parse JSON response", e);
-        }
-        return response;
-    }
+System.out.println("Response: " + content.toString());
+
+// JSON 파싱
+try {
+return objectMapper.readValue(content.toString(), VilagefcstinfoserviceResponse.class);
+} catch (Exception e) {
+e.printStackTrace();
+throw new RuntimeException("Failed to parse JSON response", e);
+}
+}
 }
