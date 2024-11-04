@@ -3,10 +3,12 @@ package VilageFcstInfoService;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Getter
 @Setter
-public class VilagefcstinfoserviceResponse{
+public class VilagefcstinfoserviceResponse {
 private Response response;
 
 @Getter
@@ -42,15 +44,43 @@ private List<Item> item;
     @Getter
     @Setter
     public static class Item {
-                private Integer numOfRows;
-                private Integer pageNo;
-                private Integer totalCount;
+                private String numOfRows;
+                private String pageNo;
+                private String totalCount;
                 private String dataType;
                 private String baseDate;
-                private Integer baseTime;
+                private String baseTime;
                 private Integer nx;
                 private Integer ny;
                 private String category;
-                private Integer obsrValue;
+                private String obsrValue;
+
+    @Override
+    public String toString() {
+    StringBuilder sb = new StringBuilder();
+                sb.append("NumOfRows: ").append(this.getNumOfRows()).append("\n");
+                sb.append("PageNo: ").append(this.getPageNo()).append("\n");
+                sb.append("TotalCount: ").append(this.getTotalCount()).append("\n");
+                sb.append("DataType: ").append(this.getDataType()).append("\n");
+                sb.append("BaseDate: ").append(this.getBaseDate()).append("\n");
+                sb.append("BaseTime: ").append(this.getBaseTime()).append("\n");
+                sb.append("Nx: ").append(this.getNx()).append("\n");
+                sb.append("Ny: ").append(this.getNy()).append("\n");
+                sb.append("Category: ").append(this.getCategory()).append("\n");
+                sb.append("ObsrValue: ").append(this.getObsrValue()).append("\n");
+    sb.append("-----------------------\n");
+    return sb.toString();
+    }
+    }
+
+    @Override
+    public String toString() {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+    return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+    } catch (JsonProcessingException e) {
+    e.printStackTrace();
+    return super.toString();
+    }
     }
     }
