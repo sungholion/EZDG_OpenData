@@ -58,10 +58,8 @@ public class APIServerGenerateService {
         // java library 프로젝트의 패키지명
         data.put("packageName", "com.openmind.ezdg_api_server." + data.get("collectionName"));
 
-
-        Template controllerTemplate = null;
         try {
-            controllerTemplate = cfg.getTemplate("controllerTemplate.ftl");
+            Template controllerTemplate = cfg.getTemplate("controllerTemplate.ftl");
             String controllerPath = new StringBuilder()
                     .append(apiServerProjectPath)
                     .append(data.get("collectionName"))
