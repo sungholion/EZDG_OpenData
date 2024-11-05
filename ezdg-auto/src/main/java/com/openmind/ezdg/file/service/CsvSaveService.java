@@ -1,5 +1,8 @@
 package com.openmind.ezdg.file.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.openmind.ezdg.file.dto.filesave.MongoBsonValueDto;
@@ -8,6 +11,7 @@ import com.openmind.ezdg.file.entity.PublicDataCode;
 import com.openmind.ezdg.file.repository.CsvSaveRepository;
 import com.openmind.ezdg.file.repository.PublicDataCodeRepository;
 import com.openmind.ezdg.file.util.CustomStringUtil;
+import com.openmind.ezdg.file.util.KryoSerializer;
 import com.openmind.ezdg.file.util.PapagoUtil;
 import com.openmind.ezdg.file.util.TypeConvertUtil;
 import lombok.RequiredArgsConstructor;
@@ -16,17 +20,26 @@ import org.bson.BsonDocument;
 import org.bson.BsonType;
 import org.bson.BsonValue;
 import org.bson.Document;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Cacheable(cacheNames = "myCache")
 public class CsvSaveService {
 
     private final PapagoUtil papagoUtil;
@@ -35,6 +48,9 @@ public class CsvSaveService {
     private final TypeConvertUtil typeConvertUtil;
     private final CsvSaveRepository csvSaveRepository;
     private final MongoTemplate mongoTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
+    private final RedisTemplate<String, byte[]> byteRedisTemplate;
 
     /**
      * mongoDB에 insert
@@ -184,13 +200,131 @@ public class CsvSaveService {
                 .build());
     }
 
+//    /**
+//     * 데이터가 잘 들어갔는지 확인하기 위해 db에서 조회한 뒤 결과 리턴
+//     */
+//    public List<List<MongoBsonValueDto>> getSavedData(String collectionName) {
+//        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//
+//        String cacheKey = "collectionName::" + collectionName;
+//        String cacheData = ops.get("collectionName::" + collectionName);
+//
+////        // 캐시의 현재 남은 TTL 확인 및 출력
+////        Long remainingTtl = redisTemplate.getExpire(cacheKey, TimeUnit.SECONDS);
+////        if (remainingTtl != null && remainingTtl > 0) {
+////            System.out.println("현재 캐시 유효 시간: " + remainingTtl + "초");
+////        } else {
+////            System.out.println("캐시가 존재하지 않거나 만료되었습니다.");
+////        }
+//
+//
+//        if(cacheData != null) {
+//            System.out.println("redis에서 꺼낸 데이터 : " + cacheData);
+//            try {
+//                // JSON 데이터를 MongoBsonValueDto 리스트로 변환
+////                redisTemplate.expire(cacheKey, Duration.ofHours(12));
+//
+////                // 갱신된 TTL 확인 및 출력
+////                Long newTtl = redisTemplate.getExpire(cacheKey, TimeUnit.SECONDS);
+////                System.out.println("갱신된 캐시 유효 시간: " + newTtl + "초");
+//
+//
+//                return objectMapper.readValue(cacheData, new TypeReference<List<List<MongoBsonValueDto>>>() {});
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        List<List<MongoBsonValueDto>> result = new ArrayList<>();
+//
+//        MongoCollection<Document> collection = csvSaveRepository.getCollection(collectionName);
+//
+//        try (MongoCursor<Document> cursor = collection.find().limit(1).iterator()) {
+//            List<MongoBsonValueDto> documents = new ArrayList<>();
+//            while(cursor.hasNext()) {
+//                Document document = cursor.next();
+//
+//                BsonDocument bsonDoc = document.toBsonDocument(BsonDocument.class, mongoTemplate.getConverter().getCodecRegistry());
+//
+//                for(Map.Entry<String, BsonValue> entry : bsonDoc.entrySet()) {
+//                    String fieldName = entry.getKey();
+//                    if(fieldName.equals("_id")) continue;
+//
+//                    BsonValue fieldValue = entry.getValue();
+//                    BsonType fieldType = fieldValue.getBsonType();
+//
+//                    documents.add(new MongoBsonValueDto(fieldName, customStringUtil.bsonValueToStr(fieldValue), fieldType.toString()));
+//                }
+//            }
+//            result.add(documents);
+//
+//            // MongoDB에서 가져온 데이터를 Redis에 캐싱
+//            try {
+//                String jsonData = objectMapper.writeValueAsString(result);
+////                ops.set("collectionName::" + collectionName, jsonData, Duration.ofHours(12));
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+////        System.out.println("redis에 없는 데이터 : " + result);
+//        return result;
+//    }
+
+    public List<List<MongoBsonValueDto>> getSavedData(String collectionName) {
+        ValueOperations<String, byte[]> ops = byteRedisTemplate.opsForValue();
+        String cacheKey = "collectionName::" + collectionName;
+
+        // Try to get cached data
+        byte[] cacheData = ops.get(cacheKey);
+        if (cacheData != null) {
+            System.out.println("Using serialized data from Redis cache");
+            // Use Kryo deserialization
+            return KryoSerializer.deserialize(cacheData);
+        }
+
+        // If no cache, fetch data from MongoDB and serialize for caching
+        List<List<MongoBsonValueDto>> result = fetchFromMongoDB(collectionName);
+        byte[] serializedData = KryoSerializer.serialize(result);
+        ops.set(cacheKey, serializedData, Duration.ofHours(12));  // Set with a TTL of 12 hours
+
+        return result;
+    }
+
+    private List<List<MongoBsonValueDto>> fetchFromMongoDB(String collectionName) {
+        List<List<MongoBsonValueDto>> result = new ArrayList<>();
+        MongoCollection<Document> collection = csvSaveRepository.getCollection(collectionName);
+
+        try (MongoCursor<Document> cursor = collection.find().limit(1).iterator()) {
+            List<MongoBsonValueDto> documents = new ArrayList<>();
+            while (cursor.hasNext()) {
+                Document document = cursor.next();
+                BsonDocument bsonDoc = document.toBsonDocument(BsonDocument.class, mongoTemplate.getConverter().getCodecRegistry());
+
+                for (Map.Entry<String, BsonValue> entry : bsonDoc.entrySet()) {
+                    String fieldName = entry.getKey();
+                    if (fieldName.equals("_id")) continue;
+
+                    BsonValue fieldValue = entry.getValue();
+                    BsonType fieldType = fieldValue.getBsonType();
+
+                    documents.add(new MongoBsonValueDto(fieldName, customStringUtil.bsonValueToStr(fieldValue), fieldType.toString()));
+                }
+            }
+            result.add(documents);
+        }
+        return result;
+    }
+
+
     /**
      * 데이터가 잘 들어갔는지 확인하기 위해 db에서 조회한 뒤 결과 리턴
      */
-    public List<List<MongoBsonValueDto>> getSavedData(String collectionName) {
+    public List<List<MongoBsonValueDto>> getSavedDataOld(String collectionNameOld) {
         List<List<MongoBsonValueDto>> result = new ArrayList<>();
 
-        MongoCollection<Document> collection = csvSaveRepository.getCollection(collectionName);
+        MongoCollection<Document> collection = csvSaveRepository.getCollection(collectionNameOld);
 
         try (MongoCursor<Document> cursor = collection.find().limit(1).iterator()) {
             List<MongoBsonValueDto> documents = new ArrayList<>();
@@ -212,6 +346,30 @@ public class CsvSaveService {
             result.add(documents);
         }
         return result;
+    }
+
+
+
+
+    public Map<String, String> getMemoryInfo() {
+        // INFO memory 명령 실행
+        String memoryInfo = stringRedisTemplate.execute((RedisCallback<Object>) (connection) -> connection.info("memory")).toString();
+
+        // 메모리 정보를 파싱하여 Map으로 반환
+        return Stream.of(memoryInfo.split(","))
+                .map(entry -> entry.split("="))
+                .filter(entry -> entry.length == 2)
+                .collect(Collectors.toMap(entry -> entry[0].trim(), entry -> entry[1].trim()));
+    }
+
+    public void printMemoryUsage() {
+        Map<String, String> memoryInfo = getMemoryInfo();
+
+        String usedMemory = memoryInfo.get("used_memory_human");
+        String maxMemory = memoryInfo.get("maxmemory_human");
+
+        System.out.println("Redis Used Memory: " + usedMemory);
+        System.out.println("Redis Max Memory: " + (maxMemory != null ? maxMemory : "Unlimited"));
     }
 
 }

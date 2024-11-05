@@ -32,7 +32,6 @@ public class CsvSaveController {
     private final JavaFileLibraryGenerateService javaFileLibraryGenerateService;
     private final APIServerGenerateService apiServerGenerateService;
     private final CsvUtil csvUtil;
-    private final ObjectMapperUtil objectMapperUtil;
     private final FileUtil fileUtil;
 
     /**
