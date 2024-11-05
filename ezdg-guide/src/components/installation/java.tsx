@@ -1,13 +1,20 @@
-import { CodeTabs } from "./tabs";
+import { CodeSection, type CodeExample } from "../code-example";
 
-export function JavaExample() {
-  const installCode = `<dependency>
+const JAVA_EXAMPLES: CodeExample[] = [
+  {
+    title: "설치",
+    description: "Maven 의존성을 추가합니다.",
+    code: `<dependency>
     <groupId>com.ezdg</groupId>
     <artifactId>ezdg-core</artifactId>
     <version>1.0.0</version>
-</dependency>`;
-
-  const configCode = `import com.ezdg.core.EZDG;
+</dependency>`,
+    language: "xml",
+  },
+  {
+    title: "설정",
+    description: "EZDG 인스턴스를 초기화합니다.",
+    code: `import com.ezdg.core.EZDG;
 
 public class EZDGConfig {
     private static final EZDG ezdg = new EZDG.Builder()
@@ -17,9 +24,13 @@ public class EZDGConfig {
     public static EZDG getInstance() {
         return ezdg;
     }
-}`;
-
-  const usageCode = `import com.ezdg.core.EZDG;
+}`,
+    language: "java",
+  },
+  {
+    title: "사용 예제",
+    description: "EZDG를 사용하여 데이터를 변환합니다.",
+    code: `import com.ezdg.core.EZDG;
 import com.ezdg.core.transform.TransformResult;
 
 public class Example {
@@ -33,30 +44,11 @@ public class Example {
             
         String apiEndpoint = result.getEndpoint();
     }
-}`;
+}`,
+    language: "java",
+  },
+];
 
-  return (
-    <div className="space-y-8">
-      <section>
-        <h3 className="text-lg font-semibold mb-3">설치</h3>
-        <div className="rounded-lg border p-4">
-          <CodeTabs code={installCode} language="xml" />
-        </div>
-      </section>
-
-      <section>
-        <h3 className="text-lg font-semibold mb-3">설정</h3>
-        <div className="rounded-lg border p-4">
-          <CodeTabs code={configCode} language="java" />
-        </div>
-      </section>
-
-      <section>
-        <h3 className="text-lg font-semibold mb-3">사용 예제</h3>
-        <div className="rounded-lg border p-4">
-          <CodeTabs code={usageCode} language="java" />
-        </div>
-      </section>
-    </div>
-  );
+export function JavaExample() {
+  return <CodeSection installations={JAVA_EXAMPLES} />;
 }
