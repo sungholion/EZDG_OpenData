@@ -51,7 +51,9 @@ private List<Item> item;
     public static class Item {
     <#if responseFields??>
         <#list responseFields as field>
-            <#if field.name != "resultCode" && field.name != "resultMsg">
+            <#if field.name != "resultCode" && field.name != "resultMsg" &&
+            field.name != "numOfRows" && field.name != "pageNo" &&
+            field.name != "totalCount" && field.name != "dataType">
                 private ${field.type} ${field.name};
             </#if>
         </#list>
@@ -62,7 +64,9 @@ private List<Item> item;
     StringBuilder sb = new StringBuilder();
     <#if responseFields??>
         <#list responseFields as field>
-            <#if field.name != "resultCode" && field.name != "resultMsg">
+            <#if field.name != "resultCode" && field.name != "resultMsg" &&
+            field.name != "numOfRows" && field.name != "pageNo" &&
+            field.name != "totalCount" && field.name != "dataType">
                 sb.append("${field.name?cap_first}: ").append(this.get${field.name?cap_first}()).append("\n");
             </#if>
         </#list>

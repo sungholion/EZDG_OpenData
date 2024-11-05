@@ -44,10 +44,6 @@ private List<Item> item;
     @Getter
     @Setter
     public static class Item {
-                private String numOfRows;
-                private String pageNo;
-                private String totalCount;
-                private String dataType;
                 private String baseDate;
                 private String baseTime;
                 private Integer nx;
@@ -58,10 +54,6 @@ private List<Item> item;
     @Override
     public String toString() {
     StringBuilder sb = new StringBuilder();
-                sb.append("NumOfRows: ").append(this.getNumOfRows()).append("\n");
-                sb.append("PageNo: ").append(this.getPageNo()).append("\n");
-                sb.append("TotalCount: ").append(this.getTotalCount()).append("\n");
-                sb.append("DataType: ").append(this.getDataType()).append("\n");
                 sb.append("BaseDate: ").append(this.getBaseDate()).append("\n");
                 sb.append("BaseTime: ").append(this.getBaseTime()).append("\n");
                 sb.append("Nx: ").append(this.getNx()).append("\n");

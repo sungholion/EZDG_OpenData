@@ -11,7 +11,7 @@ public class VilagefcstinfoserviceAPITest {
                     .pageNo(1)
                     .numOfRows(10)
                     .dataType("JSON")
-                    .base_date(20241104)
+                    .base_date(20241105)
                     .base_time("0600")
                     .nx(60)
                     .ny(127);
@@ -19,6 +19,7 @@ public class VilagefcstinfoserviceAPITest {
             // API 호출
             VilagefcstinfoserviceResponse response = api.fetch();
             List<VilagefcstinfoserviceResponse.Item> items = response.getResponse().getBody().getItems().getItem();
+            System.out.println(response);
             for (VilagefcstinfoserviceResponse.Item item : items) {
                 System.out.println("Base Date: " + item.getBaseDate());
                 System.out.println("Base Time: " + item.getBaseTime());
