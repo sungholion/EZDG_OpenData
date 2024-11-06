@@ -3,6 +3,14 @@ spring:
     mongodb:
       uri: mongodb+srv://S11P21D207:7rPaud@ssafy.ngivl.mongodb.net/S11P21D207?authSource=admin&retryWrites=true&w=majority
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 200MB
+      file-size-threshold: 50MB
+      location: C:\\Users\\SSAFY\\Desktop\\temp-file\\
+
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -15,3 +23,6 @@ springdoc:
 path:
   java-library-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
   api-server-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
+  temp-file-path: C:\\Users\\SSAFY\\Desktop\\temp-file\\
+
+

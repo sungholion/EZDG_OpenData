@@ -1,4 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Separator } from "@/components/ui/separator";
 
 const FAQItems = [
   {
@@ -36,9 +37,9 @@ const FAQItems = [
 export default function FAQ() {
   return (
     <div className="flex flex-col items-center gap-6 sm:gap-6 text-center px-2 sm:px-4 py-8 sm:py-12 lg:py-24">
-      <h1 className="border-b-4 border-gray-300 text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold">
+      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold">
         FAQ
-        <hr />
+        <Separator />
       </h1>
       <div className="container items-center mx-auto px-8 sm:px-12 md:px-16 lg:px-64">
         <Accordion type="single" collapsible className="mt-12 space-y-4">

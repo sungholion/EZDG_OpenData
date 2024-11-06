@@ -161,4 +161,35 @@ public class TypeConvertUtil {
         return parts.length > 1 && isLocalDate(parts[0]);
     }
 
+    // LocalDate 변환 메서드
+    public static LocalDate parseToLocalDate(String value) {
+        // yyyy-M-d 형식의 경우 0을 채워서 처리
+        if (value.matches("^\\d{4}-\\d{1}-\\d{1}$") || value.matches("^\\d{2}-\\d{1}-\\d{1}$")) {
+            String[] parts = value.split("-");
+            String year = parts[0];
+            String month = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
+            String day = parts[2].length() == 1 ? "0" + parts[2] : parts[2];
+            String formattedDate = year + "-" + month + "-" + day;
+            return LocalDate.parse(formattedDate); // 포맷된 날짜로 LocalDate 변환
+        } else {
+            return LocalDate.parse(value); // 기존 형식 유지
+        }
+    }
+
+    // LocalDateTime 변환 메서드
+    public static LocalDateTime parseToLocalDateTime(String value) {
+        // yyyy-M-d 형식의 경우 0을 채워서 처리
+        if (value.matches("^\\d{4}-\\d{1}-\\d{1}.*") || value.matches("^\\d{2}-\\d{1}-\\d{1}.*")) {
+            String[] parts = value.split("[-T ]");
+            String year = parts[0];
+            String month = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
+            String day = parts[2].length() == 1 ? "0" + parts[2] : parts[2];
+            String timePart = value.contains("T") ? value.split("T")[1] : value.split(" ")[1];
+            String formattedDateTime = year + "-" + month + "-" + day + "T" + timePart;
+            return LocalDateTime.parse(formattedDateTime); // 포맷된 날짜로 LocalDateTime 변환
+        } else {
+            return LocalDateTime.parse(value); // 기존 형식 유지
+        }
+    }
+
 }

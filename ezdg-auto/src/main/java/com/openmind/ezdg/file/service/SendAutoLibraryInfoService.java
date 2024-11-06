@@ -4,6 +4,7 @@ import com.openmind.ezdg.file.dto.filesave.AutoLibraryInfoDto;
 import com.openmind.ezdg.file.util.CustomStringUtil;
 import com.openmind.ezdg.file.util.TypeConvertUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,19 +13,16 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class SendAutoLibraryInfoService {
 
     private final TypeConvertUtil typeConvertUtil;
     private final CustomStringUtil customStringUtil;
 
-    public AutoLibraryInfoDto makeAutoLibraryInfo(String translatedFileName, List<String> translatedColumns, List<String[]> datas) {
-        AutoLibraryInfoDto autoLibraryInfoDto = new AutoLibraryInfoDto();
+    public AutoLibraryInfoDto makeAutoLibraryInfo(String translatedFileName, String originFileName, List<String> translatedColumns, List<String[]> datas) {
 
-        // 파일명을 클래스명으로 설정
-        autoLibraryInfoDto.setClassInfo(translatedFileName);
-
-        List<AutoLibraryInfoDto.ColumnInfo> columnInfoList = new ArrayList<>();
+        List<AutoLibraryInfoDto.ColumnInfo> columnInfoList = new ArrayList<>(); // Column 저장
         Map<String, String> columnDataTypes = new HashMap<>(); // 초기 데이터 타입 저장용
 
         // 첫 번째 행을 기준으로 각 컬럼의 초기 데이터 타입 설정
@@ -34,7 +32,7 @@ public class SendAutoLibraryInfoService {
                 String column = translatedColumns.get(i);
                 String value = i < firstRow.length ? firstRow[i] : null;
                 String dataType = typeConvertUtil.getDataTypeFromString(value);
-                columnDataTypes.put(column, dataType); // 초기 타입 설정
+                columnDataTypes.put(column, dataType);
             }
 
             // 이후 행들을 순회하며 각 열의 데이터 타입 검사
@@ -45,9 +43,13 @@ public class SendAutoLibraryInfoService {
                     String value = j < row.length ? row[j] : null;
                     String currentDataType = typeConvertUtil.getDataTypeFromString(value);
 
-                    // 만약 초기 타입과 다른 타입이 발견되면 해당 컬럼 타입을 String으로 변경
+                    // 만약 초기 타입과 다른 타입이 발견되면 해당 컬럼 타입을 String 으로 변경
                     if (!currentDataType.equals(columnDataTypes.get(column))) {
+                        log.info("Expected Type : " + columnDataTypes.get(column));
                         columnDataTypes.put(column, "String");
+                        log.info("Current Type : " + columnDataTypes.get(column));
+                        log.info("Because : " + column);
+                        break;
                     }
                 }
             }
@@ -61,8 +63,7 @@ public class SendAutoLibraryInfoService {
             }
         }
 
-        autoLibraryInfoDto.setColumnInfo(columnInfoList);
-        return autoLibraryInfoDto;
+        return new AutoLibraryInfoDto(translatedFileName, originFileName, columnInfoList);
     }
 
 }

@@ -17,6 +17,9 @@ public class AutoLibraryInfoDto {
     private String classInfo;
 
     @NonNull
+    private String originFileName;
+
+    @NonNull
     private List<ColumnInfo> columnInfo;
 
     @Getter
