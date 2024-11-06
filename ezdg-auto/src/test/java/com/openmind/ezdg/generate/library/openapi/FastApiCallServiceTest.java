@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class FastApiCallServiceTest {
@@ -29,6 +30,17 @@ public class FastApiCallServiceTest {
         CodeGenerator codeGenerator = new CodeGenerator();
         codeGenerator.generateCode(filePath);
     }
+
+    @Test
+    public void swaggerFormApi() throws IOException, TemplateException {
+        String inputUrl = "https://www.data.go.kr/data/15056912/openapi.do#";
+        List<String> filePathList = fastApiCallService.swaggerFormApi(inputUrl);
+        System.out.println("SAVED AT : " + filePathList.toString());
+
+        //CodeGenerator codeGenerator = new CodeGenerator();
+        //codeGenerator.generateCode(filePathList);
+    }
+
 
     @Test
     public void getnerateCode() throws IOException, TemplateException {
