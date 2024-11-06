@@ -1,4 +1,3 @@
-# 베이스 이미지로 Python 3.9 슬림 버전 사용
 FROM python:3.12.7
 
 # 작업 디렉토리 설정
@@ -12,4 +11,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # uvicorn을 통해 FastAPI 앱 실행
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "Server:app", "--host", "0.0.0.0", "--port", "8000"]
