@@ -28,5 +28,23 @@ def make_response(url, requests, responses):
     return response
 
 
+def make_responselist(url, requestlist, responselist):
+    service_name = url.split('/')[-1]  # 'VilageFcstInfoService'
+    response_item = []
+    #endpoint_list = requestlist.keys()
+    for (k, v), response in zip(requestlist.items(), responselist):
+        response_item.append(
+            {
+                'packageName': service_name,
+                'className': k.lstrip("/get"),
+                'baseUrl': url,
+                'endpoint': k,
+                'requestFields': v,
+                'responseFields': response
+            }
+        )
+
+    return response_item
+
 
 

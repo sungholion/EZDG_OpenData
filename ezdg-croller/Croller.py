@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-from TableResponseMaker import make_response
+from ResponseMaker import make_response, make_responselist
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -40,6 +40,8 @@ def table_croller(url):
                     'type': sample_data_type,
                     'name': columns[1].text.strip(),
                     'description': columns[5].text.strip(),
+                    'required' : columns[3].text.strip(),
+                    'sampleData' : columns[4].text.strip(),
                 }
                 request_parameters.append(data)
 
@@ -82,17 +84,21 @@ def table_croller(url):
         print("웹사이트에 접근할 수 없습니다.", response.status_code)
 
 def swagger_controller(url):
-
     # Chrome WebDriver 경로 설정
-    global response_data
+    global response_data, request_parameters
     driver = webdriver.Chrome()
 
     try:
-        # 웹페이지 URL(기상청_단기예보 ((구)_동네예보) 조회서비스)
-        # url = "https://www.data.go.kr/data/15056912/openapi.do#"
-
         # 웹페이지 열기
         driver.get(url)
+
+        # <pre> 태그에서 class가 'base-url'인 요소 찾기
+        base_url_element = driver.find_element(By.CLASS_NAME, 'base-url')
+
+        # Base URL 텍스트 추출
+        base_url_text = base_url_element.text
+        base_url = "https://" + base_url_text.split('Base URL:')[-1].strip(" ]")
+        #print("Extracted Base URL:", base_url)
 
         # 페이지가 완전히 로드될 때까지 대기
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'body')))
@@ -116,21 +122,20 @@ def swagger_controller(url):
             swagger_json = swagger_json.strip('"')
             # JSON 문자열을 Python 객체로 변환
             swagger_data = json.loads(swagger_json)
-            # print(swagger_data)
             # paths에서 각 endpoint의 parameters 추출
             request_parameters = {}
             for path, methods in swagger_data.get("paths", {}).items():
+                param_after = []
                 for method, details in methods.items():
                     if "parameters" in method:
-                        extract_details = {}
                         for a in details:
-                            print(a)
-                            extract_details[a.get("name")] = a.get("type")
-                            # extract_details.append({b : c})
-                        request_parameters[path] = extract_details
-            # 추출된 parameters 출력
-            print("REQUEST 출력할게~~!!~!!~!~!!")
-            print(request_parameters)
+                            del a['in']
+                            if 'type' in a:
+                                a['type'] = a['type'].title()
+
+                            param_after.append(a)
+                        request_parameters[path] = param_after
+
         else:
             print("swaggerJson을 찾을 수 없습니다.")
 
@@ -138,31 +143,38 @@ def swagger_controller(url):
         # 버튼을 클릭하기 위해 aria-label 속성값을 사용해 요소를 찾음
         buttons = driver.find_elements(By.CLASS_NAME, 'opblock-summary-control')
         for button in buttons:
-
             button.click()
             # 버튼 클릭 후 새로운 페이지로 이동하는 경우 약간의 대기 추가
             time.sleep(3)  # 필요에 따라 대기 시간 조정
-            response_data = {}
+            response_data = []
             # highlight-code 블럭을 모두 찾습니다.
             highlight_code_blocks = driver.find_elements(By.CSS_SELECTOR, "code.language-json")
 
             for idx, block in enumerate(highlight_code_blocks, start=1):
                 code_text = block.text
-
                 # JSON 형식의 텍스트에서 줄바꿈을 제거
                 try:
                     # JSON 문자열을 Python 딕셔너리로 변환
                     json_data = json.loads(code_text)
-                    # JSON 데이터를 줄바꿈 없이 문자열로 변환하여 저장
-                    response_data[f"code_block_{idx}"] = json.dumps(json_data, ensure_ascii=False, separators=(",", ":"))
+
+                    # item에 접근하여 원하는 형식으로 변환
+                    item_data = json_data['body']['items']['item']
+                    item_list = [{"name": key, "type": value.title(), "description": None} for key, value in item_data.items()]
+
+                    response_data.append(item_list)
+                    #print(item_list)
                 except json.JSONDecodeError:
                     # JSON 파싱에 실패할 경우 원본 텍스트를 그대로 저장
                     response_data[f"code_block_{idx}"] = code_text
 
         # 크롤링한 내용을 출력
-        # print("RESPONSE 출력할게~~!!~!!~!~!!")
-        # print(response_data)
-        response_list = []
+        print("Base URL 출력할게~~!!~!!~!~!!")
+        print(base_url)
+        print("REQUEST 출력할게~~!!~!!~!~!!")
+        print(request_parameters)
+        print("RESPONSE 출력할게~~!!~!!~!~!!")
+        print(response_data)
+        return make_responselist(base_url, request_parameters, response_data)
 
 
     finally:
