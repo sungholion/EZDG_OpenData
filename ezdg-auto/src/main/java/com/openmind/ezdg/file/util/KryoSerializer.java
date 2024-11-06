@@ -19,18 +19,32 @@ public class KryoSerializer {
         kryo.register(MongoBsonValueDto.class); // MongoBsonValueDto 클래스 등록
     }
 
-    // 직렬화 메서드
-    public static byte[] serialize(List<List<MongoBsonValueDto>> data) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        Output output = new Output(byteArrayOutputStream);
-        kryo.writeObject(output, data); // 중첩된 리스트 구조를 직렬화
-        output.close();
-        return byteArrayOutputStream.toByteArray();
-    }
+//    // 직렬화 메서드
+//    public static byte[] serialize(List<List<MongoBsonValueDto>> data) {
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        Output output = new Output(byteArrayOutputStream);
+//        kryo.writeObject(output, data); // 중첩된 리스트 구조를 직렬화
+//        output.close();
+//        return byteArrayOutputStream.toByteArray();
+//    }
+//
+//    // 역직렬화 메서드
+//    public static List<List<MongoBsonValueDto>> deserialize(byte[] data) {
+//        Input input = new Input(new ByteArrayInputStream(data));
+//        return kryo.readObject(input, List.class); // 중첩된 리스트 구조로 역직렬화
+//    }
+// 단일 List<MongoBsonValueDto> 직렬화 메서드
+public static byte[] serialize(List<MongoBsonValueDto> data) {
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    Output output = new Output(byteArrayOutputStream);
+    kryo.writeObject(output, data);  // 단일 리스트 구조를 직렬화
+    output.close();
+    return byteArrayOutputStream.toByteArray();
+}
 
-    // 역직렬화 메서드
-    public static List<List<MongoBsonValueDto>> deserialize(byte[] data) {
+    // 단일 List<MongoBsonValueDto> 역직렬화 메서드
+    public static List<MongoBsonValueDto> deserialize(byte[] data) {
         Input input = new Input(new ByteArrayInputStream(data));
-        return kryo.readObject(input, List.class); // 중첩된 리스트 구조로 역직렬화
+        return kryo.readObject(input, ArrayList.class);  // 단일 리스트 구조로 역직렬화
     }
 }

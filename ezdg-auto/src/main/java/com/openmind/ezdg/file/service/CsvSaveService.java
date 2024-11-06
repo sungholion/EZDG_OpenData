@@ -39,7 +39,6 @@ import java.util.stream.Stream;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Cacheable(cacheNames = "myCache")
 public class CsvSaveService {
 
     private final PapagoUtil papagoUtil;
@@ -272,24 +271,73 @@ public class CsvSaveService {
 //        return result;
 //    }
 
+//    public List<List<MongoBsonValueDto>> getSavedData(String collectionName) {
+//        ValueOperations<String, byte[]> ops = byteRedisTemplate.opsForValue();
+//        String cacheKey = "collectionName::" + collectionName;
+//
+//        // Try to get cached data
+//        byte[] cacheData = ops.get(cacheKey);
+//        if (cacheData != null) {
+//            System.out.println("Using serialized data from Redis cache");
+//            // Use Kryo deserialization
+//            return KryoSerializer.deserialize(cacheData);
+//        }
+//
+//        // If no cache, fetch data from MongoDB and serialize for caching
+//        List<List<MongoBsonValueDto>> result = fetchFromMongoDB(collectionName);
+//        byte[] serializedData = KryoSerializer.serialize(result);
+//        ops.set(cacheKey, serializedData, Duration.ofHours(12));  // Set with a TTL of 12 hours
+//
+//        return result;
+//    }
+
+
     public List<List<MongoBsonValueDto>> getSavedData(String collectionName) {
+        List<List<MongoBsonValueDto>> result = new ArrayList<>();
+        MongoCollection<Document> collection = csvSaveRepository.getCollection(collectionName);
         ValueOperations<String, byte[]> ops = byteRedisTemplate.opsForValue();
-        String cacheKey = "collectionName::" + collectionName;
 
-        // Try to get cached data
-        byte[] cacheData = ops.get(cacheKey);
-        if (cacheData != null) {
-            System.out.println("Using serialized data from Redis cache");
-            // Use Kryo deserialization
-            return KryoSerializer.deserialize(cacheData);
+        // MongoDB의 모든 문서를 순회하면서 Redis에 개별 저장
+        try (MongoCursor<Document> cursor = collection.find().iterator()) {
+            while (cursor.hasNext()) {
+                Document document = cursor.next();
+                String documentId = document.getObjectId("_id").toHexString();  // MongoDB의 _id를 사용
+                String cacheKey = collectionName + ":" + documentId;
+
+                // Redis에서 개별 문서 데이터를 가져오거나 캐시되지 않았다면 MongoDB 데이터 사용
+                byte[] cacheData = ops.get(cacheKey);
+                List<MongoBsonValueDto> documentData;
+
+                if (cacheData != null) {
+                    System.out.println("Using cached document from Redis for ID: " + documentId);
+                    documentData = KryoSerializer.deserialize(cacheData);
+                } else {
+                    // MongoDB에서 데이터 조회 후 Redis에 개별 캐시로 저장
+                    documentData = convertDocumentToDtoList(document);
+                    byte[] serializedData = KryoSerializer.serialize(documentData);
+                    ops.set(cacheKey, serializedData, Duration.ofHours(12));  // TTL 설정
+                }
+
+                result.add(documentData);
+            }
         }
-
-        // If no cache, fetch data from MongoDB and serialize for caching
-        List<List<MongoBsonValueDto>> result = fetchFromMongoDB(collectionName);
-        byte[] serializedData = KryoSerializer.serialize(result);
-        ops.set(cacheKey, serializedData, Duration.ofHours(12));  // Set with a TTL of 12 hours
-
         return result;
+    }
+
+    // 문서를 MongoBsonValueDto 목록으로 변환하는 헬퍼 메서드
+    private List<MongoBsonValueDto> convertDocumentToDtoList(Document document) {
+        List<MongoBsonValueDto> documents = new ArrayList<>();
+        BsonDocument bsonDoc = document.toBsonDocument(BsonDocument.class, mongoTemplate.getConverter().getCodecRegistry());
+
+        for (Map.Entry<String, BsonValue> entry : bsonDoc.entrySet()) {
+            String fieldName = entry.getKey();
+            if (fieldName.equals("_id")) continue;  // _id 필드는 제외
+
+            BsonValue fieldValue = entry.getValue();
+            BsonType fieldType = fieldValue.getBsonType();
+            documents.add(new MongoBsonValueDto(fieldName, customStringUtil.bsonValueToStr(fieldValue), fieldType.toString()));
+        }
+        return documents;
     }
 
     private List<List<MongoBsonValueDto>> fetchFromMongoDB(String collectionName) {

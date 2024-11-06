@@ -2,6 +2,7 @@ package com.openmind.ezdg.file.controller;
 
 import com.openmind.ezdg.file.dto.filesave.MongoBsonValueDto;
 import com.openmind.ezdg.file.service.CsvSaveService;
+import com.openmind.ezdg.file.service.RedisService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,14 +15,16 @@ import java.util.Map;
 @RequestMapping("/redis")
 public class RedisSaveTestController {
     private final CsvSaveService csvSaveService;
+    private final RedisService redisService;
 
-    public  RedisSaveTestController(CsvSaveService csvSaveService) {
+    public  RedisSaveTestController(CsvSaveService csvSaveService, RedisService redisService) {
         this.csvSaveService = csvSaveService;
+        this.redisService = redisService;
     }
 
     @GetMapping("redis/{collectionName}")
     public List<List<MongoBsonValueDto>> getSavedData(@PathVariable String collectionName) {
-        return csvSaveService.getSavedData(collectionName);
+        return redisService.getSavedData(collectionName);
     }
 
     @GetMapping("db/{collectionNameOld}")
