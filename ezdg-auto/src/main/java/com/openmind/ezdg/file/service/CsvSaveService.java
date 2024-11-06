@@ -57,45 +57,31 @@ public class CsvSaveService {
      */
     @Transactional
     public void saveFile(List<String[]> datas, String translatedFileName, List<String> translatedColumns) {
-        // insert mongoDB
         csvSaveRepository.createCollection(translatedFileName);
         MongoCollection<Document> collection = csvSaveRepository.getCollection(translatedFileName);
-
-        // document 생성
         List<Document> documents = getDocuments(datas, translatedColumns);
-
-        // 삽입
         csvSaveRepository.insertDocuments(collection, documents);
     }
 
     private List<Document> getDocuments(List<String[]> datas, List<String> translatedColumns) {
         List<Document> documents = new ArrayList<>();
+        if (datas == null || datas.size() <= 1) return documents;
 
-        if (datas == null || datas.size() <= 1) {
-            return documents; // 데이터가 없을 경우 빈 리스트 반환
-        }
-
-        Map<String, String> columnDataTypes = new HashMap<>(); // 각 열의 최종 데이터 타입 저장용
-        String[] firstRow = datas.get(1); // 첫 번째 행 사용
-
-        // 첫 번째 행의 데이터를 기준으로 초기 타입 설정
+        Map<String, String> columnDataTypes = new HashMap<>();
+        String[] firstRow = datas.get(1);
         for (int j = 0; j < translatedColumns.size(); j++) {
             String columnName = translatedColumns.get(j);
             String value = j < firstRow.length ? firstRow[j] : null;
             String dataType = typeConvertUtil.getDataTypeFromString(value);
-            columnDataTypes.put(columnName, dataType); // 초기 데이터 타입 설정
+            columnDataTypes.put(columnName, dataType);
         }
 
-        // 두 번째 행부터 타입 검증 시작
         for (int i = 2; i < datas.size(); i++) {
             String[] row = datas.get(i);
-
             for (int j = 0; j < row.length; j++) {
                 String columnName = translatedColumns.get(j);
                 String value = row[j];
                 String currentDataType = typeConvertUtil.getDataTypeFromString(value);
-
-                // 기존 타입과 다른 타입이 있으면 해당 열의 타입을 String으로 고정하고 더 이상 검사하지 않음
                 if (!"String".equals(columnDataTypes.get(columnName)) &&
                         !currentDataType.equals(columnDataTypes.get(columnName))) {
                     log.info("Expected Type : " + columnDataTypes.get(columnName));
@@ -107,23 +93,17 @@ public class CsvSaveService {
             }
         }
 
-        // 결정된 데이터 타입을 사용하여 각 행을 Document로 변환
         for (int i = 1; i < datas.size(); i++) {
             String[] row = datas.get(i);
             Map<String, Object> documentMap = new HashMap<>();
-
             for (int j = 0; j < row.length; j++) {
                 String columnName = translatedColumns.get(j);
                 String value = row[j];
-                String dataType = columnDataTypes.get(columnName); // 최종 타입 가져오기
-
-
-                // 결정된 타입으로 map에 put
+                String dataType = columnDataTypes.get(columnName);
                 putDocumentByDataType(dataType, documentMap, columnName, value);
             }
             documents.add(new Document(documentMap));
         }
-
         return documents;
     }
 
@@ -136,7 +116,7 @@ public class CsvSaveService {
                 documentMap.put(columnName, Double.parseDouble(value));
                 break;
             case "LocalDate":
-                documentMap.put(columnName, TypeConvertUtil.parseToLocalDate(value));   // 03-09와 같은 형식이 아니라 3-9 이런 형식으로 넘어오면, 0채우고 LocalDate로 변환
+                documentMap.put(columnName, TypeConvertUtil.parseToLocalDate(value));
                 break;
             case "LocalDateTime":
                 documentMap.put(columnName, TypeConvertUtil.parseToLocalDateTime(value));
@@ -146,6 +126,33 @@ public class CsvSaveService {
                 break;
         }
     }
+
+    public List<List<MongoBsonValueDto>> getSavedData(String collectionName) {
+        String cacheKey = "collectionName::" + collectionName;
+        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String cacheData = ops.get(cacheKey);
+
+        if (cacheData != null) {
+            log.info("Redis cache hit for collection: {}", collectionName);
+            try {
+                return objectMapper.readValue(cacheData, new TypeReference<>() {});
+            } catch (JsonProcessingException e) {
+                log.error("Error parsing JSON from Redis", e);
+            }
+        }
+
+        List<List<MongoBsonValueDto>> result = fetchFromMongoDB(collectionName);
+        try {
+            String jsonData = objectMapper.writeValueAsString(result);
+            ops.set(cacheKey, jsonData, 12, TimeUnit.HOURS);
+        } catch (JsonProcessingException e) {
+            log.error("Error serializing data to JSON for Redis", e);
+        }
+
+        return result;
+    }
+
 
     /**
      * 네이버 papago api를 활용해서 한글 파일명을 영어로 변환 및 문자열 정리
@@ -206,7 +213,7 @@ public class CsvSaveService {
 //        ValueOperations<String, String> ops = redisTemplate.opsForValue();
 //        ObjectMapper objectMapper = new ObjectMapper();
 //
-//        String cacheKey = "collectionName::" + collectionName;
+////        String cacheKey = "collectionName::" + collectionName;
 //        String cacheData = ops.get("collectionName::" + collectionName);
 //
 ////        // 캐시의 현재 남은 TTL 확인 및 출력
@@ -227,8 +234,7 @@ public class CsvSaveService {
 ////                // 갱신된 TTL 확인 및 출력
 ////                Long newTtl = redisTemplate.getExpire(cacheKey, TimeUnit.SECONDS);
 ////                System.out.println("갱신된 캐시 유효 시간: " + newTtl + "초");
-//
-//
+////                log.info("캐시 히트\n");
 //                return objectMapper.readValue(cacheData, new TypeReference<List<List<MongoBsonValueDto>>>() {});
 //            } catch (JsonProcessingException e) {
 //                e.printStackTrace();
@@ -261,13 +267,13 @@ public class CsvSaveService {
 //            // MongoDB에서 가져온 데이터를 Redis에 캐싱
 //            try {
 //                String jsonData = objectMapper.writeValueAsString(result);
-////                ops.set("collectionName::" + collectionName, jsonData, Duration.ofHours(12));
+//                ops.set("collectionName::" + collectionName, jsonData, Duration.ofHours(12));
 //            } catch (JsonProcessingException e) {
 //                e.printStackTrace();
 //            }
 //        }
 //
-////        System.out.println("redis에 없는 데이터 : " + result);
+//        System.out.println("redis에 없는 데이터 : " + result);
 //        return result;
 //    }
 
@@ -292,75 +298,74 @@ public class CsvSaveService {
 //    }
 
 
-    public List<List<MongoBsonValueDto>> getSavedData(String collectionName) {
-        List<List<MongoBsonValueDto>> result = new ArrayList<>();
-        MongoCollection<Document> collection = csvSaveRepository.getCollection(collectionName);
-        ValueOperations<String, byte[]> ops = byteRedisTemplate.opsForValue();
-
-        // MongoDB의 모든 문서를 순회하면서 Redis에 개별 저장
-        try (MongoCursor<Document> cursor = collection.find().iterator()) {
-            while (cursor.hasNext()) {
-                Document document = cursor.next();
-                String documentId = document.getObjectId("_id").toHexString();  // MongoDB의 _id를 사용
-                String cacheKey = collectionName + ":" + documentId;
-
-                // Redis에서 개별 문서 데이터를 가져오거나 캐시되지 않았다면 MongoDB 데이터 사용
-                byte[] cacheData = ops.get(cacheKey);
-                List<MongoBsonValueDto> documentData;
-
-                if (cacheData != null) {
-                    System.out.println("Using cached document from Redis for ID: " + documentId);
-                    documentData = KryoSerializer.deserialize(cacheData);
-                } else {
-                    // MongoDB에서 데이터 조회 후 Redis에 개별 캐시로 저장
-                    documentData = convertDocumentToDtoList(document);
-                    byte[] serializedData = KryoSerializer.serialize(documentData);
-                    ops.set(cacheKey, serializedData, Duration.ofHours(12));  // TTL 설정
-                }
-
-                result.add(documentData);
-            }
-        }
-        return result;
-    }
-
-    // 문서를 MongoBsonValueDto 목록으로 변환하는 헬퍼 메서드
-    private List<MongoBsonValueDto> convertDocumentToDtoList(Document document) {
-        List<MongoBsonValueDto> documents = new ArrayList<>();
-        BsonDocument bsonDoc = document.toBsonDocument(BsonDocument.class, mongoTemplate.getConverter().getCodecRegistry());
-
-        for (Map.Entry<String, BsonValue> entry : bsonDoc.entrySet()) {
-            String fieldName = entry.getKey();
-            if (fieldName.equals("_id")) continue;  // _id 필드는 제외
-
-            BsonValue fieldValue = entry.getValue();
-            BsonType fieldType = fieldValue.getBsonType();
-            documents.add(new MongoBsonValueDto(fieldName, customStringUtil.bsonValueToStr(fieldValue), fieldType.toString()));
-        }
-        return documents;
-    }
+//    public List<List<MongoBsonValueDto>> getSavedData(String collectionName) {
+//        List<List<MongoBsonValueDto>> result = new ArrayList<>();
+//        MongoCollection<Document> collection = csvSaveRepository.getCollection(collectionName);
+//        ValueOperations<String, byte[]> ops = byteRedisTemplate.opsForValue();
+//
+//        // MongoDB의 모든 문서를 순회하면서 Redis에 개별 저장
+//        try (MongoCursor<Document> cursor = collection.find().iterator()) {
+//            while (cursor.hasNext()) {
+//                Document document = cursor.next();
+//                String documentId = document.getObjectId("_id").toHexString();  // MongoDB의 _id를 사용
+//                String cacheKey = collectionName + ":" + documentId;
+//
+//                // Redis에서 개별 문서 데이터를 가져오거나 캐시되지 않았다면 MongoDB 데이터 사용
+//                byte[] cacheData = ops.get(cacheKey);
+//                List<MongoBsonValueDto> documentData;
+//
+//                if (cacheData != null) {
+//                    System.out.println("Using cached document from Redis for ID: " + documentId);
+//                    documentData = KryoSerializer.deserialize(cacheData);
+//                } else {
+//                    // MongoDB에서 데이터 조회 후 Redis에 개별 캐시로 저장
+//                    documentData = convertDocumentToDtoList(document);
+//                    byte[] serializedData = KryoSerializer.serialize(documentData);
+//                    ops.set(cacheKey, serializedData, Duration.ofHours(12));  // TTL 설정
+//                }
+//
+//                result.add(documentData);
+//            }
+//        }
+//        return result;
+//    }
+//
+//    // 문서를 MongoBsonValueDto 목록으로 변환하는 헬퍼 메서드
+//    private List<MongoBsonValueDto> convertDocumentToDtoList(Document document) {
+//        List<MongoBsonValueDto> documents = new ArrayList<>();
+//        BsonDocument bsonDoc = document.toBsonDocument(BsonDocument.class, mongoTemplate.getConverter().getCodecRegistry());
+//
+//        for (Map.Entry<String, BsonValue> entry : bsonDoc.entrySet()) {
+//            String fieldName = entry.getKey();
+//            if (fieldName.equals("_id")) continue;  // _id 필드는 제외
+//
+//            BsonValue fieldValue = entry.getValue();
+//            BsonType fieldType = fieldValue.getBsonType();
+//            documents.add(new MongoBsonValueDto(fieldName, customStringUtil.bsonValueToStr(fieldValue), fieldType.toString()));
+//        }
+//        return documents;
+//    }
 
     private List<List<MongoBsonValueDto>> fetchFromMongoDB(String collectionName) {
         List<List<MongoBsonValueDto>> result = new ArrayList<>();
         MongoCollection<Document> collection = csvSaveRepository.getCollection(collectionName);
 
-        try (MongoCursor<Document> cursor = collection.find().limit(1).iterator()) {
-            List<MongoBsonValueDto> documents = new ArrayList<>();
+        try (MongoCursor<Document> cursor = collection.find().iterator()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
+                List<MongoBsonValueDto> documentList = new ArrayList<>();
                 BsonDocument bsonDoc = document.toBsonDocument(BsonDocument.class, mongoTemplate.getConverter().getCodecRegistry());
 
                 for (Map.Entry<String, BsonValue> entry : bsonDoc.entrySet()) {
                     String fieldName = entry.getKey();
-                    if (fieldName.equals("_id")) continue;
-
-                    BsonValue fieldValue = entry.getValue();
-                    BsonType fieldType = fieldValue.getBsonType();
-
-                    documents.add(new MongoBsonValueDto(fieldName, customStringUtil.bsonValueToStr(fieldValue), fieldType.toString()));
+                    if (!fieldName.equals("_id")) {
+                        BsonValue fieldValue = entry.getValue();
+                        BsonType fieldType = fieldValue.getBsonType();
+                        documentList.add(new MongoBsonValueDto(fieldName, customStringUtil.bsonValueToStr(fieldValue), fieldType.toString()));
+                    }
                 }
+                result.add(documentList);
             }
-            result.add(documents);
         }
         return result;
     }
@@ -394,6 +399,7 @@ public class CsvSaveService {
             result.add(documents);
         }
         return result;
+
     }
 
 
