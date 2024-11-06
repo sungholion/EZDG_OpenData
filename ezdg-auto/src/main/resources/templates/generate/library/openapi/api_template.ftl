@@ -41,7 +41,6 @@ content.append(inputLine);
 in.close();
 conn.disconnect();
 
-System.out.println("Response: " + content.toString());
 
 // JSON 파싱
 try {
