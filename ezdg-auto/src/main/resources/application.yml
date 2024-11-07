@@ -9,7 +9,7 @@ spring:
       max-file-size: 200MB
       max-request-size: 200MB
       file-size-threshold: 50MB
-      location: C:\\Users\\SSAFY\\Desktop\\temp-file\\
+      location: C:\\Users\\Hajae\\Desktop\\temp-file\\
 
 springdoc:
   api-docs:
@@ -20,10 +20,10 @@ springdoc:
     tags-sorter: alpha
     operations-sorter: alpha
 
-path:
-  java-library-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
-  api-server-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
-  temp-file-path: C:\\Users\\SSAFY\\Desktop\\temp-file\\
+#path:
+#  java-library-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
+#  api-server-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
+#  temp-file-path: C:\\Users\\SSAFY\\Desktop\\temp-file\\
 
 
 

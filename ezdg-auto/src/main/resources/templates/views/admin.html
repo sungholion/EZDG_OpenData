@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EZDG 관리자 페이지</title>
-    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link th:href="@{css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet" />
     <style>
         .custom-btn-width {
             width: 40%;
@@ -23,18 +23,41 @@
                         type="text"
                         name="code"
                         class="form-control d-inline-block w-25"
+                        id="adminCodeInput"
                         placeholder="관리자 코드 입력"
                         required
                 />
-                <button type="submit" class="btn btn-primary">인증</button>
+                <button type="submit" class="btn btn-primary" id="authButton">인증</button>
                 <div class="form-text">※ 부여받은 관리자 코드를 입력하세요</div>
             </div>
         </form>
 
+
         <div class="text-center">
-            <button class="btn btn-primary custom-btn-width mb-3 d-block mx-auto" onclick="navigateTo('/admin/file')">파일</button>
-            <button class="btn btn-primary custom-btn-width mb-3 d-block mx-auto" onclick="navigateTo('/admin/openapi')">Open API</button>
-            <button class="btn btn-primary custom-btn-width d-block mx-auto" onclick="navigateTo('/admin/deploy')">배포 현황</button>
+            <button
+                    class="btn btn-primary custom-btn-width mb-3 d-block mx-auto"
+                    onclick="navigateTo('/admin/file')"
+            >
+                파일
+            </button>
+            <button
+                    class="btn btn-success custom-btn-width mb-3 d-block mx-auto"
+                    onclick="navigateTo('/admin/openapi')"
+            >
+                Open API
+            </button>
+            <button
+                    class="btn btn-primary custom-btn-width mb-3 d-block mx-auto"
+                    onclick="navigateTo('/admin/data')"
+            >
+                데이터 신청 현황
+            </button>
+            <button
+                    class="btn btn-success custom-btn-width d-block mx-auto"
+                    onclick="navigateTo('/admin/deploy')"
+            >
+                배포 현황
+            </button>
         </div>
     </section>
 </div>
@@ -68,7 +91,21 @@
 
     window.onload = function () {
         const isSuccessAttr = document.getElementById("admin").getAttribute("data-is-success");
-        console.log("isSuccessAttr = ", isSuccessAttr);
+
+        // 인증 필드와 버튼 처리
+        const adminCodeInput = document.getElementById("adminCodeInput");
+        const authButton = document.getElementById("authButton");
+
+        if (isSuccessAttr !== null) {
+            const isSuccess = isSuccessAttr === 'true';
+            if(isSuccess) {
+                // 인증이 완료된 경우: 입력 필드 읽기 전용 및 메시지 변경
+                adminCodeInput.value = "관리자 인증이 완료되었습니다.";
+                adminCodeInput.readOnly = true;
+                authButton.disabled = true; // 인증 버튼 비활성화
+            }
+        }
+
         if (isSuccessAttr !== null) {
             const isSuccess = isSuccessAttr === 'true';
             const modalBody = document.getElementById("modalBody");

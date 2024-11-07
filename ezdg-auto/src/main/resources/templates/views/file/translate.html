@@ -1,63 +1,99 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>파일 변환 페이지</title>
-    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet" />
-    <style>
-      .step-circle {
-        width: 2rem;
-        height: 2rem;
-        border-radius: 50%;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 0.5rem;
-        color: white;
-      }
-      .active {
-        background-color: #007bff;
-      }
-      .inactive {
-        background-color: gray;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container mt-5">
-      <div class="text-center">
-        <span class="step-circle inactive">1</span>
-        <span class="step-circle active">2</span>
-        <span class="step-circle inactive">3</span>
-      </div>
-      <h2 class="text-center mt-3">파일 변환 페이지</h2>
-      <div class="text-center">
-        <button class="btn btn-primary">파일명</button> <span>원본 파일 이름</span>
-        <button class="btn btn-primary mt-3">클래스명</button> <span>변환된 클래스명</span>
-        <div class="mt-4">
-          <table class="table table-bordered w-75 mx-auto">
-            <thead>
-              <tr>
-                <th>원본 칼럼명</th>
-                <th>변환 칼럼명</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>회원</td>
-                <td><input type="text" class="form-control" value="user" /></td>
-              </tr>
-              <tr>
-                <td>나이</td>
-                <td><input type="text" class="form-control" value="age" /></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="form-text">※ 칼럼명은 변경할 수 있으나, 숫자는 모두 사라지니 주의하세요</div>
-          <button class="btn btn-primary mt-4">등록</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>파일 변환 페이지</title>
+  <link th:href="@{css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .step-circle {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 0.5rem;
+      color: white;
+    }
+    .active {
+      background-color: #007bff;
+    }
+    .inactive {
+      background-color: gray;
+    }
+    .input-container {
+      max-width: 700px;
+      margin-left: 300px;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <div class="text-center">
+    <span class="step-circle inactive">1</span>
+    <span class="step-circle active">2</span>
+    <span class="step-circle inactive">3</span>
+  </div>
+  <h2 class="text-center mt-3">파일 변환 페이지</h2>
+  <form action="/file/save" method="post">
+    <input type="hidden" name="fileName" th:value="${fileName}">
+    <input type="hidden" name="code" th:value="${code}">
+    <div class="text-center">
+      <div class="input-container">
+        <div class="input-group mt-3">
+          <span class="input-group-text identify text-center">파일명</span>
+          <input
+                  type="text"
+                  class="form-control"
+                  placeholder="원본 파일 이름"
+                  readonly="readonly"
+                  th:value="${originFileName}"
+          />
+        </div>
+        <div class="input-group mt-3">
+          <span class="input-group-text identify text-center">클래스명</span>
+          <input type="text" class="form-control" th:value="${translatedFileName}" placeholder="변환된 클래스명" />
         </div>
       </div>
+      <div class="mt-4">
+        <table class="table table-bordered w-75 mx-auto">
+          <thead>
+          <tr>
+            <th>원본 칼럼명</th>
+            <th>변환 칼럼명</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="origin, iterStat : ${originalColumns}">
+            <td>
+              <input
+                      type="text"
+                      class="form-control"
+                      name="originColumns"
+                      th:value="${origin}"
+                      readonly="readonly"
+                      placeholder="원본 칼럼명"
+              />
+            </td>
+            <td>
+              <input
+                      type="text"
+                      class="form-control"
+                      name="translatedColumns"
+                      th:value="${translatedColumns[iterStat.index]}"
+                      placeholder="변환 칼럼명"
+              />
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="form-text">※ 칼럼명은 변경할 수 있으나, 숫자는 모두 사라지니 주의하세요</div>
+        <button class="btn btn-primary mt-4">등록</button>
+      </div>
     </div>
-  </body>
+</div>
+</form>
+</body>
 </html>

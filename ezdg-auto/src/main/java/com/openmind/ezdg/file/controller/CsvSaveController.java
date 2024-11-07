@@ -37,7 +37,6 @@ public class CsvSaveController {
 
     /**
      * 파일 변환
-     * 파일과 공공데이터 코드 입력 후 변환 버튼 클릭
      */
     @PostMapping()
     public String translateFile(@RequestParam("file") MultipartFile file, @RequestParam("code") String code,
@@ -80,11 +79,6 @@ public class CsvSaveController {
         redirectAttributes.addFlashAttribute("originalColumns", originalColumns);
         redirectAttributes.addFlashAttribute("translatedColumns", translatedColumns);
 
-        // List<String[]> 타입을 view로 전달하고, 다른 컨트롤러로 전달하기 위해 json String type으로 변경
-//        String dataToJson = objectMapperUtil.dataToString(datas);
-
-//        redirectAttributes.addFlashAttribute("datas", dataToJson);
-//        redirectAttributes.addFlashAttribute("file", file);
         redirectAttributes.addFlashAttribute("fileName", file.getOriginalFilename());
         redirectAttributes.addFlashAttribute("code", code);
 
@@ -97,11 +91,10 @@ public class CsvSaveController {
     @GetMapping("/save")
     public String getFileSavePage(Model model) {
         log.info("파일 저장 페이지 호출");
-//        model.addAttribute("file", model.getAttribute("file"));
         model.addAttribute("fileName", model.getAttribute("fileName"));
         model.addAttribute("code", model.getAttribute("code"));
 
-        return "views/filesave/save";
+        return "views/file/translate";
     }
 
     /**

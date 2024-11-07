@@ -48,6 +48,9 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    /**
+     * file 업로드 페이지 호출
+     */
     @GetMapping("/file")
     public String filePage(@SessionAttribute(value = "isAuth", required = false) Boolean isAuth) {
         if (Boolean.TRUE.equals(isAuth)) {
@@ -56,6 +59,9 @@ public class AdminController {
         return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
     }
 
+    /**
+     * openapi url 업로드 페이지 호출
+     */
     @GetMapping("/openapi")
     public String openApiPage(@SessionAttribute(value = "isAuth", required = false) Boolean isAuth) {
         if (Boolean.TRUE.equals(isAuth)) {
@@ -64,10 +70,24 @@ public class AdminController {
         return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
     }
 
+    /**
+     * 배포 현황 페이지 호출
+     */
     @GetMapping("/deploy")
     public String deployPage(@SessionAttribute(value = "isAuth", required = false) Boolean isAuth) {
         if (Boolean.TRUE.equals(isAuth)) {
             return "views/deploy/deploy"; // 인증된 경우 배포 현황 페이지로 이동
+        }
+        return "redirect:/admin";
+    }
+
+    /**
+     * 데이터 신청 내역 페이지 호출
+     */
+    @GetMapping("/data")
+    public String dataRequestPage(@SessionAttribute(value = "isAuth", required = false) Boolean isAuth) {
+        if (Boolean.TRUE.equals(isAuth)) {
+            return "views/data/data"; // 인증된 경우 배포 현황 페이지로 이동
         }
         return "redirect:/admin";
     }
