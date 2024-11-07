@@ -1,15 +1,5 @@
 import { LucideIcon } from "lucide-react";
 
-// sidebar 데이터 및 통신 관련 types (TODO: 실제 통신에 맞게 수정 필요)
-// API 엔드포인트 정보
-export interface Endpoint {
-  id: string;
-  title: string;
-  path: string;
-  description: string;
-  apiSpec?: ApiSpec;
-}
-
 type ParameterType = 'string' | 'number' | 'boolean';
 
 interface ApiParameter {
@@ -38,8 +28,35 @@ export interface DataCategory {
   title: string;
   description: string;
   icon: LucideIcon;
-  apiVersion: string;
-  endpoints: Endpoint[];
+
+  // API 관련 필드들
+  apiVersion?: string;
+  endpoints?: Array<{
+    id: string;
+    title: string;
+    path: string;
+    description: string;
+    apiSpec?: ApiSpec;
+  }>;
+
+  //Java 라이브러리 관련 필드들
+  inputSpec?: Array<{
+    name: string;
+    type: string;
+    description: string;
+    constraints?: string;
+  }>;
+  outputSpec?: Array<{
+    name: string;
+    type: string;
+    description: string;
+  }>;
+  examples?: Array<{
+    title: string;
+    description?: string;
+    code: string;
+    result?: string;  // 실행 결과 (선택사항)
+  }>;
 }
 
 // ------------------------------------------------------------
