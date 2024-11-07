@@ -32,7 +32,6 @@ public class CsvSaveController {
     private final JavaFileLibraryGenerateService javaFileLibraryGenerateService;
     private final APIServerGenerateService apiServerGenerateService;
     private final CsvUtil csvUtil;
-    private final ObjectMapperUtil objectMapperUtil;
     private final FileUtil fileUtil;
 
     /**
@@ -104,15 +103,12 @@ public class CsvSaveController {
     @PostMapping("/save")
     public String saveFile(@RequestParam(value = "translatedFileName") String translatedFileName,
                            @RequestParam(value = "translatedColumns") List<String> translatedColumns,
-//                           @RequestParam(value = "file") MultipartFile file,
                            @RequestParam(value = "fileName") String fileName,
                            @RequestParam(value = "code") String code,
                            RedirectAttributes redirectAttributes) {
         log.info("save file request for {}", translatedFileName);
         log.info("translatedColumns = {}", translatedColumns);
 
-        // 파일 변환 단계에서 json String으로 변환한 데이터를 다시 List<String[]> 타입으로 변환
-//        List<String[]> datas = objectMapperUtil.stringToData(dataToJson);
         MultipartFile file = fileUtil.readFileFromTempPath(fileName);
 
         // read csv
@@ -135,15 +131,16 @@ public class CsvSaveController {
         javaFileLibraryGenerateService.generate(autoLibraryInfoDto);
 
         // view 전달 파라미터
-        redirectAttributes.addFlashAttribute("collection", translatedFileName);
-        redirectAttributes.addFlashAttribute("code", code);
+//        redirectAttributes.addFlashAttribute("collection", translatedFileName);
+//        redirectAttributes.addFlashAttribute("code", code);
 
-        return "redirect:/file/result";
+        return "views/file/file-complete";
     }
 
     /**
      * 저장 결과
      */
+    /*
     @GetMapping("/result")
     public String getResultPage(Model model) {
         String collectionName = (String) model.getAttribute("collection");
@@ -155,4 +152,5 @@ public class CsvSaveController {
 
         return "views/filesave/result";
     }
+     */
 }

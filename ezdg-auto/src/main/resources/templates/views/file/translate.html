@@ -48,13 +48,14 @@
                   type="text"
                   class="form-control"
                   placeholder="원본 파일 이름"
+                  name="originFileName"
                   readonly="readonly"
                   th:value="${originFileName}"
           />
         </div>
         <div class="input-group mt-3">
           <span class="input-group-text identify text-center">클래스명</span>
-          <input type="text" class="form-control" th:value="${translatedFileName}" placeholder="변환된 클래스명" />
+          <input type="text" class="form-control" th:value="${translatedFileName}" name="translatedFileName" placeholder="변환된 클래스명" />
         </div>
       </div>
       <div class="mt-4">
