@@ -22,28 +22,15 @@ public class RedisConfig {
         return new LettuceConnectionFactory(host, port);
     }
 
-//    @Bean
-//    public RedisTemplate<?, ?> redisTemplate() {
-//        RedisTemplate<?, ?> redisTemplate = new RedisTemplate<>();
-//        redisTemplate.setConnectionFactory(redisConnectionFactory());
-//        return redisTemplate;
-//    }
-
-//    @Bean
-//    public RedisTemplate<String, byte[]> redisTemplateBytes(RedisConnectionFactory connectionFactory) {
-//        RedisTemplate<String, byte[]> template = new RedisTemplate<>();
-//        template.setConnectionFactory(connectionFactory);
-//        return template;
-//    }
-
-
     @Bean
-    public RedisTemplate<String, ?> redisTemplate() {
-        RedisTemplate<String, ?> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
 
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        // Kryo Serializer 적용 - 여기서 Object.class를 명확히 지정합니다.
+        KryoSerializer<Object> kryoSerializer = new KryoSerializer<>(Object.class);
+        redisTemplate.setValueSerializer(kryoSerializer);
+        redisTemplate.setKeySerializer(new StringRedisSerializer()); // 키는 문자열 직렬화 유지
 
         return redisTemplate;
     }

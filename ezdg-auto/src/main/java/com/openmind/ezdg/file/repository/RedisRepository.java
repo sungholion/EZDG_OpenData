@@ -25,11 +25,6 @@ public class RedisRepository {
         return mongoTemplate.getCollection(collectionName);
     }
 
-    // New method to return MongoTemplate instance
-    public MongoTemplate getMongoTemplate() {
-        return mongoTemplate;
-    }
-
     // Redis operations
     public void saveToRedis(String key, Object data, long duration, TimeUnit unit) {
         redisTemplate.opsForValue().set(key, data, duration, unit);  // Save data with expiration
