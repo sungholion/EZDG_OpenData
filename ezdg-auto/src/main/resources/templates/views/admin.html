@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EZDG 관리자 페이지</title>
+    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .custom-btn-width {
+            width: 40%;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <section id="admin" th:data-is-success="${isSuccess}">
+        <h2 class="text-center">EZDG 관리자 페이지</h2>
+
+        <!-- 인증 폼 -->
+        <form action="/admin/authenticate" method="post" id="authForm">
+            <div class="text-center mb-4">
+                <input
+                        type="text"
+                        name="code"
+                        class="form-control d-inline-block w-25"
+                        placeholder="관리자 코드 입력"
+                        required
+                />
+                <button type="submit" class="btn btn-primary">인증</button>
+                <div class="form-text">※ 부여받은 관리자 코드를 입력하세요</div>
+            </div>
+        </form>
+
+        <div class="text-center">
+            <button class="btn btn-primary custom-btn-width mb-3 d-block mx-auto" onclick="navigateTo('/file')">파일</button>
+            <button class="btn btn-primary custom-btn-width mb-3 d-block mx-auto" onclick="navigateTo('/openapi')">Open API</button>
+            <button class="btn btn-primary custom-btn-width d-block mx-auto" onclick="navigateTo('/deploy')">배포 현황</button>
+        </div>
+    </section>
+</div>
+
+<!-- 인증 모달 -->
+<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="authModalLabel">인증 결과</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBody">관리자 코드가 올바른지 확인해주세요.</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}" src="../js/bootstrap.bundle.min.js"></script>
+<script>
+    let isAuth = document.getElementById("admin").getAttribute("data-is-success") === 'true';
+    function navigateTo(url) {
+        if (isAuth) {
+            window.location.href = url;
+        } else {
+            new bootstrap.Modal(document.getElementById('authModal')).show();
+        }
+    }
+
+    window.onload = function () {
+        const isSuccessAttr = document.getElementById("admin").getAttribute("data-is-success");
+        console.log("isSuccessAttr = ", isSuccessAttr);
+        if (isSuccessAttr !== null) {
+            const isSuccess = isSuccessAttr === 'true';
+            const modalBody = document.getElementById("modalBody");
+            if (isSuccess) {
+                modalBody.innerText = "인증이 완료되었습니다.";
+            } else {
+                modalBody.innerText = "관리자 코드가 올바른지 확인해주세요.";
+            }
+            new bootstrap.Modal(document.getElementById("authModal")).show();
+        }
+    };
+</script>
+</body>
+</html>
