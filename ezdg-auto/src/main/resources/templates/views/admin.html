@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EZDG 관리자 페이지</title>
-    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link th:href="@{css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
     <style>
         .custom-btn-width {
             width: 40%;
@@ -32,20 +33,52 @@
         </form>
 
         <div class="text-center">
-            <button class="btn btn-primary custom-btn-width mb-3 d-block mx-auto" onclick="navigateTo('/admin/file')">파일</button>
-            <button class="btn btn-primary custom-btn-width mb-3 d-block mx-auto" onclick="navigateTo('/admin/openapi')">Open API</button>
-            <button class="btn btn-primary custom-btn-width d-block mx-auto" onclick="navigateTo('/admin/deploy')">배포 현황</button>
+            <button
+                    class="btn btn-primary custom-btn-width mb-3 d-block mx-auto"
+                    onclick="navigateTo('/admin/file')"
+            >
+                파일
+            </button>
+            <button
+                    class="btn btn-success custom-btn-width mb-3 d-block mx-auto"
+                    onclick="navigateTo('/admin/openapi')"
+            >
+                Open API
+            </button>
+            <button
+                    class="btn btn-primary custom-btn-width mb-3 d-block mx-auto"
+                    onclick="navigateTo('/admin/data')"
+            >
+                데이터 신청 현황
+            </button>
+            <button
+                    class="btn btn-success custom-btn-width d-block mx-auto"
+                    onclick="navigateTo('/admin/deploy')"
+            >
+                배포 현황
+            </button>
         </div>
     </section>
 </div>
 
 <!-- 인증 모달 -->
-<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+<div
+        class="modal fade"
+        id="authModal"
+        tabindex="-1"
+        aria-labelledby="authModalLabel"
+        aria-hidden="true"
+>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="authModalLabel">인증 결과</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                ></button>
             </div>
             <div class="modal-body" id="modalBody">관리자 코드가 올바른지 확인해주세요.</div>
             <div class="modal-footer">
@@ -57,12 +90,12 @@
 
 <script th:src="@{/js/bootstrap.bundle.min.js}" src="../js/bootstrap.bundle.min.js"></script>
 <script>
-    let isAuth = document.getElementById("admin").getAttribute("data-is-success") === 'true';
+    let isAuth = document.getElementById("admin").getAttribute("data-is-success") === "true";
     function navigateTo(url) {
         if (isAuth) {
             window.location.href = url;
         } else {
-            new bootstrap.Modal(document.getElementById('authModal')).show();
+            new bootstrap.Modal(document.getElementById("authModal")).show();
         }
     }
 
@@ -70,7 +103,7 @@
         const isSuccessAttr = document.getElementById("admin").getAttribute("data-is-success");
         console.log("isSuccessAttr = ", isSuccessAttr);
         if (isSuccessAttr !== null) {
-            const isSuccess = isSuccessAttr === 'true';
+            const isSuccess = isSuccessAttr === "true";
             const modalBody = document.getElementById("modalBody");
             if (isSuccess) {
                 modalBody.innerText = "인증이 완료되었습니다.";
