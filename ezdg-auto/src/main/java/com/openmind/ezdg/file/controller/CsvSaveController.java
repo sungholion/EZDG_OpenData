@@ -36,14 +36,6 @@ public class CsvSaveController {
     private final FileUtil fileUtil;
 
     /**
-     * 파일 업로드 페이지 호출
-     */
-    @GetMapping()
-    public String getFileUploadPage() {
-        return "views/filesave/file";
-    }
-
-    /**
      * 파일 변환
      * 파일과 공공데이터 코드 입력 후 변환 버튼 클릭
      */

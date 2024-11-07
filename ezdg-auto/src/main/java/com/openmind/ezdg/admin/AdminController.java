@@ -51,7 +51,7 @@ public class AdminController {
     @GetMapping("/file")
     public String filePage(@SessionAttribute(value = "isAuth", required = false) Boolean isAuth) {
         if (Boolean.TRUE.equals(isAuth)) {
-            return "views/filesave/file"; // 인증된 경우 파일 페이지로 이동
+            return "views/file/file"; // 인증된 경우 파일 페이지로 이동
         }
         return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
     }
@@ -59,7 +59,7 @@ public class AdminController {
     @GetMapping("/openapi")
     public String openApiPage(@SessionAttribute(value = "isAuth", required = false) Boolean isAuth) {
         if (Boolean.TRUE.equals(isAuth)) {
-            return "views/api/openapi"; // 인증된 경우 Open API 페이지로 이동
+            return "views/api/api"; // 인증된 경우 Open API 페이지로 이동
         }
         return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
     }
