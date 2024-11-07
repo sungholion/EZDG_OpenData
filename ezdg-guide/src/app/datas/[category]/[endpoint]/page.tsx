@@ -14,6 +14,9 @@ export default function EndpointPage({ params }: PageProps) {
   const category = DATA_CATEGORIES.find((c) => c.id === params.category);
   if (!category) return notFound();
 
+  // 라이브러리 카테고리인 경우(endpoints가 없는 경우) notFound 반환
+  if (!category.endpoints) return notFound();
+
   // endpoint path에서 앞의 '/' 제거하여 비교
   const endpoint = category.endpoints.find((e) => e.path.replace("/", "") === params.endpoint);
   if (!endpoint) return notFound();
@@ -28,9 +31,11 @@ export default function EndpointPage({ params }: PageProps) {
       {/* 데이터 개요 섹션 */}
       <div className="mb-8">
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-          <span>{category.title}</span>
-          {/* <span></span>
-          <span>{endpoint.title}</span> */}
+          <a href={`/datas/${category.id}`} className="hover:text-gray-700">
+            {category.title}
+          </a>
+          <span className="text-gray-400">/</span>
+          <span>{endpoint.title}</span>
         </div>
         <h1 className="text-3xl font-bold mb-4">{endpoint.title}</h1>
         <div className="bg-white rounded-lg p-6 shadow-sm border">
@@ -60,7 +65,6 @@ export default function EndpointPage({ params }: PageProps) {
         {/* API 문서화 섹션 */}
         <div className="bg-white rounded-lg p-6 shadow-sm border">
           <h2 className="text-xl font-semibold mb-4">API 스펙</h2>
-          {/* TODO: 필요한 파라미터 등 API 상세 스펙 추가 필요 */}
           {endpoint.apiSpec ? (
             <ApiSpecSection spec={endpoint.apiSpec} baseUrl={baseUrl} />
           ) : (
@@ -82,17 +86,20 @@ export default function EndpointPage({ params }: PageProps) {
   );
 }
 
-// 정정 경로 생성
+// 정적 경로 생성
 export function generateStaticParams() {
   const paths: { category: string; endpoint: string }[] = [];
 
   DATA_CATEGORIES.forEach((category) => {
-    category.endpoints.forEach((endpoint) => {
-      paths.push({
-        category: category.id,
-        endpoint: endpoint.path.replace("/", ""),
+    // endpoints가 있는 카테고리만 처리
+    if (category.endpoints) {
+      category.endpoints.forEach((endpoint) => {
+        paths.push({
+          category: category.id,
+          endpoint: endpoint.path.replace("/", ""),
+        });
       });
-    });
+    }
   });
 
   return paths;
