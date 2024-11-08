@@ -5,7 +5,7 @@ import { NavData } from "@/components/sidebar/nav-data";
 import { NavGuide } from "@/components/sidebar/nav-menu";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/ui/sidebar";
 import { generateNavigationFromCategories } from "@/lib/navigation";
-import { DATA_CATEGORIES } from "@/config/sidebar-data";
+import { DATA_CATEGORIES } from "@/config/sidebar-datas";
 import { NAV_MENU } from "@/config/sidebar-guide";
 import { Separator } from "../ui/separator";
 
