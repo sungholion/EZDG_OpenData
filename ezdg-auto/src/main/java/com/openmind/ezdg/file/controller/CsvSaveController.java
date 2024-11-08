@@ -1,13 +1,11 @@
 package com.openmind.ezdg.file.controller;
 
-import com.openmind.ezdg.file.dto.filesave.AutoLibraryInfoDto;
-import com.openmind.ezdg.file.dto.filesave.MongoBsonValueDto;
+import com.openmind.ezdg.file.dto.filesave.FileInfoDto;
 import com.openmind.ezdg.file.dto.filesave.ValidateDuplicateCodeDto;
 import com.openmind.ezdg.file.service.CsvSaveService;
 import com.openmind.ezdg.file.service.SendAutoLibraryInfoService;
 import com.openmind.ezdg.file.util.CsvUtil;
 import com.openmind.ezdg.file.util.FileUtil;
-import com.openmind.ezdg.file.util.ObjectMapperUtil;
 import com.openmind.ezdg.generate.library.file.service.JavaFileLibraryGenerateService;
 import com.openmind.ezdg.generate.server.service.APIServerGenerateService;
 import lombok.RequiredArgsConstructor;
@@ -115,6 +113,8 @@ public class CsvSaveController {
         String filePath = fileUtil.getFullPath(file.getOriginalFilename());
         List<String[]> datas = csvUtil.readCsvFile(filePath);
 
+        List<String> originalColumns = csvSaveService.getOriginalColumns(datas);
+
         // 파일 삭제
         fileUtil.deleteFileFromTempPath(fileName);
 
@@ -125,10 +125,11 @@ public class CsvSaveController {
         csvSaveService.insertCode(code);
 
         // library 자동화를 위해 DTO 생성
-        AutoLibraryInfoDto autoLibraryInfoDto = sendAutoLibraryInfoService.makeAutoLibraryInfo(translatedFileName, fileName, translatedColumns, datas);
+        FileInfoDto fileInfoDto = sendAutoLibraryInfoService.setBasicInfo(fileName, translatedFileName, originalColumns);
+        sendAutoLibraryInfoService.makeAutoLibraryInfo(fileInfoDto, translatedColumns, datas);
 
-        apiServerGenerateService.generate(autoLibraryInfoDto);
-        javaFileLibraryGenerateService.generate(autoLibraryInfoDto);
+        apiServerGenerateService.generate(fileInfoDto);
+        javaFileLibraryGenerateService.generate(fileInfoDto);
 
         // view 전달 파라미터
 //        redirectAttributes.addFlashAttribute("collection", translatedFileName);
