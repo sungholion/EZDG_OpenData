@@ -18,6 +18,7 @@ export interface NavDataItem {
 // 가이드라인 메뉴 아이템
 export interface NavGuideItem {
   name: string;
-  url: string;
+  url?: string;
   icon: LucideIcon;
+  isDialog?: boolean;
 }
