@@ -24,4 +24,9 @@ public class DatalistController {
         return datalistService.isDuplicatedTranslatedName(name);
     }
 
+    @GetMapping("/save-test")
+    public void saveTest() {
+        datalistService.saveTest();
+    }
+
 }

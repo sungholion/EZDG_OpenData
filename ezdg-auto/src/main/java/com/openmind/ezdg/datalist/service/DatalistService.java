@@ -1,5 +1,8 @@
 package com.openmind.ezdg.datalist.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openmind.ezdg.datalist.dto.ApiDataDto;
+import com.openmind.ezdg.datalist.dto.FileDataDto;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -8,13 +11,16 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class DatalistService {
     private final MongoTemplate mongoTemplate;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public List<Document> getMenuList() {
         Query query = new Query();
@@ -57,5 +63,41 @@ public class DatalistService {
         Query query = new Query();
         query.addCriteria(Criteria.where("translatedName").is(name));
         return mongoTemplate.exists(query, "data_list");
+    }
+
+    public void saveDocument(FileDataDto dto) {
+        // DTO를 Map으로 변환
+        Map<String, Object> dtoMap = objectMapper.convertValue(dto, Map.class);
+
+        // 추가 필드와 병합
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        dtoMap.put("createdAt", currentDateTime);
+        dtoMap.put("updatedAt", currentDateTime);
+        dtoMap.put("type", "file");
+        dtoMap.put("deployed", false);
+
+        mongoTemplate.insert(new Document(dtoMap), "data_list");
+    }
+
+    public void saveDocument(ApiDataDto dto) {
+        // DTO를 Map으로 변환
+        Map<String, Object> dtoMap = objectMapper.convertValue(dto, Map.class);
+
+        // 추가 필드와 병합
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        dtoMap.put("createdAt", currentDateTime);
+        dtoMap.put("updatedAt", currentDateTime);
+        dtoMap.put("type", "api");
+        dtoMap.put("deployed", false);
+        mongoTemplate.insert(new Document(dtoMap), "data_list");
+    }
+
+    public void saveTest() {
+        FileDataDto fileDataDto = new FileDataDto();
+        fileDataDto.setOriginalFileName("originalFileName");
+        fileDataDto.setTranslatedFileName("translatedFileName");
+        List<Map<String, String>> fields = List.of(Map.of("key1", "value1"), Map.of("key2", "value2"));
+        fileDataDto.setFields(fields);
+        saveDocument(fileDataDto);
     }
 }
