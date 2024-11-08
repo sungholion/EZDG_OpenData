@@ -37,7 +37,7 @@ public class AdminController {
 
         redirectAttributes.addFlashAttribute("isSuccess", isSuccess);
 //        return "redirect:/admin";
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
     /**
@@ -55,7 +55,7 @@ public class AdminController {
             return "views/file/file"; // 인증된 경우 파일 페이지로 이동
         }
 //        return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
-        return "redirect:/"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
+        return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
     }
 
     @GetMapping("/openapi")
@@ -64,7 +64,7 @@ public class AdminController {
             return "views/api/api"; // 인증된 경우 Open API 페이지로 이동
         }
 //        return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
-        return "redirect:/"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
+        return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
     }
 
     @GetMapping("/deploy")
@@ -73,6 +73,6 @@ public class AdminController {
             return "views/deploy/deploy"; // 인증된 경우 배포 현황 페이지로 이동
         }
 //        return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
-        return "redirect:/"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
+        return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
     }
 }
