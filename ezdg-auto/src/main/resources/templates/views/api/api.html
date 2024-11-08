@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Open API 페이지</title>
+  <link th:href="@{css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .step-circle {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 0.5rem;
+      color: white;
+    }
+    .active {
+      background-color: #007bff;
+    }
+    .inactive {
+      background-color: gray;
+    }
+    .form-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .btn-next {
+      margin-right: 150px;
+    }
+    .input-container {
+      max-width: 600px;
+      margin-left: 150px;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <div class="text-center">
+    <span class="step-circle active">1</span>
+    <span class="step-circle inactive">2</span>
+    <span class="step-circle inactive">3</span>
+  </div>
+  <h2 class="text-center mt-3">Open API 페이지</h2>
+  <form action="/openapi" method="post" enctype="multipart/form-data" class="form-container mt-3">
+    <div class="text-center">
+      <div class="input-container">
+        <div class="input-group mt-3">
+          <span class="input-group-text identify text-center">URL</span>
+          <input
+                  type="text"
+                  class="form-control"
+                  placeholder="URL"
+                  name="url"
+                  th:value="${url}"
+          />
+        </div>
+      </div>
+      <div class="form-text">※ 공공데이터 Open API URL을 입력하세요</div>
+      <div class="d-flex justify-content-end mt-4">
+        <button type="submit" class="btn btn-primary btn-next">다음</button>
+      </div>
+    </div>
+  </form>
+</div>
+</body>
+</html>
