@@ -117,8 +117,6 @@ public class CsvSaveController {
         String filePath = fileUtil.getFullPath(file.getOriginalFilename());
         List<String[]> datas = csvUtil.readCsvFile(filePath);
 
-        List<String> originalColumns = csvSaveService.getOriginalColumns(datas);
-
         // 파일 삭제
         fileUtil.deleteFileFromTempPath(fileName);
 
