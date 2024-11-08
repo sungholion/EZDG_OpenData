@@ -1,4 +1,4 @@
-package ${packageName};
+package AnotherService;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Getter
 @Setter
-public class ${className} {
+public class AnotherServiceClassResponse {
     private Response response;
 
     @Getter
@@ -21,8 +21,6 @@ public class ${className} {
     @Getter
     @Setter
     public static class Header {
-        private Integer resultCode;
-        private String resultMsg;
     }
 
     @Getter
@@ -44,28 +42,12 @@ public class ${className} {
     @Getter
     @Setter
     public static class Item {
-<#if responseFields??>
-    <#list responseFields as field>
-        <#if field.name != "resultCode" && field.name != "resultMsg" &&
-        field.name != "numOfRows" && field.name != "pageNo" &&
-        field.name != "totalCount" && field.name != "dataType">
-            private String ${field.name};
-        </#if>
-    </#list>
-</#if>
+            private String status;
 
         @Override
         public String toString() {
         StringBuilder sb = new StringBuilder();
-    <#if responseFields??>
-        <#list responseFields as field>
-            <#if field.name != "resultCode" && field.name != "resultMsg" &&
-            field.name != "numOfRows" && field.name != "pageNo" &&
-            field.name != "totalCount" && field.name != "dataType">
-                sb.append("${field.name?cap_first}: ").append(this.get${field.name?cap_first}()).append("\n");
-            </#if>
-        </#list>
-    </#if>
+                sb.append("Status: ").append(this.getStatus()).append("\n");
             sb.append("-----------------------\n");
             return sb.toString();
         }

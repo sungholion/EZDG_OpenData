@@ -1,7 +1,22 @@
 spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
   data:
     mongodb:
       uri: mongodb+srv://S11P21D207:7rPaud@ssafy.ngivl.mongodb.net/S11P21D207?authSource=admin&retryWrites=true&w=majority
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
 
 springdoc:
   api-docs:
@@ -15,3 +30,4 @@ springdoc:
 path:
   java-library-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
   api-server-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
+  api-auto-project-path: C:\\Users\\SSAFY\\Desktop\\오픈소스가 뭐임\\ezdg-auto\\src\\main\\java
