@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
-// import { Textarea } from "@/components/ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
@@ -15,6 +15,7 @@ const formSchema = z.object({
   data: z.string().min(1, "요청하시는 데이터를 입력해주세요"),
   purpose: z.string().min(1, "활용목적을 입력해주세요"),
   additionalInfo: z.string().optional(),
+  link: z.string().url("올바른 주소 형식이 아닙니다"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -29,6 +30,7 @@ export function DataRequest() {
       data: "",
       purpose: "",
       additionalInfo: "",
+      link: "",
     },
   });
 
@@ -92,7 +94,23 @@ export function DataRequest() {
                 공공데이터 명칭<span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input placeholder="활용목적을 입력하세요." {...field} />
+                <Textarea placeholder="공공데이터 이름을 입력하세요." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="link"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                해당 공공데이터 링크<span className="text-red-500">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input type="url" placeholder="공공데이터 링크를 입력하세요." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
