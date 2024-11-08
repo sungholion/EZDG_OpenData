@@ -83,7 +83,11 @@ public class CsvSaveService {
                 // 기존 타입과 다른 타입이 있으면 해당 열의 타입을 String으로 고정하고 더 이상 검사하지 않음
                 if (!"String".equals(columnDataTypes.get(columnName)) &&
                         !currentDataType.equals(columnDataTypes.get(columnName))) {
+                    log.info("Expected Type : " + columnDataTypes.get(columnName));
                     columnDataTypes.put(columnName, "String");
+                    log.info("Current Type : " + columnDataTypes.get(columnName));
+                    log.info("Because : " + columnName);
+                    break;
                 }
             }
         }
@@ -98,7 +102,6 @@ public class CsvSaveService {
                 String value = row[j];
                 String dataType = columnDataTypes.get(columnName); // 최종 타입 가져오기
 
-                log.info("dataType:" + dataType + " value:" + value);
 
                 // 결정된 타입으로 map에 put
                 putDocumentByDataType(dataType, documentMap, columnName, value);
@@ -118,31 +121,10 @@ public class CsvSaveService {
                 documentMap.put(columnName, Double.parseDouble(value));
                 break;
             case "LocalDate":
-                // yyyy-M-d 또는 yy-M-d 형식의 경우 M과 d 앞에 0을 추가
-                if (value.matches("^\\d{4}-\\d{1}-\\d{1}$") || value.matches("^\\d{2}-\\d{1}-\\d{1}$")) {
-                    String[] parts = value.split("-");
-                    String year = parts[0];
-                    String month = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
-                    String day = parts[2].length() == 1 ? "0" + parts[2] : parts[2];
-                    String formattedDate = year + "-" + month + "-" + day;
-                    documentMap.put(columnName, LocalDate.parse(formattedDate)); // 포맷된 날짜로 LocalDate 변환
-                } else {
-                    documentMap.put(columnName, LocalDate.parse(value)); // 기존 형식 유지
-                }
+                documentMap.put(columnName, TypeConvertUtil.parseToLocalDate(value));   // 03-09와 같은 형식이 아니라 3-9 이런 형식으로 넘어오면, 0채우고 LocalDate로 변환
                 break;
             case "LocalDateTime":
-                // yyyy-M-d 또는 yy-M-d 형식의 경우 M과 d 앞에 0을 추가
-                if (value.matches("^\\d{4}-\\d{1}-\\d{1}.*") || value.matches("^\\d{2}-\\d{1}-\\d{1}.*")) {
-                    String[] parts = value.split("[-T ]");
-                    String year = parts[0];
-                    String month = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
-                    String day = parts[2].length() == 1 ? "0" + parts[2] : parts[2];
-                    String timePart = value.contains("T") ? value.split("T")[1] : value.split(" ")[1];
-                    String formattedDateTime = year + "-" + month + "-" + day + "T" + timePart;
-                    documentMap.put(columnName, LocalDateTime.parse(formattedDateTime)); // 포맷된 날짜로 LocalDateTime 변환
-                } else {
-                    documentMap.put(columnName, LocalDateTime.parse(value)); // 기존 형식 유지
-                }
+                documentMap.put(columnName, TypeConvertUtil.parseToLocalDateTime(value));
                 break;
             default:
                 documentMap.put(columnName, value);
@@ -205,6 +187,7 @@ public class CsvSaveService {
     /**
      * 데이터가 잘 들어갔는지 확인하기 위해 db에서 조회한 뒤 결과 리턴
      */
+    /*
     public List<List<MongoBsonValueDto>> getSavedData(String collectionName) {
         List<List<MongoBsonValueDto>> result = new ArrayList<>();
 
@@ -231,5 +214,5 @@ public class CsvSaveService {
         }
         return result;
     }
-
+     */
 }

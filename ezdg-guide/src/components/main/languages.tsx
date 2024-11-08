@@ -3,14 +3,14 @@ import Image from "next/image";
 
 const languages = [
   {
-    id: "spring",
-    name: "spring",
-    logo: "/Spring.png",
+    id: "java",
+    name: "java",
+    logo: "/Java.png",
   },
   {
-    id: "nodejs",
-    name: "nodejs",
-    logo: "/Nodejs.png",
+    id: "javascript",
+    name: "javascript",
+    logo: "/JavaScript.png",
   },
 ];
 
@@ -22,8 +22,8 @@ export default function Languages() {
         {languages.map((language) => (
           <Card
             key={language.id}
-            className="flex items-center justfiy-center p-12 bg-white hover:shadow-lg transition-shadow">
-            <div className="relative w-full h-32 content-center overflow-hidden">
+            className="flex items-center justfiy-center p-6 shadow-xl bg-white hover:shadow-2xl transition-shadow">
+            <div className="relative w-full h-auto content-center overflow-hidden">
               <Image
                 src={language.logo}
                 alt={`$(language.name) Logo`}
