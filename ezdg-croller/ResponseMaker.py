@@ -1,14 +1,17 @@
 import re
 
-def make_response(url, requests, responses):
+def make_response(title, description, url, requests, responses):
     # URL 파싱 및 필요한 부분 추출
     global endpoint_name, service_name
 
     parts = url.split('/')
-    service_name = parts[-2]  # 'VilageFcstInfoService'
+    service_name = parts[-2]  # 'VilageFcstInfoService_2.0'
+    service_name = service_name.split('_')[0]
     endpoint_name = parts[-1]  # 'getUltraSrtFcst'
 
     api = {
+        'title': title,
+        'description': description,
         'packageName' : service_name,
         'className' : service_name.title(),
         'baseUrl' : url.rsplit('/', 1)[0],
@@ -20,13 +23,16 @@ def make_response(url, requests, responses):
     return api
 
 
-def make_responselist(url, requestlist, responselist):
+def make_swagger_response(title_list, url, requestlist, responselist, description_text):
     service_name = url.split('/')[-1]  # 'VilageFcstInfoService'
+
     response_item = []
     #endpoint_list = requestlist.keys()
-    for (k, v), response in zip(requestlist.items(), responselist):
+    for (k, v), response, title, description in zip(requestlist.items(), responselist, title_list, description_text):
         response_item.append(
             {
+                'title': title,
+                'description': description,
                 'packageName': service_name,
                 'className': k.lstrip("/get"),
                 'baseUrl': url,

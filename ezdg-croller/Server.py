@@ -37,7 +37,7 @@ def swaggerFormApi(request_data: ApiCrollRequest):
     if not url:
         raise HTTPException(status_code=400, detail="Text not provided")
     print(url)
-    return Croller.swagger_controller(url)
+    return Croller.swagger_crawler(url)
 
 if __name__ == "__main__":
     import uvicorn
