@@ -93,6 +93,8 @@ public class CsvSaveController {
         log.info("파일 저장 페이지 호출");
         model.addAttribute("fileName", model.getAttribute("fileName"));
         model.addAttribute("code", model.getAttribute("code"));
+        model.addAttribute("originalFileName", model.getAttribute("originFileName"));
+        model.addAttribute("originalColumns", model.getAttribute("originalColumns"));
 
         return "views/file/translate";
     }
@@ -105,6 +107,8 @@ public class CsvSaveController {
                            @RequestParam(value = "translatedColumns") List<String> translatedColumns,
                            @RequestParam(value = "fileName") String fileName,
                            @RequestParam(value = "code") String code,
+                           @RequestParam(value = "originalFileName") List<String> originalFileName,
+                           @RequestParam(value = "originalColumns") List<String> originalColumns,
                            RedirectAttributes redirectAttributes) {
         log.info("save file request for {}", translatedFileName);
         log.info("translatedColumns = {}", translatedColumns);
