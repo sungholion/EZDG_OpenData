@@ -21,6 +21,8 @@ public class AdminController {
     @GetMapping()
     public String getAdminPage(HttpSession session, Model model) {
         log.info("request get admin page");
+        // 배포 테스트
+        session.setAttribute("isAuth", true);
         Boolean isAuth = (Boolean) session.getAttribute("isAuth");
         model.addAttribute("isAuth", isAuth != null && isAuth);
         return "views/admin";
@@ -36,8 +38,7 @@ public class AdminController {
 
         // 배포 테스트
         isSuccess = true;
-
-        session.setAttribute("isAuth", isSuccess);
+//        session.setAttribute("isAuth", isSuccess);
 
         redirectAttributes.addFlashAttribute("isSuccess", isSuccess);
         return "redirect:/admin";
