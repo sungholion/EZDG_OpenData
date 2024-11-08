@@ -39,6 +39,8 @@
   <form action="/file/save" method="post">
     <input type="hidden" name="fileName" th:value="${fileName}">
     <input type="hidden" name="code" th:value="${code}">
+    <input type="hidden" name="originalFileName" th:value="${originalFileName}">
+    <input type="hidden" name="originalColumns" th:value="${originalColumns}">
     <div class="text-center">
       <div class="input-container">
         <div class="input-group mt-3">
