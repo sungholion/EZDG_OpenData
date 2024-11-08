@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API 목록 페이지</title>
+    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .table-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            color: #007bff;
+            margin-top: 1rem;
+        }
+        .step-circle {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 0.5rem;
+            color: white;
+        }
+        .active {
+            background-color: #007bff;
+        }
+        .inactive {
+            background-color: gray;
+        }
+        .input-container {
+            max-width: 600px;
+            margin-left: 300px;
+            margin-bottom: 20px;
+        }
+        .btn-next {
+            margin-right: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="text-center">
+        <span class="step-circle active">1</span>
+        <span class="step-circle inactive">2</span>
+        <span class="step-circle inactive">3</span>
+    </div>
+    <h2 class="text-center mt-3">API 목록 페이지</h2>
+
+    <div class="table-container">
+        <div th:each="api, iterStat : ${apiList}">
+            <div class="input-container">
+                <div class="input-group mt-3">
+                    <span class="input-group-text">패키지 명</span>
+                    <input
+                            type="text"
+                            class="form-control"
+                            placeholder="패키지 명"
+                            name="packageName"
+                            th:value="${api.packageName}"
+                    />
+                </div>
+                <div class="input-group mt-3">
+                    <span class="input-group-text">클래스 명</span>
+                    <input
+                            type="text"
+                            class="form-control"
+                            placeholder="클래스 명"
+                            name="className"
+                            th:value="${api.className}"
+                    />
+                </div>
+                <div class="input-group mt-3">
+                    <span class="input-group-text">base url</span>
+                    <input
+                            type="text"
+                            class="form-control"
+                            placeholder="base url"
+                            name="baseUrl"
+                            th:value="${api.baseUrl}"
+                            readonly="readonly"
+                    />
+                </div>
+                <div class="input-group mt-3">
+                    <span class="input-group-text">Endpoint</span>
+                    <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Endpoint"
+                            name="endpoint"
+                            th:value="${api.endpoint}"
+                            readonly="readonly"
+                    />
+                </div>
+            </div>
+            <!-- 요청 필드 테이블 -->
+            <h4>요청 필드</h4>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>타입</th>
+                    <th>필드 이름</th>
+                    <th>설명</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="requestField : ${api.requestFields}">
+                    <td th:text="${requestField.type}">String</td>
+                    <td th:text="${requestField.name}">fieldName</td>
+                    <td th:text="${requestField.description}">Description</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- 응답 필드 테이블 -->
+            <h4>응답 필드</h4>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>타입</th>
+                    <th>필드 이름</th>
+                    <th>설명</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="responseField : ${api.responseFields}">
+                    <td th:text="${responseField.type}">String</td>
+                    <td th:text="${responseField.name}">fieldName</td>
+                    <td th:text="${responseField.description}">Description</td>
+                </tr>
+                </tbody>
+            </table>
+            <hr/>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-4">
+        <button type="submit" class="btn btn-primary btn-next">다음</button>
+    </div>
+</div>
+<script th:src="@{js/bootstrap.bundle.min.js}" src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
