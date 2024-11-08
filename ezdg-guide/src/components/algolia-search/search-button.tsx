@@ -4,23 +4,20 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
-import { useInstantSearch } from "react-instantsearch";
-import { PublicDataHit } from "@/lib/algolia";
-
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useInstantSearch, useSearchBox } from "react-instantsearch";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import type { PublicDataHit } from "@/lib/algolia";
 
 export function SearchDialog() {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
-
-  // useInstantSearch 훅으로부터 results 직접 접근
+  const { query, refine } = useSearchBox();
   const { results } = useInstantSearch();
+  const items = results?.hits as PublicDataHit[];
 
-  // 검색 결과를 타입 안전하게 가져오기
-  const hits = React.useMemo(() => {
-    return (results?.hits ?? []) as PublicDataHit[];
-  }, [results?.hits]);
+  const [inputValue, setInputValue] = React.useState(query);
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -34,15 +31,34 @@ export function SearchDialog() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  const handleSearch = React.useCallback(
+    (value: string) => {
+      setInputValue(value);
+      refine(value);
+    },
+    [refine]
+  );
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="overflow-hidden p-0 shadow-lg">
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          className="relative h-9 w-full justify-start text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64">
+          <Search className="mr-2 h-4 w-4" />
+          <span>데이터 검색...</span>
+          <kbd className="pointer-events-none absolute right-1.5 top-1.5 hidden h-6 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+            <span className="text-xs">⌘</span>K
+          </kbd>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="overflow-hidden p-0">
         <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
-          <CommandInput placeholder="데이터 검색..." className="h-12" />
+          <CommandInput placeholder="데이터 검색..." value={inputValue} onValueChange={handleSearch} className="h-12" />
           <CommandList>
             <CommandEmpty>검색 결과가 없습니다.</CommandEmpty>
-            <CommandGroup heading="검색 결과">
-              {hits.map((hit: PublicDataHit) => (
+            <CommandGroup heading={`검색 결과 (${items?.length ?? 0})`}>
+              {items?.map((hit) => (
                 <CommandItem
                   key={hit.objectID}
                   onSelect={() => {
@@ -54,8 +70,8 @@ export function SearchDialog() {
                       <Search className="mr-2 h-4 w-4" />
                       <span className="font-medium">{hit.title}</span>
                     </div>
-                    <p className="text-sm text-muted-foreground">{hit.description}</p>
-                    <div className="flex gap-2">
+                    <p className="text-sm text-muted-foreground ml-6">{hit.description}</p>
+                    <div className="flex gap-2 ml-6">
                       <span className="text-xs bg-slate-100 px-2 py-1 rounded">{hit.provider}</span>
                       <span className="text-xs bg-slate-100 px-2 py-1 rounded">{hit.category}</span>
                       <span className="text-xs bg-slate-100 px-2 py-1 rounded">

@@ -8,7 +8,7 @@ import { generateNavigationFromCategories } from "@/lib/navigation";
 import { DATA_CATEGORIES } from "@/config/sidebar-datas";
 import { NAV_MENU } from "@/config/sidebar-guide";
 import { Separator } from "../ui/separator";
-import { SearchProvider } from "../algolia-search/search-provider";
+import { SearchDialog } from "../algolia-search/search-button";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const navData = React.useMemo(() => generateNavigationFromCategories(DATA_CATEGORIES), []);
@@ -16,7 +16,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader />
-      <SearchProvider />
+      <SearchDialog />
       <SidebarContent>
         <NavData items={navData} />
         <Separator />
