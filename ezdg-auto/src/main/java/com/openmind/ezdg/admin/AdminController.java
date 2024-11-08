@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-//@RequestMapping("/admin")
+@RequestMapping("/admin")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AdminController {
 
