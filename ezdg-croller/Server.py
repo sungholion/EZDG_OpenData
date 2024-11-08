@@ -29,7 +29,7 @@ def crollTableFormApi(request_data: ApiCrollRequest):
     if not url:
         raise HTTPException(status_code=400, detail="Text not provided")
     print(url)
-    return Croller.table_croller(url)
+    return Croller.main_crawler(url)
 
 @app.post("/swagger")
 def swaggerFormApi(request_data: ApiCrollRequest):
