@@ -1,6 +1,6 @@
 package com.openmind.ezdg.generate.server.service;
 
-import com.openmind.ezdg.file.dto.filesave.AutoLibraryInfoDto;
+import com.openmind.ezdg.file.dto.filesave.FileInfoDto;
 import com.openmind.ezdg.file.util.CustomStringUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -25,13 +25,13 @@ public class APIServerGenerateService {
     @Value("${path.api-server-project-path}")
     private String apiServerProjectPath;
 
-    public void generate(AutoLibraryInfoDto dto) {
+    public void generate(FileInfoDto dto) {
         Map<String, Object> data = new HashMap<>();
-        data.put("collectionName", dto.getClassInfo());
-        data.put("className", customStringUtil.capitalizeFirstLetter(customStringUtil.snakeCaseToCamelCase(dto.getClassInfo())));
+        data.put("collectionName", dto.getTranslatedFileName());
+        data.put("className", customStringUtil.capitalizeFirstLetter(customStringUtil.snakeCaseToCamelCase(dto.getTranslatedFileName())));
 
         List<Map<String, String>> fields = new ArrayList<>();
-        dto.getColumnInfo().forEach(columnInfo -> {
+        dto.getTranslatedColumns().forEach(columnInfo -> {
             Map<String, String> field = new HashMap<>();
             field.put("type", columnInfo.getColumnType());
             field.put("name", columnInfo.getColumnName());

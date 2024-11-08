@@ -187,6 +187,7 @@ public class CsvSaveService {
     /**
      * 데이터가 잘 들어갔는지 확인하기 위해 db에서 조회한 뒤 결과 리턴
      */
+    /*
     public List<List<MongoBsonValueDto>> getSavedData(String collectionName) {
         List<List<MongoBsonValueDto>> result = new ArrayList<>();
 
@@ -213,5 +214,5 @@ public class CsvSaveService {
         }
         return result;
     }
-
+     */
 }
