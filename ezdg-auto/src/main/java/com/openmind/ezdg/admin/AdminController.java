@@ -33,10 +33,13 @@ public class AdminController {
     public String authenticate(@RequestParam("code") String adminCode, HttpSession session, RedirectAttributes redirectAttributes) {
         log.info("request authenticate admin code {}", adminCode);
         boolean isSuccess = "openmind".equals(adminCode);
+
+        // 배포 테스트
+        isSuccess = true;
+
         session.setAttribute("isAuth", isSuccess);
 
         redirectAttributes.addFlashAttribute("isSuccess", isSuccess);
-//        return "redirect:/admin";
         return "redirect:/admin";
     }
 
@@ -54,7 +57,6 @@ public class AdminController {
         if (Boolean.TRUE.equals(isAuth)) {
             return "views/file/file"; // 인증된 경우 파일 페이지로 이동
         }
-//        return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
         return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
     }
 
@@ -63,7 +65,6 @@ public class AdminController {
         if (Boolean.TRUE.equals(isAuth)) {
             return "views/api/api"; // 인증된 경우 Open API 페이지로 이동
         }
-//        return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
         return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
     }
 
@@ -72,7 +73,6 @@ public class AdminController {
         if (Boolean.TRUE.equals(isAuth)) {
             return "views/deploy/deploy"; // 인증된 경우 배포 현황 페이지로 이동
         }
-//        return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
         return "redirect:/admin"; // 인증되지 않은 경우 admin 페이지로 리다이렉트
     }
 }
