@@ -24,79 +24,137 @@
     }
     .input-container {
       max-width: 700px;
-      margin-left: 300px;
+      margin: 0 auto;
     }
   </style>
 </head>
 <body>
-<div class="container mt-5">
+<div class="container mt-5" id="file-container" th:data-baseurl="${baseUrl}" th:data-file-data="${fileData}">
   <div class="text-center">
     <span class="step-circle inactive">1</span>
     <span class="step-circle active">2</span>
     <span class="step-circle inactive">3</span>
   </div>
   <h2 class="text-center mt-3">파일 변환 페이지</h2>
-  <form action="/file/save" method="post">
-    <input type="hidden" name="fileName" th:value="${fileName}">
-    <input type="hidden" name="code" th:value="${code}">
-    <input type="hidden" name="originalFileName" th:value="${originalFileName}">
-    <input type="hidden" name="originalColumns" th:value="${originalColumns}">
-    <div class="text-center">
-      <div class="input-container">
-        <div class="input-group mt-3">
-          <span class="input-group-text identify text-center">파일명</span>
-          <input
-                  type="text"
-                  class="form-control"
-                  placeholder="원본 파일 이름"
-                  name="originFileName"
-                  readonly="readonly"
-                  th:value="${originFileName}"
-          />
-        </div>
-        <div class="input-group mt-3">
-          <span class="input-group-text identify text-center">클래스명</span>
-          <input type="text" class="form-control" th:value="${translatedFileName}" name="translatedFileName" placeholder="변환된 클래스명" />
-        </div>
-      </div>
-      <div class="mt-4">
-        <table class="table table-bordered w-75 mx-auto">
-          <thead>
-          <tr>
-            <th>원본 칼럼명</th>
-            <th>변환 칼럼명</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr th:each="origin, iterStat : ${originalColumns}">
-            <td>
-              <input
-                      type="text"
-                      class="form-control"
-                      name="originColumns"
-                      th:value="${origin}"
-                      readonly="readonly"
-                      placeholder="원본 칼럼명"
-              />
-            </td>
-            <td>
-              <input
-                      type="text"
-                      class="form-control"
-                      name="translatedColumns"
-                      th:value="${translatedColumns[iterStat.index]}"
-                      placeholder="변환 칼럼명"
-              />
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <div class="form-text">※ 칼럼명은 변경할 수 있으나, 숫자는 모두 사라지니 주의하세요</div>
-        <button class="btn btn-primary mt-4">등록</button>
-      </div>
+
+  <form id="translateForm" class="text-center input-container">
+    <div class="input-group mt-3">
+      <span class="input-group-text identify text-center">파일명</span>
+      <input type="text" class="form-control" placeholder="원본 파일 이름" id="originFileName"/>
     </div>
+    <div class="input-group mt-3">
+      <span class="input-group-text identify text-center">클래스명</span>
+      <input type="text" class="form-control" id="translatedFileName" placeholder="변환된 클래스명" />
+    </div>
+
+    <div class="mt-4">
+      <table class="table table-bordered w-75 mx-auto">
+        <thead>
+        <tr>
+          <th>원본 칼럼명</th>
+          <th>변환 칼럼명</th>
+        </tr>
+        </thead>
+        <tbody id="columnsTable">
+        <!-- JavaScript로 데이터 로드 -->
+        </tbody>
+      </table>
+      <div class="form-text">※ 칼럼명은 변경할 수 있으나, 숫자는 모두 사라지니 주의하세요</div>
+      <button type="button" class="btn btn-primary mt-4" onclick="submitForm()">등록</button>
+    </div>
+  </form>
 </div>
-</form>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script th:inline="javascript">
+  const fileData = /*[[${fileData}]]*/ {};
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    console.log("fileData", fileData);
+
+    // 파일명 및 클래스명 필드 채우기
+    document.getElementById("originFileName").value = fileData.originFileName || "";
+    document.getElementById("translatedFileName").value = fileData.translatedFileName || "";
+
+    // 칼럼명 테이블에 데이터 로드
+    const columnsTable = document.getElementById("columnsTable");
+    const originalColumns = fileData.originalColumns || [];
+    const translatedColumns = fileData.translatedColumns || [];
+
+    originalColumns.forEach((column, index) => {
+      const row = document.createElement("tr");
+
+      const originalColumnCell = document.createElement("td");
+      originalColumnCell.innerHTML = `<input type="text" class="form-control" readonly value="${column}">`;
+      row.appendChild(originalColumnCell);
+
+      const translatedColumnCell = document.createElement("td");
+      translatedColumnCell.innerHTML = `<input type="text" class="form-control" value="${translatedColumns[index] || ""}">`;
+      row.appendChild(translatedColumnCell);
+
+      columnsTable.appendChild(row);
+    });
+  });
+
+  // 모델로 넘어온 baseUrl을 포함하여 URL 설정
+  let baseUrl = document.getElementById("file-container").getAttribute("data-baseurl");
+  if(!baseUrl) {
+    baseUrl = "";
+  }
+  const url = `${baseUrl}/file/save`;
+
+  // 비동기 제출
+  function submitForm() {
+    const translatedFileName = document.getElementById("translatedFileName").value;
+    const translatedColumns = Array.from(document.querySelectorAll("#columnsTable tr td:nth-child(2) input")).map(input => input.value);
+    const originColumns = Array.from(document.querySelectorAll("#columnsTable tr td:nth-child(1) input")).map(input => input.value);
+    const code = fileData.code;
+
+    // 중복 확인 요청
+    fetch(`${baseUrl}/datalist/duplicate/translatedName?name=${encodeURIComponent(translatedFileName)}`, {
+      method: "GET",
+    })
+            .then(response => response.json())
+            .then(isDuplicate => {
+              if (isDuplicate) {
+                // 중복일 경우 경고 메시지 출력
+                alert("중복된 클래스명입니다. 다른 클래스명을 입력해주세요.");
+              } else {
+                // 중복이 아닐 경우 나머지 데이터를 서버에 전송
+                const fileData = {
+                  translatedFileName,
+                  translatedColumns,
+                  originFileName: document.getElementById("originFileName").value,
+                  originColumns,
+                  code,
+                };
+
+                fetch(url, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(fileData),
+                })
+                        .then(response => {
+                          if (response.ok) {
+                            alert("데이터가 성공적으로 저장되었습니다.");
+                          } else {
+                            throw new Error("데이터 저장 실패");
+                          }
+                        })
+                        .catch(error => {
+                          console.error("Error:", error);
+                          alert("서버 오류가 발생했습니다.");
+                        });
+              }
+            })
+            .catch(error => {
+              console.error("Error:", error);
+              alert("중복 확인 중 오류가 발생했습니다.");
+            });
+  }
+</script>
 </body>
 </html>
