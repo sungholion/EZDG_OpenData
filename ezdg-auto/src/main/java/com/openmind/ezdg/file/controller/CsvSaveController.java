@@ -1,13 +1,11 @@
 package com.openmind.ezdg.file.controller;
 
-import com.openmind.ezdg.file.dto.filesave.AutoLibraryInfoDto;
-import com.openmind.ezdg.file.dto.filesave.MongoBsonValueDto;
+import com.openmind.ezdg.file.dto.filesave.FileInfoDto;
 import com.openmind.ezdg.file.dto.filesave.ValidateDuplicateCodeDto;
 import com.openmind.ezdg.file.service.CsvSaveService;
 import com.openmind.ezdg.file.service.SendAutoLibraryInfoService;
 import com.openmind.ezdg.file.util.CsvUtil;
 import com.openmind.ezdg.file.util.FileUtil;
-import com.openmind.ezdg.file.util.ObjectMapperUtil;
 import com.openmind.ezdg.generate.library.file.service.JavaFileLibraryGenerateService;
 import com.openmind.ezdg.generate.server.service.APIServerGenerateService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +30,6 @@ public class CsvSaveController {
     private final JavaFileLibraryGenerateService javaFileLibraryGenerateService;
     private final APIServerGenerateService apiServerGenerateService;
     private final CsvUtil csvUtil;
-    private final ObjectMapperUtil objectMapperUtil;
     private final FileUtil fileUtil;
 
     /**
@@ -93,6 +90,8 @@ public class CsvSaveController {
         log.info("파일 저장 페이지 호출");
         model.addAttribute("fileName", model.getAttribute("fileName"));
         model.addAttribute("code", model.getAttribute("code"));
+        model.addAttribute("originalFileName", model.getAttribute("originFileName"));
+        model.addAttribute("originalColumns", model.getAttribute("originalColumns"));
 
         return "views/file/translate";
     }
@@ -103,15 +102,14 @@ public class CsvSaveController {
     @PostMapping("/save")
     public String saveFile(@RequestParam(value = "translatedFileName") String translatedFileName,
                            @RequestParam(value = "translatedColumns") List<String> translatedColumns,
-//                           @RequestParam(value = "file") MultipartFile file,
                            @RequestParam(value = "fileName") String fileName,
                            @RequestParam(value = "code") String code,
+                           @RequestParam(value = "originalFileName") List<String> originalFileName,
+                           @RequestParam(value = "originalColumns") List<String> originalColumns,
                            RedirectAttributes redirectAttributes) {
         log.info("save file request for {}", translatedFileName);
         log.info("translatedColumns = {}", translatedColumns);
 
-        // 파일 변환 단계에서 json String으로 변환한 데이터를 다시 List<String[]> 타입으로 변환
-//        List<String[]> datas = objectMapperUtil.stringToData(dataToJson);
         MultipartFile file = fileUtil.readFileFromTempPath(fileName);
 
         // read csv
@@ -128,21 +126,23 @@ public class CsvSaveController {
         csvSaveService.insertCode(code);
 
         // library 자동화를 위해 DTO 생성
-        AutoLibraryInfoDto autoLibraryInfoDto = sendAutoLibraryInfoService.makeAutoLibraryInfo(translatedFileName, fileName, translatedColumns, datas);
+        FileInfoDto fileInfoDto = sendAutoLibraryInfoService.setBasicInfo(fileName, translatedFileName, originalColumns);
+        sendAutoLibraryInfoService.makeAutoLibraryInfo(fileInfoDto, translatedColumns, datas);
 
-        apiServerGenerateService.generate(autoLibraryInfoDto);
-        javaFileLibraryGenerateService.generate(autoLibraryInfoDto);
+        apiServerGenerateService.generate(fileInfoDto);
+        javaFileLibraryGenerateService.generate(fileInfoDto);
 
         // view 전달 파라미터
-        redirectAttributes.addFlashAttribute("collection", translatedFileName);
-        redirectAttributes.addFlashAttribute("code", code);
+//        redirectAttributes.addFlashAttribute("collection", translatedFileName);
+//        redirectAttributes.addFlashAttribute("code", code);
 
-        return "redirect:/file/result";
+        return "views/file/file-complete";
     }
 
     /**
      * 저장 결과
      */
+    /*
     @GetMapping("/result")
     public String getResultPage(Model model) {
         String collectionName = (String) model.getAttribute("collection");
@@ -154,4 +154,5 @@ public class CsvSaveController {
 
         return "views/filesave/result";
     }
+     */
 }
