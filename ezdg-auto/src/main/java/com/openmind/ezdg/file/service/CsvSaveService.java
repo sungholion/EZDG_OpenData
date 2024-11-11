@@ -183,36 +183,4 @@ public class CsvSaveService {
                 .regDate(LocalDateTime.now())
                 .build());
     }
-
-    /**
-     * 데이터가 잘 들어갔는지 확인하기 위해 db에서 조회한 뒤 결과 리턴
-     */
-    /*
-    public List<List<MongoBsonValueDto>> getSavedData(String collectionName) {
-        List<List<MongoBsonValueDto>> result = new ArrayList<>();
-
-        MongoCollection<Document> collection = csvSaveRepository.getCollection(collectionName);
-
-        try (MongoCursor<Document> cursor = collection.find().limit(1).iterator()) {
-            List<MongoBsonValueDto> documents = new ArrayList<>();
-            while(cursor.hasNext()) {
-                Document document = cursor.next();
-
-                BsonDocument bsonDoc = document.toBsonDocument(BsonDocument.class, mongoTemplate.getConverter().getCodecRegistry());
-
-                for(Map.Entry<String, BsonValue> entry : bsonDoc.entrySet()) {
-                    String fieldName = entry.getKey();
-                    if(fieldName.equals("_id")) continue;
-
-                    BsonValue fieldValue = entry.getValue();
-                    BsonType fieldType = fieldValue.getBsonType();
-
-                    documents.add(new MongoBsonValueDto(fieldName, customStringUtil.bsonValueToStr(fieldValue), fieldType.toString()));
-                }
-            }
-            result.add(documents);
-        }
-        return result;
-    }
-     */
 }
