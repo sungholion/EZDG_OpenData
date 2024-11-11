@@ -31,115 +31,170 @@
         .inactive {
             background-color: gray;
         }
-        .input-container {
-            max-width: 600px;
-            margin-left: 300px;
-            margin-bottom: 20px;
-        }
-        .btn-next {
-            margin-right: 50px;
-        }
     </style>
 </head>
 <body>
 <div class="container mt-5">
     <div class="text-center">
-        <span class="step-circle active">1</span>
-        <span class="step-circle inactive">2</span>
+        <span class="step-circle inactive">1</span>
+        <span class="step-circle active">2</span>
         <span class="step-circle inactive">3</span>
     </div>
-    <h2 class="text-center mt-3">API 목록 페이지</h2>
+    <h2 class="text-center mt-3" th:text="${apiData.mainTitle}">API 목록 페이지</h2>
+    <p class="text-center" th:text="${apiData.mainDescription}">API 설명</p>
 
-    <div class="table-container">
-        <div th:each="api, iterStat : ${apiList}">
-            <div class="input-container">
-                <div class="input-group mt-3">
-                    <span class="input-group-text">패키지 명</span>
-                    <input
-                            type="text"
-                            class="form-control"
-                            placeholder="패키지 명"
-                            name="packageName"
-                            th:value="${api.packageName}"
-                    />
-                </div>
-                <div class="input-group mt-3">
-                    <span class="input-group-text">클래스 명</span>
-                    <input
-                            type="text"
-                            class="form-control"
-                            placeholder="클래스 명"
-                            name="className"
-                            th:value="${api.className}"
-                    />
-                </div>
-                <div class="input-group mt-3">
-                    <span class="input-group-text">base url</span>
-                    <input
-                            type="text"
-                            class="form-control"
-                            placeholder="base url"
-                            name="baseUrl"
-                            th:value="${api.baseUrl}"
-                            readonly="readonly"
-                    />
-                </div>
-                <div class="input-group mt-3">
-                    <span class="input-group-text">Endpoint</span>
-                    <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Endpoint"
-                            name="endpoint"
-                            th:value="${api.endpoint}"
-                            readonly="readonly"
-                    />
+    <div class="accordion" id="apiAccordion">
+        <div th:each="api, iterStat : ${apiData.apiList}">
+            <div class="accordion-item">
+                <h2 class="accordion-header" th:id="'heading_' + ${iterStat.index}">
+                    <button 
+                        class="accordion-button" 
+                        type="button" 
+                        data-bs-toggle="collapse"
+                        th:attr="aria-expanded=${iterStat.index == 0 ? 'true' : 'false'}, aria-controls='collapse_' + ${iterStat.index}, data-bs-target='#collapse_' + ${iterStat.index}"
+                        th:text="${api.title}">
+                    </button>
+                </h2>
+                <div th:id="'collapse_' + ${iterStat.index}" th:class="'accordion-collapse collapse' + (${iterStat.index == 0} ? ' show' : '')"
+                     th:attr="aria-labelledby='heading_$' + {iterStat.index}" data-bs-parent="#apiAccordion">
+                    <div class="accordion-body">
+                        <p th:text="${api.description}">API 설명</p>
+                        
+                        <div class="input-container">
+                            <div class="input-group mt-3">
+                                <span class="input-group-text">패키지 명</span>
+                                <input type="text" class="form-control" th:value="${api.packageName}" readonly />
+                            </div>
+                            <div class="input-group mt-3">
+                                <span class="input-group-text">클래스 명</span>
+                                <input type="text" class="form-control" th:id="'classNameInput_' + ${iterStat.index}" th:value="${api.className}"/>
+                            </div>
+                            <div class="input-group mt-3">
+                                <span class="input-group-text">Base URL</span>
+                                <input type="text" class="form-control" th:value="${api.baseUrl}" readonly />
+                            </div>
+                            <div class="input-group mt-3">
+                                <span class="input-group-text">Endpoint</span>
+                                <input type="text" class="form-control" th:value="${api.endpoint}" readonly />
+                            </div>
+                        </div>
+                        
+                        <!-- 요청 필드 테이블 -->
+                        <h4>요청 필드</h4>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>타입</th>
+                                <th>필드 이름</th>
+                                <th>설명</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="requestField : ${api.requestFields}">
+                                <td th:text="${requestField.type}">String</td>
+                                <td th:text="${requestField.name}">fieldName</td>
+                                <td th:text="${requestField.description}">Description</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 응답 필드 테이블 -->
+                        <h4>응답 필드</h4>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>타입</th>
+                                <th>필드 이름</th>
+                                <th>설명</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="responseField : ${api.responseFields}">
+                                <td th:text="${responseField.type}">String</td>
+                                <td th:text="${responseField.name}">fieldName</td>
+                                <td th:text="${responseField.description}">Description</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <!-- 요청 필드 테이블 -->
-            <h4>요청 필드</h4>
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>타입</th>
-                    <th>필드 이름</th>
-                    <th>설명</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="requestField : ${api.requestFields}">
-                    <td th:text="${requestField.type}">String</td>
-                    <td th:text="${requestField.name}">fieldName</td>
-                    <td th:text="${requestField.description}">Description</td>
-                </tr>
-                </tbody>
-            </table>
-
-            <!-- 응답 필드 테이블 -->
-            <h4>응답 필드</h4>
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>타입</th>
-                    <th>필드 이름</th>
-                    <th>설명</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="responseField : ${api.responseFields}">
-                    <td th:text="${responseField.type}">String</td>
-                    <td th:text="${responseField.name}">fieldName</td>
-                    <td th:text="${responseField.description}">Description</td>
-                </tr>
-                </tbody>
-            </table>
-            <hr/>
         </div>
     </div>
+
     <div class="d-flex justify-content-end mt-4">
-        <button type="submit" class="btn btn-primary btn-next">다음</button>
+        <button type="button" class="btn btn-primary">다음</button>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    function collectApiData() {
+        // apiList를 가져오는 루프
+        const apiList = [];
+        document.querySelectorAll('.accordion-item').forEach((item, index) => {
+            const title = item.querySelector('.accordion-button').textContent;
+            const description = item.querySelector('.accordion-body p').textContent;
+            const packageName = item.querySelector('[th\\:value="${api.packageName}"]').value;
+            const className = document.getElementById(`classNameInput_${index}`).value;  // 사용자 입력값
+            const baseUrl = item.querySelector('[th\\:value="${api.baseUrl}"]').value;
+            const endpoint = item.querySelector('[th\\:value="${api.endpoint}"]').value;
+            
+            // requestFields 및 responseFields 테이블 수집
+            const requestFields = Array.from(item.querySelectorAll('[th\\:each="requestField : ${api.requestFields}"]')).map(row => ({
+                type: row.cells[0].textContent,
+                name: row.cells[1].textContent,
+                description: row.cells[2].textContent
+            }));
+            const responseFields = Array.from(item.querySelectorAll('[th\\:each="responseField : ${api.responseFields}"]')).map(row => ({
+                type: row.cells[0].textContent,
+                name: row.cells[1].textContent,
+                description: row.cells[2].textContent
+            }));
+            
+            // apiList에 추가
+            apiList.push({
+                title, 
+                description,
+                packageName, 
+                className, 
+                baseUrl, 
+                endpoint, 
+                requestFields, 
+                responseFields
+            });
+        });
+        
+        // 전체 JSON 생성
+        const apiData = {
+            mainTitle: document.querySelector('h2').textContent,
+            mainDescription: document.querySelector('p').textContent,
+            apiList
+        };
+        
+        // 서버로 JSON 전송
+        sendJsonToServer(apiData);
+    }
+
+    function sendJsonToServer(apiData) {
+        fetch('/your-server-endpoint', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(apiData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
 </body>
 </html>

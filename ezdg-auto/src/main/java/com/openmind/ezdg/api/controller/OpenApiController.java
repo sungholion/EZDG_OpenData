@@ -1,11 +1,23 @@
 package com.openmind.ezdg.api.controller;
 
+import com.openmind.ezdg.api.dto.UrlAndCrollingOptionRequestDto;
+import com.openmind.ezdg.api.service.OpenApiService;
+import com.openmind.ezdg.datalist.dto.ApiDataDto;
+import com.openmind.ezdg.datalist.service.DatalistService;
+import com.openmind.ezdg.generate.library.openapi.FastApiResponseDto;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -14,24 +26,59 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OpenApiController {
 
+    @Value("${admin.base-url}")
+    private String baseUrl;
+
+    private final OpenApiService openApiService;
+    private final DatalistService datalistService;
+
     /**
      * 호출 시점: url 입력 후 다음 버튼 클릭 시
      */
     @PostMapping()
-    public String analyzeUrl(@RequestParam String url, RedirectAttributes redirectAttributes) {
-        // TODO 크롤링
-        // TODO 중복검사(API명 중복되는거 있는지)
-        // TODO api명, request 파라미터, response 파라미터 redirectAttributes에 담기
-        return "redirect:/openapi/save";
+    @ResponseBody
+    public Map<String, Object> analyzeUrl(@RequestBody UrlAndCrollingOptionRequestDto request) {
+        log.info("[OpenApiController] request get url {}, {}", request.getUrl(), request.getCrollerOption()) ;
+        Map<String, Object> response = new HashMap<>();
+
+        // 크롤링
+        ApiDataDto apiData = openApiService.callFastApiCroller(request.getUrl(), request.getCrollerOption());
+
+        // 중복검사
+        List<FastApiResponseDto> apiList = apiData.getApiList();
+        for (FastApiResponseDto res : apiList) {
+            String name = res.getClassName();
+            boolean isDuplicatedName = datalistService.isDuplicatedTranslatedName(name);
+            if(isDuplicatedName) {
+                throw new RuntimeException("중복된 클래스가 존재합니다.");
+            }
+        }
+
+        if ("/admin".equals(baseUrl)) {
+            response.put("saveUrl", "/openapi/save-data");
+            response.put("redirectUrl", "/openapi/save");
+        } else if ("".equals(baseUrl)) {
+            response.put("saveUrl", "/admin/openapi/save-data");
+            response.put("redirectUrl", "/admin/openapi/save");
+        }
+        response.put("response", apiData);
+
+        return response;
     }
 
-    /**
-     * 호출 시점: 위 analyzeUrl 메서드가 return되면 호출
-     */
+    @PostMapping("/save-data")
+    @ResponseBody
+    public ResponseEntity<Void> saveApiData(@RequestBody Map<String, Object> data, HttpSession session) {
+        log.info("[OpenApiController] request save api data");
+        session.setAttribute("apiData", data.get("response"));
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/save")
-    public String getApiSavePage(Model model) {
-        // TODO api명, request 파라미터, response 파라미터를 model에 담아서 return
-        // TODO save view 페이지 구현
+    public String getApiSavePage(Model model, HttpSession session) {
+        log.info("[OpenApiController] get api save page");
+        model.addAttribute("apiData", session.getAttribute("apiData"));
+
         return "views/api/save";
     }
 
