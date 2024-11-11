@@ -34,11 +34,11 @@ def find_main_title(url):
 
         # 제목 부분 추출
         title = soup.find('p', class_='tit open-api-title').get_text(strip=True)
-        # print("제목:", title)
+        print("제목:", title)
 
         # 설명 부분 추출
         description = soup.find('div', class_='cont').find('span').get_text(strip=True)
-        # print("설명:", description)
+        print("설명:", description)
 
         return title, description
 
