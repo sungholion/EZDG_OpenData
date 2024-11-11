@@ -25,10 +25,13 @@ public class FileUtil {
 
         File saveFile = new File(getFullPath(originFileName));
 
+        log.info("saving file full path = {}", saveFile.getAbsolutePath());
+
         try {
             file.transferTo(saveFile);
             return true;
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException("파일 저장에 실패하였습니다.");
         }
     }
