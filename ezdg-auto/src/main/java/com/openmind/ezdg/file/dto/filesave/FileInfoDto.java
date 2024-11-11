@@ -14,25 +14,24 @@ import java.util.List;
 public class FileInfoDto {
 
     @NonNull
-    private String originFileName;
+    private String originalFileName;
 
     @NonNull
-    private String translatedFileName;  // classInfo -> translatedFileName으로 변경
+    private String translatedFileName;
 
     @NonNull
-    private List<String> originalColumns;
-
-    @NonNull
-    private List<TranslatedColumn> translatedColumns;   // columnInfo -> translatedColumns로 멤버명 변경
+    private List<Field> fields;
 
     @Getter
     @Setter
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @ToString
-    public static class TranslatedColumn{   // ColumnInfo -> TranslatedColumn으로 클래스명 변경
-        private String columnType;
-        private String columnName;
+    public static class Field {
+        private String type;
+        private String translatedName;
+        private String originalName;
     }
 
 }

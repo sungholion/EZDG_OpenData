@@ -23,4 +23,5 @@ public class DatalistController {
         return datalistService.isDuplicatedTranslatedName(name);
     }
 
+
 }
