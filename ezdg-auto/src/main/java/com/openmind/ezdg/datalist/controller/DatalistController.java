@@ -14,8 +14,7 @@ public class DatalistController {
     private final DatalistService datalistService;
 
     @GetMapping("/duplicate/code")
-    public boolean isDuplicatedCode(
-            @RequestParam String code) {
+    public boolean isDuplicatedCode(@RequestParam String code) {
         return datalistService.isDuplicatedCode(code);
     }
 
