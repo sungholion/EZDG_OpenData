@@ -27,7 +27,8 @@ public class CodeGenerator {
 
     public CodeGenerator() throws IOException {
         cfg = new Configuration(Configuration.VERSION_2_3_30);
-        cfg.setDirectoryForTemplateLoading(new File("src/main/resources/templates/generate/library/openapi"));
+        //cfg.setDirectoryForTemplateLoading(new File("src/main/resources/templates/generate/library/openapi"));
+        cfg.setClassLoaderForTemplateLoading(getClass().getClassLoader(), "templates/generate/library/openapi");
         mapper = new ObjectMapper();
     }
 
