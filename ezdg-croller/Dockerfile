@@ -9,7 +9,8 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
     && rm ./google-chrome-stable_current_amd64.deb  # 설치 후 .deb 파일 제거
 
 # ChromeDriver 버전을 Chrome 버전과 일치시키기 위한 설정
-RUN CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE) && \
+# ChromeDriver 버전 자동 설정 (Chrome 130 버전에 맞는 최신 버전 가져오기)
+RUN CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_130) && \
     wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip && \
     unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
     rm /tmp/chromedriver.zip  # 설치 후 .zip 파일 제거
