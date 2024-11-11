@@ -1,8 +1,8 @@
 package com.openmind.ezdg.file.controller;
 
+import com.openmind.ezdg.datalist.service.DatalistService;
 import com.openmind.ezdg.file.dto.filesave.FileDataRequestDto;
 import com.openmind.ezdg.file.dto.filesave.FileInfoDto;
-import com.openmind.ezdg.file.dto.filesave.ValidateDuplicateCodeDto;
 import com.openmind.ezdg.file.service.CsvSaveService;
 import com.openmind.ezdg.file.service.SendAutoLibraryInfoService;
 import com.openmind.ezdg.file.util.CsvUtil;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +36,7 @@ public class CsvSaveController {
     private final APIServerGenerateService apiServerGenerateService;
     private final CsvUtil csvUtil;
     private final FileUtil fileUtil;
+    private final DatalistService datalistService;
 
     @Value("${admin.base-url}")
     private String baseUrl;
@@ -52,7 +52,7 @@ public class CsvSaveController {
         Map<String, Object> response = new HashMap<>();
 
         boolean isSuccessFileSaveToTempPath = fileUtil.saveFileToTempPath(file);
-        if(!isSuccessFileSaveToTempPath) {
+        if (!isSuccessFileSaveToTempPath) {
             response.put("isSuccess", false);
             response.put("error", "파일을 저장하는 중 오류가 발생했습니다.");
             return response;
@@ -73,9 +73,9 @@ public class CsvSaveController {
 
         // 성공 응답 구성
         response.put("isSuccess", true);
-        if("/admin".equals(baseUrl)) {
+        if ("/admin".equals(baseUrl)) {
             response.put("redirectUrl", "/file/save");
-        } else if("".equals(baseUrl)) {
+        } else if ("".equals(baseUrl)) {
             response.put("redirectUrl", "/admin/file/save");
         }
 
@@ -107,13 +107,13 @@ public class CsvSaveController {
     public String getFileSavePage(HttpSession session, Model model) {
         log.info("[FileSaveController] request get file save page");
         Map<String, Object> fileData = (Map<String, Object>) session.getAttribute("fileData");
-        if(fileData != null) {
+        if (fileData != null) {
             model.addAttribute("fileData", fileData);
             session.removeAttribute("fileData");
         }
-        if("/admin".equals(baseUrl)) {
+        if ("/admin".equals(baseUrl)) {
             model.addAttribute("baseUrl", "");
-        } else if("".equals(baseUrl)) {
+        } else if ("".equals(baseUrl)) {
             model.addAttribute("baseUrl", "/admin");
         }
         return "views/file/translate";
@@ -145,11 +145,16 @@ public class CsvSaveController {
         // TODO mongoDB에 저장정보 저장
 
         // library 자동화를 위해 DTO 생성
-        FileInfoDto fileInfoDto = sendAutoLibraryInfoService.setBasicInfo(originFileName, translatedFileName, originalColumns);
-        sendAutoLibraryInfoService.makeAutoLibraryInfo(fileInfoDto, translatedColumns, datas);
+        FileInfoDto fileInfoDto = sendAutoLibraryInfoService.setBasicInfo(originFileName, translatedFileName, originalColumns, translatedColumns, datas);
 
+        // api 서버 코드 생성
         apiServerGenerateService.generate(fileInfoDto);
+
+        // library 코드 생성
         javaFileLibraryGenerateService.generate(fileInfoDto);
+
+        // 데이터 정보 저장 (MongoDB)
+        datalistService.saveDocument(fileInfoDto);
 
         // 파일 삭제
         fileUtil.deleteFileFromTempPath(originFileName);

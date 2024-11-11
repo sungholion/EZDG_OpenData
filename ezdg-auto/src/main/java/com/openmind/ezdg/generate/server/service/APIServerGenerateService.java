@@ -31,10 +31,10 @@ public class APIServerGenerateService {
         data.put("className", customStringUtil.capitalizeFirstLetter(customStringUtil.snakeCaseToCamelCase(dto.getTranslatedFileName())));
 
         List<Map<String, String>> fields = new ArrayList<>();
-        dto.getTranslatedColumns().forEach(columnInfo -> {
+        dto.getFields().forEach(columnInfo -> {
             Map<String, String> field = new HashMap<>();
-            field.put("type", columnInfo.getColumnType());
-            field.put("name", columnInfo.getColumnName());
+            field.put("type", columnInfo.getType());
+            field.put("name", columnInfo.getTranslatedName());
             fields.add(field);
         });
         data.put("fields", fields);
