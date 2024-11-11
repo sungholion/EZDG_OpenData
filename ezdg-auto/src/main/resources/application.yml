@@ -1,4 +1,13 @@
 spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
   data:
     mongodb:
       uri: mongodb+srv://S11P21D207:7rPaud@ssafy.ngivl.mongodb.net/S11P21D207?authSource=admin&retryWrites=true&w=majority
@@ -22,6 +31,12 @@ spring:
       max-request-size: 200MB
       file-size-threshold: 50MB
       location: C:\\Users\\SSAFY\\Desktop\\temp-file\\
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
 
 springdoc:
   api-docs:
