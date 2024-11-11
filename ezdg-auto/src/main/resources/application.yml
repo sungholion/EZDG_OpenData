@@ -1,20 +1,29 @@
 spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
   data:
     mongodb:
       uri: mongodb+srv://S11P21D207:7rPaud@ssafy.ngivl.mongodb.net/S11P21D207?authSource=admin&retryWrites=true&w=majority
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/ezdg?useSSL=false&serverTimezone=UTC
-#    username: root
-#    password: 1234
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#      dialect: org.hibernate.dialect.MySQLDialect  #
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
+  #  datasource:
+  #    url: jdbc:mysql://localhost:3306/ezdg?useSSL=false&serverTimezone=UTC
+  #    username: root
+  #    password: 1234
+  #    driver-class-name: com.mysql.cj.jdbc.Driver
+  #  jpa:
+  #    hibernate:
+  #      ddl-auto: update
+  #      dialect: org.hibernate.dialect.MySQLDialect  #
+  #    show-sql: true
+  #    properties:
+  #      hibernate:
+  #        format_sql: true
   servlet:
     multipart:
       enabled: true
@@ -22,6 +31,12 @@ spring:
       max-request-size: 200MB
       file-size-threshold: 50MB
       location: C:\\Users\\SSAFY\\Desktop\\temp-file\\
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
 
 springdoc:
   api-docs:
@@ -33,6 +48,13 @@ springdoc:
     operations-sorter: alpha
 
 path:
-  java-library-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
-  api-server-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
-  temp-file-path: C:\\Users\\SSAFY\\Desktop\\temp-file\\
+ java-library-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
+ api-server-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
+ temp-file-path: C:\\Users\\SSAFY\\Desktop\\temp-file\\
+
+admin:
+  base-url: /admin
+
+external:
+  api:
+    fastApi: k11d201.p.ssafy.io/croller
