@@ -51,6 +51,18 @@ public class DatalistService {
         return fileResults;
     }
 
+    /**
+     * 관리자 배포현황 조회용
+     *
+     * @return
+     */
+    public List<Document> getDataList() {
+        return mongoTemplate.findAll(Document.class, "data_list").stream().map(doc -> {
+            doc.put("_id", new ObjectId(doc.get("_id").toString()).toHexString());
+            return doc;
+        }).collect(Collectors.toList());
+    }
+
     // 코드 중복 확인
     public boolean isDuplicatedCode(String code) {
         Query query = new Query();
