@@ -2,7 +2,7 @@ package com.openmind.ezdg.datalist.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openmind.ezdg.datalist.dto.ApiDataDto;
-import com.openmind.ezdg.datalist.dto.FileDataDto;
+import com.openmind.ezdg.file.dto.filesave.FileInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -65,7 +65,7 @@ public class DatalistService {
         return mongoTemplate.exists(query, "data_list");
     }
 
-    public void saveDocument(FileDataDto dto) {
+    public void saveDocument(FileInfoDto dto) {
         // DTO를 Map으로 변환
         Map<String, Object> dtoMap = objectMapper.convertValue(dto, Map.class);
 
@@ -92,12 +92,5 @@ public class DatalistService {
         mongoTemplate.insert(new Document(dtoMap), "data_list");
     }
 
-    public void saveTest() {
-        FileDataDto fileDataDto = new FileDataDto();
-        fileDataDto.setOriginalFileName("originalFileName");
-        fileDataDto.setTranslatedFileName("translatedFileName");
-        List<Map<String, String>> fields = List.of(Map.of("key1", "value1"), Map.of("key2", "value2"));
-        fileDataDto.setFields(fields);
-        saveDocument(fileDataDto);
-    }
+
 }

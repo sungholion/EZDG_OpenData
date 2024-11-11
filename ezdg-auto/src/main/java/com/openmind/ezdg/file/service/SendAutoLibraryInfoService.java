@@ -20,17 +20,8 @@ public class SendAutoLibraryInfoService {
     private final TypeConvertUtil typeConvertUtil;
     private final CustomStringUtil customStringUtil;
 
-    public FileInfoDto setBasicInfo(String originFileName, String translatedFileName, List<String> originalColumns) {
-        return FileInfoDto.builder()
-                .originFileName(originFileName)
-                .translatedFileName(translatedFileName)
-                .originalColumns(originalColumns)
-                .build();
-    }
-
-    public void makeAutoLibraryInfo(FileInfoDto fileInfoDto, List<String> translatedColumns, List<String[]> datas) {
-
-        List<FileInfoDto.TranslatedColumn> translatedColumnList = new ArrayList<>();
+    public FileInfoDto setBasicInfo(String originalFileName, String translatedFileName, List<String> originalColumns, List<String> translatedColumns, List<String[]> datas) {
+        List<FileInfoDto.Field> fields = new ArrayList<>();
         Map<String, String> columnDataTypes = new HashMap<>();
 
         if (datas != null && datas.size() > 1) {
@@ -59,14 +50,25 @@ public class SendAutoLibraryInfoService {
                 }
             }
 
-            for (String column : translatedColumns) {
-                String columnType = columnDataTypes.getOrDefault(column, "String");
-                String translatedColumnName = customStringUtil.snakeCaseToCamelCase(column);
-                translatedColumnList.add(new FileInfoDto.TranslatedColumn(columnType, translatedColumnName));
+            for (int i = 0; i < translatedColumns.size(); i++) {
+                String type = columnDataTypes.getOrDefault(translatedColumns.get(i), "String");
+                String translatedName = customStringUtil.snakeCaseToCamelCase(translatedColumns.get(i));
+                String originalName = originalColumns.get(i);
+                fields.add(FileInfoDto.Field.builder()
+                        .type(type)
+                        .originalName(originalName)
+                        .translatedName(translatedName)
+                        .build());
             }
+
         }
 
-        fileInfoDto.setTranslatedColumns(translatedColumnList);
+        return FileInfoDto.builder()
+                .originalFileName(originalFileName)
+                .translatedFileName(translatedFileName)
+                .fields(fields)
+                .build();
     }
+
 
 }
