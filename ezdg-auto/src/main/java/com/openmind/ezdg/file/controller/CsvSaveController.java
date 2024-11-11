@@ -123,7 +123,11 @@ public class CsvSaveController {
      * 파일 저장
      */
     @PostMapping("/save")
-    public String saveFile(@RequestBody FileDataRequestDto fileData) {
+    @ResponseBody
+    public Map<String, Object> saveFile(@RequestBody FileDataRequestDto fileData) {
+
+        Map<String, Object> response = new HashMap<>();
+
         String translatedFileName = fileData.getTranslatedFileName();
         List<String> translatedColumns = fileData.getTranslatedColumns();
         String originFileName = fileData.getOriginFileName();
@@ -142,8 +146,6 @@ public class CsvSaveController {
         // mongoDB에 저장
         csvSaveService.saveFile(datas, translatedFileName, translatedColumns);
 
-        // TODO mongoDB에 저장정보 저장
-
         // library 자동화를 위해 DTO 생성
         FileInfoDto fileInfoDto = sendAutoLibraryInfoService.setBasicInfo(originFileName, translatedFileName, originalColumns, translatedColumns, datas);
 
@@ -159,7 +161,18 @@ public class CsvSaveController {
         // 파일 삭제
         fileUtil.deleteFileFromTempPath(originFileName);
 
-        return "views/file/file-complete";
+        // 성공 응답 구성
+        response.put("isSuccess", true);
+        if ("/admin".equals(baseUrl)) {
+            response.put("redirectUrl", "/file/complete");
+        } else if ("".equals(baseUrl)) {
+            response.put("redirectUrl", "/admin/file/complete");
+        }
+        return response;
     }
 
+    @GetMapping("/complete")
+    public String getCompletePage() {
+        return "views/file/file-complete";
+    }
 }

@@ -140,6 +140,7 @@
                         .then(response => {
                           if (response.ok) {
                             alert("데이터가 성공적으로 저장되었습니다.");
+                            window.location.href = `${baseUrl}/file/complete`
                           } else {
                             throw new Error("데이터 저장 실패");
                           }
