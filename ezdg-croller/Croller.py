@@ -204,13 +204,15 @@ def swagger_crawler(url):
                 try:
                     # JSON 문자열을 Python 딕셔너리로 변환
                     json_data = json.loads(code_text)
+                    item_list = find_item_data(json_data)
+                    print(item_list)
+                    #print(json_data)
                     # item에 접근하여 원하는 형식으로 변환
-                    item_data = json_data['body']['items']['item']
-                    #item_data = json_data['response']['body']['items']['item']
-                    item_list = [{"name": key, "type": value.title(), "description": None} for key, value in item_data.items()]
+                    #item_data = json_data['body']['items']['item']
+                    #item_list = [{"name": key, "type": value.title(), "description": None} for key, value in item_data.items()]
 
                     response_data.append(item_list)
-                    #print(item_list)
+
                 except json.JSONDecodeError:
                     # JSON 파싱에 실패할 경우 원본 텍스트를 그대로 저장
                     response_data[f"code_block_{idx}"] = code_text
@@ -232,3 +234,28 @@ def swagger_crawler(url):
     finally:
         # 드라이버 종료
         driver.quit()
+
+ # item 데이터를 찾는 함수 정의
+def find_item_data(data):
+    if isinstance(data, dict):
+        # 'body' -> 'items' -> 'item' 경로가 존재할 경우
+        if 'body' in data and 'items' in data['body'] and 'item' in data['body']['items']:
+            item_data = data['body']['items']['item']
+            # 원하는 형식으로 변환
+            return [{"name": key, "type": value.title(), "description": None} for key, value in item_data.items()]
+        else:
+            # body - items - item이 없는 경우 가장 안쪽 데이터 접근
+            innermost_values = []
+            for key, value in data.items():
+                if isinstance(value, dict) or isinstance(value, list):
+                    innermost_values.extend(find_item_data(value))
+                else:
+                    innermost_values.append({"name": key, "type": value.title(), "description": None})
+            return innermost_values
+    elif isinstance(data, list):
+        innermost_values = []
+        for item in data:
+            innermost_values.extend(find_item_data(item))
+        return innermost_values
+    else:
+        return []
