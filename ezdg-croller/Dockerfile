@@ -5,11 +5,14 @@ RUN apt update && apt install -y wget unzip libxpm4 libxrender1 libgtk2.0-0 libn
 
 # Chrome 설치
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && apt install -y ./google-chrome-stable_current_amd64.deb
+    && apt install -y ./google-chrome-stable_current_amd64.deb \
+    && rm ./google-chrome-stable_current_amd64.deb  # 설치 후 .deb 파일 제거
 
 # ChromeDriver 버전을 Chrome 버전과 일치시키기 위한 설정
-RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/130.0.6723.116/chromedriver_linux64.zip && \
-    unzip /tmp/chromedriver.zip -d /usr/local/bin/
+RUN CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE) && \
+    wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip && \
+    unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
+    rm /tmp/chromedriver.zip  # 설치 후 .zip 파일 제거
 
 # 환경 설정
 ENV DISPLAY=:99
