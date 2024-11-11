@@ -12,7 +12,8 @@ RUN CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_
 wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip && \
 unzip /tmp/chromedriver.zip -d /usr/local/bin/
 
-
+# 환경 설정
+ENV DISPLAY=:99
 
 # 작업 디렉토리 설정
 WORKDIR /app

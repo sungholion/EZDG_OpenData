@@ -6,12 +6,24 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options
 global sample_data_type
 import json
 import time
 import re
 
 global response_data
+
+def start_chrome_driver():
+    options = Options()
+    options.add_argument('--headless')  # GUI 없는 환경에서 실행
+    options.add_argument('--no-sandbox')  # 보안 옵션 비활성화 (Docker 환경에서 필요)
+    options.add_argument('--disable-dev-shm-usage')  # /dev/shm 공유 메모리 문제 해결
+    options.add_argument('--disable-gpu')  # GPU 비활성화 (headless 모드에서 필요)
+
+    driver = webdriver.Chrome(options=options)
+    return driver
+
 
 def find_main_title(url):
     # URL에서 HTML 가져오기
@@ -80,7 +92,7 @@ def table_crawler(title, html_content):
 
 def main_crawler(url):
     # Selenium WebDriver 설정
-    driver = webdriver.Chrome()  # ChromeDriver 경로 설정
+    driver = start_chrome_driver()
     driver.get(url)
     main_title, main_description = find_main_title(url)
     response = {"mainTitle" : main_title, "mainDescription" : main_description}
@@ -122,7 +134,9 @@ def main_crawler(url):
 def swagger_crawler(url):
     # Chrome WebDriver 경로 설정
     global response_data, request_parameters
-    driver = webdriver.Chrome()
+
+    driver = start_chrome_driver()
+
     main_title, main_description = find_main_title(url)
 
     try:
