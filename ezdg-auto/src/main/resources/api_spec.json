@@ -1,6 +1,10 @@
 {
+  "mainTitle" : "String",
+  "mainDescription": "String",
   "apiList": [
     {
+      "title": "String",
+      "description": "String",
       "packageName": "VilageFcstInfoService",
       "className": "Vilagefcstinfoservice",
       "baseUrl": "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0",
@@ -111,6 +115,8 @@
       ]
     },
     {
+      "title": "String",
+      "description": "String",
       "packageName": "AnotherService",
       "className": "AnotherServiceClass",
       "baseUrl": "http://example.com/api",
@@ -240,6 +246,8 @@
       ]
     },
     {
+      "title": "String",
+      "description": "String",
       "packageName": "AnotherService",
       "className": "AnotherServiceClass",
       "baseUrl": "http://example.com/api",
