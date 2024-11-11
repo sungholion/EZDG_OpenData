@@ -23,7 +23,9 @@ public class FileUtil {
 
         String originFileName = file.getOriginalFilename();
 
-        File saveFile = new File(getFullPath(originFileName));
+        //File saveFile = new File(getFullPath(originFileName));
+        // 중복 경로 문제 해결
+        File saveFile = new File(filePath, originFileName);
 
         log.info("saving file full path = {}", saveFile.getAbsolutePath());
 
