@@ -20,6 +20,7 @@ def start_chrome_driver():
     options.add_argument('--no-sandbox')  # 보안 옵션 비활성화 (Docker 환경에서 필요)
     options.add_argument('--disable-dev-shm-usage')  # /dev/shm 공유 메모리 문제 해결
     options.add_argument('--disable-gpu')  # GPU 비활성화 (headless 모드에서 필요)
+    options.add_argument("--window-size=1920,1080")  # 기본 화면 크기 설정
 
     driver = webdriver.Chrome(options=options)
     return driver
@@ -110,8 +111,14 @@ def main_crawler(url):
             # 각 옵션 선택
             select.select_by_value(option.get_attribute('value'))
 
+
             # 조회 버튼 클릭
-            driver.find_element(By.XPATH, "//button[contains(text(), '조회')]").click()
+            # driver.find_element(By.XPATH, "//button[contains(text(), '조회')]").click()
+            # 조회 버튼 클릭 가능한 상태로 대기
+            button = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), '조회')]"))
+            )
+            button.click()
 
             # 2초 대기
             time.sleep(2)
