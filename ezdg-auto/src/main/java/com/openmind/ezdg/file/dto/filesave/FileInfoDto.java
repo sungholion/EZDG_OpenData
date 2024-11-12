@@ -11,24 +11,27 @@ import java.util.List;
 @Setter
 @Data
 @ToString
-public class AutoLibraryInfoDto {
+public class FileInfoDto {
 
     @NonNull
-    private String classInfo;
+    private String originalFileName;
 
     @NonNull
-    private String originFileName;
+    private String translatedFileName;
 
     @NonNull
-    private List<ColumnInfo> columnInfo;
+    private List<Field> fields;
 
     @Getter
     @Setter
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @ToString
-    public static class ColumnInfo{
-        private String columnType;
-        private String columnName;
+    public static class Field {
+        private String type;
+        private String translatedName;
+        private String originalName;
     }
+
 }
