@@ -1,5 +1,8 @@
 package ${packageName};
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class ${className} {
 <#list fields as field>
     private ${field.type} ${field.name};

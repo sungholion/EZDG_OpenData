@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>API Response Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+<h1>기업기본정보조회</h1>
+
+<div class="row">
+    <div th:each="item : ${response.response.body.items.item}" class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">법인명: <span th:text="${item.corpNm}"></span></h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>법인등록번호:</strong> <span th:text="${item.crno}"></span></li>
+                    <li class="list-group-item"><strong>법인명:</strong> <span th:text="${item.corpNm}"></span></li>
+                    <li class="list-group-item"><strong>법인영문명:</strong> <span th:text="${item.corpEnsnNm}"></span></li>
+                    <li class="list-group-item"><strong>기업공시회사명:</strong> <span th:text="${item.enpPbanCmpyNm}"></span></li>
+                    <li class="list-group-item"><strong>기업대표자성명:</strong> <span th:text="${item.enpRprFnm}"></span></li>
+                    <li class="list-group-item"><strong>법인등록시장구분코드:</strong> <span th:text="${item.corpRegMrktDcd}"></span></li>
+                    <li class="list-group-item"><strong>법인등록시장구분코드명:</strong> <span th:text="${item.corpRegMrktDcdNm}"></span></li>
+                    <li class="list-group-item"><strong>법인구분코드:</strong> <span th:text="${item.corpDcd}"></span></li>
+                    <li class="list-group-item"><strong>법인구분코드명:</strong> <span th:text="${item.corpDcdNm}"></span></li>
+                    <li class="list-group-item"><strong>사업자등록번호:</strong> <span th:text="${item.bzno}"></span></li>
+                    <li class="list-group-item"><strong>기업구우편번호:</strong> <span th:text="${item.corpDcd}"></span></li>
+                    <li class="list-group-item"><strong>기업기본주소:</strong> <span th:text="${item.corpDcdNm}"></span></li>
+                    <li class="list-group-item"><strong>기업상세주소:</strong> <span th:text="${item.bzno}"></span></li>
+                    <li class="list-group-item"><strong>기업홈페이지URL:</strong> <span th:text="${item.enpHmpgUrl}"></span></li>
+                    <li class="list-group-item"><strong>기업전화번호:</strong> <span th:text="${item.enpTlno}"></span></li>
+                    <li class="list-group-item"><strong>기업팩스번호:</strong> <span th:text="${item.enpFxno}"></span></li>
+                    <!-- 이하 너무 많아서 생략 -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

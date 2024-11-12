@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ValidateDuplicateCodeDto {
-    
+
     // 중복인지 여부
     private Boolean isDuplicate;
-    
+
     // 코드 등록 일시
     private LocalDateTime regDate;
 }
