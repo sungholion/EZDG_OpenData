@@ -79,6 +79,11 @@ public class OpenApiController {
         log.info("[OpenApiController] get api save page");
         model.addAttribute("apiData", session.getAttribute("apiData"));
 
+        if ("/admin".equals(baseUrl)) {
+            model.addAttribute("baseUrl", "");
+        } else if ("".equals(baseUrl)) {
+            model.addAttribute("baseUrl", "/admin");
+        }
         return "views/api/save";
     }
 
@@ -86,9 +91,15 @@ public class OpenApiController {
      * 호출 시점: save 페이지에서 저장 버튼 클릭 시
      */
     @PostMapping("/save")
-    public String saveApi() {
-        // TODO 본 메서드 파라미터에서 api명, request 파라미터, response 파라미터 받아야 함
-        // TODO 자동화 코드 생성
+    @ResponseBody
+    public ResponseEntity<Void> saveApiData(@RequestBody ApiDataDto request) {
+        openApiService.generateLibraryCode(request.getApiList());
+        // TODO mongoDB에 배포 데이터 저장
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/complete")
+    public String getCompletePage() {
         return "views/api/api-complete";
     }
 }

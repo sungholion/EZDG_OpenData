@@ -87,7 +87,7 @@
             }
 
             row.innerHTML = `
-                <td>${index + 1}</td>
+                <td>${data.id}</td>
                 <td>${data.name}</td>
                 <td>${data.email}</td>
                 <td>${data.publicDataName}</td>
@@ -96,11 +96,33 @@
                 <td>${data.association}</td>
                 <td>${data.purpose}</td>
                 <td>${data.additionalRequest}</td>
-                <td>${data.isAccept ? 'Yes' : 'No'}</td>
+                <td>
+                    ${data.isAccept ? 'Yes' : `<button id="acceptBtn_${data.id}" class="btn btn-primary" onclick="sendRequest(${data.id})">처리</button>`}
+                </td>
             `;
             columnsTable.appendChild(row);
         });
     });
+
+    function sendRequest(id) {
+        const baseUrl = document.querySelector(".container").getAttribute("th:data-baseurl") || "";
+        fetch(`${baseUrl}/accept/${id}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+            .then(response => response.ok ? response.json() : Promise.reject('Failed to send request'))
+            .then(() => {
+                document.getElementById(`acceptBtn_${id}`).textContent = "처리 완료";
+                document.getElementById(`acceptBtn_${id}`).classList.replace("btn-primary", "btn-success");
+                document.getElementById(`acceptBtn_${id}`).disabled = true;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("처리 요청에 실패했습니다.");
+            });
+    }
 </script>
 </body>
 </html>
