@@ -54,8 +54,6 @@ public class CodeGenerator {
             generateRequestDTO(dataModel, apiSpec, basePackagePath);
             generateResponseDTO(dataModel, apiSpec, basePackagePath);
             generateAPIClass(dataModel, apiSpec, basePackagePath);
-
-            log.info("Generated code for {}", className);
         } catch (IOException | TemplateException e) {
             log.error("Failed to generate code for endpoint {}: {}", apiSpec.getEndpoint(), e.getMessage());
             throw new RuntimeException(e);
