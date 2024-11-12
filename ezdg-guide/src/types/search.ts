@@ -2,7 +2,7 @@ import type { BaseHit } from 'instantsearch.js';
 
 export interface SearchResult extends BaseHit {
   objectID: string;
-  id: string;
+  id?: string;
   title: string;
   description: string;
   _highlightResult?: {

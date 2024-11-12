@@ -1,5 +1,6 @@
 // hooks/useSearchHistory.ts
 import { useState, useEffect } from 'react';
+import { SearchResult } from '@/types/search';
 
 const SEARCH_HISTORY_KEY = 'search_history';
 const MAX_HISTORY_ITEMS = 5;
