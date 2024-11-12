@@ -1,5 +1,8 @@
 package com.openmind.ezdg.admin;
 
+import com.openmind.ezdg.datalist.service.DatalistService;
+import com.openmind.ezdg.user.entity.DataApplyEntity;
+import com.openmind.ezdg.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -20,6 +24,9 @@ public class AdminController {
 
     @Value("${admin.base-url}")
     private String baseUrl;
+
+    private final UserService userService;
+    private final DatalistService datalistService;
 
     /**
      * 관리자 페이지 호출
@@ -107,6 +114,7 @@ public class AdminController {
             } else if("".equals(baseUrl)) {
                 model.addAttribute("baseUrl", "/admin");
             }
+            model.addAttribute("deployData", datalistService.getDataList());
             return "views/deploy/deploy"; // 인증된 경우 배포 현황 페이지로 이동
         }
         return "redirect:" + baseUrl; // 인증되지 않은 경우 admin 페이지로 리다이렉트
@@ -123,6 +131,7 @@ public class AdminController {
             } else if("".equals(baseUrl)) {
                 model.addAttribute("baseUrl", "/admin");
             }
+            model.addAttribute("userRequestData", userService.getAllDataApply());
             return "views/data/data"; // 인증된 경우 배포 현황 페이지로 이동
         }
         return "redirect:" + baseUrl;
