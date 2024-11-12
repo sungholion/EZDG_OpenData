@@ -33,7 +33,6 @@ public class DatalistService {
         // "type" 필드가 "api"인 경우
         Criteria apiCriteria = Criteria.where("type").is("api").and("deployed").is(true);
         Query apiQuery = new Query(apiCriteria);
-        apiQuery.fields().include("age").include("type");
 
         // 두 개의 쿼리 결과 합치기
         List<Document> fileResults = mongoTemplate.find(fileQuery, Document.class, "data_list").stream().map(doc -> {
@@ -49,6 +48,18 @@ public class DatalistService {
         // 두 결과를 합쳐서 반환
         fileResults.addAll(apiResults);
         return fileResults;
+    }
+
+    /**
+     * 관리자 배포현황 조회용
+     *
+     * @return
+     */
+    public List<Document> getDataList() {
+        return mongoTemplate.findAll(Document.class, "data_list").stream().map(doc -> {
+            doc.put("_id", new ObjectId(doc.get("_id").toString()).toHexString());
+            return doc;
+        }).collect(Collectors.toList());
     }
 
     // 코드 중복 확인
