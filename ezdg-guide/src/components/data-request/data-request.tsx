@@ -110,7 +110,7 @@ export function DataRequest() {
                 해당 공공데이터 링크<span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input type="url" placeholder="공공데이터 링크를 입력하세요." {...field} />
+                <Input type="url" placeholder="공공데이터 링크를." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
