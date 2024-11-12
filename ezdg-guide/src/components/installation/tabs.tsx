@@ -47,7 +47,7 @@ export function CodeTabs({ code, language }: CodeTabsProps) {
     });
   }, [code, language]);
 
-  // 복사 버튼
+  // TODO: 서버에서 복사 버튼 작동 안되는거 확인 필요
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(code);
