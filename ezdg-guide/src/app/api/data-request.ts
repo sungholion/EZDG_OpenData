@@ -7,7 +7,3 @@ export const dataRequestAPI = {
     return response.data;
   }
 }
-
-export const dataGetAPI = {
- getData: async ()
-}
