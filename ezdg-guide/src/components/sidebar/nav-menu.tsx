@@ -38,12 +38,9 @@ export function NavGuide({ projects }: NavGuideProps) {
                     <span>{item.name}</span>
                   </SidebarMenuButton>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[600px]">
+                <DialogContent className="sm:max-w-[600px] max-h-screen overflow-y-scroll ">
                   <DialogHeader className="mb-4">
                     <DialogTitle className="text-lg font-semibold">데이터 추가 요청</DialogTitle>
-                    <DialogDescription className="text-red-500">
-                      *(필수) 항목은 반드시 기재하셔야 신청이 가능합니다.
-                    </DialogDescription>
                   </DialogHeader>
                   <DataRequest />
                 </DialogContent>
