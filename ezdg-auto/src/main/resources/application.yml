@@ -39,9 +39,10 @@ springdoc:
     operations-sorter: alpha
 
 path:
- java-library-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
- api-server-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
- temp-file-path: C:\\Users\\SSAFY\\Desktop\\temp-file\\
+  java-library-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
+  api-server-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
+  temp-file-path: C:\\Users\\SSAFY\\Desktop\\temp-file\\
+  release-sh-path: C:\\Users\\SSAFY\\Desktop\\
 
 admin:
   base-url: /admin
