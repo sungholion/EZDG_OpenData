@@ -10,5 +10,3 @@ export interface GuideItem {
   originalName: string;
   translatedName: string;
 }
-
-export type GuideResponse = GuideItem[];
