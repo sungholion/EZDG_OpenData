@@ -8,12 +8,13 @@ def make_response(title, description, url, requests, responses):
     service_name = parts[-2]  # 'VilageFcstInfoService_2.0'
     service_name = service_name.split('_')[0]
     endpoint_name = parts[-1]  # 'getUltraSrtFcst'
+    class_name = endpoint_name.split('get')[-1].title()
 
     api = {
         'title': title,
         'description': description,
         'packageName' : service_name,
-        'className' : service_name.title(),
+        'className' : class_name,
         'baseUrl' : url.rsplit('/', 1)[0],
         'endpoint' : "/" + endpoint_name,
         'requestFields' : requests,
