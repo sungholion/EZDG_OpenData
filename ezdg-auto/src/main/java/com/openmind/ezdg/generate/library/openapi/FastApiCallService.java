@@ -71,13 +71,14 @@ public class FastApiCallService implements ExternalApiCallService {
                 // 각 API 스펙에 대해 코드 생성
                 for (FastApiResponseDto apiSpec : apiSpecs) {
                     try {
+                        String className = apiSpec.getClassName() + "Api";
+                        apiSpec.setClassName(className);
                         codeGenerator.generateCode(apiSpec);
                         log.info("Code generation completed for {}", apiSpec.getClassName());
                     } catch (Exception e) {
                         log.error("Failed to generate code for {}: {}", apiSpec.getClassName(), e.getMessage());
                     }
                 }
-
                 return apiSpecs;
             }
             return new ArrayList<>();

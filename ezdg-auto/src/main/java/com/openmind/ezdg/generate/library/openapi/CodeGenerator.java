@@ -35,10 +35,6 @@ public class CodeGenerator {
     // 단일 API 스펙에 대한 코드 생성
     public void generateCode(FastApiResponseDto apiSpec) {
         try {
-            // 엔드포인트로부터 클래스 이름 생성
-            String className = generateClassName(apiSpec.getEndpoint());
-            apiSpec.setClassName(className);
-
             Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("packageName", apiSpec.getPackageName());
             dataModel.put("className", apiSpec.getClassName());
@@ -52,19 +48,13 @@ public class CodeGenerator {
             generateResponseDTO(dataModel, apiSpec, basePackagePath);
             generateAPIClass(dataModel, apiSpec, basePackagePath);
 
-            log.info("Generated code for {}", className);
+            log.info("Generated code for {}", apiSpec.getClassName());
         } catch (IOException | TemplateException e) {
             log.error("Failed to generate code for endpoint {}: {}", apiSpec.getEndpoint(), e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
-    private String generateClassName(String endpoint) {
-        // 엔드포인트에서 슬래시 제거하고 camelCase로 변환
-        // TODO 본 메서드 삭제하고 fastAPI에서 이 부분 적용해서 className에 넣고 반환해주기
-        String name = endpoint.replace("/", "");
-        return name.substring(0, 1).toUpperCase() + name.substring(1) + "Api";
-    }
 
     private void generateRequestDTO(Map<String, Object> dataModel, FastApiResponseDto apiSpec, String basePackagePath)
             throws IOException, TemplateException {
