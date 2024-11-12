@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 요청 폼</title>
+</head>
+<body>
+<h2>API 요청 폼</h2>
+<form action="/submit-fin-info" method="post">
+
+    <label for="crno">법인 등록 번호:</label>
+    <input type="text" id="crno" name="crno" required><br><br>
+
+    <label for="bizYear">법인의 과세 기간 (년도):</label>
+    <input type="text" id="bizYear" name="bizYear"><br><br>
+
+    <button type="submit">API 요청 전송</button>
+</form>
+</body>
+</html>

@@ -3,6 +3,8 @@ package ${packageName};
 import common.AbstractAPI;
 import java.util.Date;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ${className}API extends AbstractAPI<${className}> {
 
