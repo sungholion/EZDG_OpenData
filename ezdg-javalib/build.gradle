@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'com.openmind'
+version = '1.0-EZDGLIBRARY' //라이브러리코드 추가시 업데이트 하여 사용해주세요
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "https://lab.ssafy.com/api/v4/projects/823781/packages/maven"
+            credentials {
+                username = "kyoungmop" // Deploy Token의 username
+                password = "gldt-3pDCB-ixBg9KcyRyYzXs" // Deploy Token의 token
+            }
+        }
+    }
+}
+repositories {
+    maven {
+        url "https://lab.ssafy.com/api/v4/projects/823781/packages/maven"
+    }
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.opencsv:opencsv:5.5.2'
+    implementation 'org.freemarker:freemarker:2.3.31'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3' // Jackson 라이브러리 추가
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    // 테스트 라이브러리
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+}
+
+
+test {
+    useJUnitPlatform()
+}
