@@ -51,6 +51,7 @@ dependencies {
 	testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework:spring-context'
+	implementation 'com.algolia:algoliasearch:4.7.1'
 }
 
 tasks.named('test') {
