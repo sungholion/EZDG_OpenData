@@ -7,6 +7,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -24,6 +25,8 @@ public class CodeGenerator {
     private final Configuration cfg;
     private final ObjectMapper mapper;
 
+    @Value("${path.java-library-project-path}")
+    private String javaLibraryProjectPath;
 
     public CodeGenerator() throws IOException {
         cfg = new Configuration(Configuration.VERSION_2_3_30);
@@ -34,6 +37,7 @@ public class CodeGenerator {
 
     // 단일 API 스펙에 대한 코드 생성
     public void generateCode(FastApiResponseDto apiSpec) {
+        log.info("apiSpec = {}", apiSpec.getRequestFields());
         try {
             Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("packageName", apiSpec.getPackageName());
@@ -41,7 +45,10 @@ public class CodeGenerator {
             dataModel.put("baseUrl", apiSpec.getBaseUrl());
             dataModel.put("endpoint", apiSpec.getEndpoint());
 
-            String basePackagePath = "src/main/java/" + apiSpec.getPackageName().replace(".", "/") + "/";
+            String basePackagePath = javaLibraryProjectPath
+                    + apiSpec.getPackageName().replace(".", "/")
+                    + (System.getProperty("os.name").startsWith("Windows") ? "\\" : "/");
+
             new File(basePackagePath).mkdirs();
 
             generateRequestDTO(dataModel, apiSpec, basePackagePath);
@@ -54,7 +61,6 @@ public class CodeGenerator {
             throw new RuntimeException(e);
         }
     }
-
 
     private void generateRequestDTO(Map<String, Object> dataModel, FastApiResponseDto apiSpec, String basePackagePath)
             throws IOException, TemplateException {

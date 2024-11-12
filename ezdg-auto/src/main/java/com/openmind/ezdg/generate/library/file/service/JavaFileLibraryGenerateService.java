@@ -23,7 +23,6 @@ public class JavaFileLibraryGenerateService {
 
     private final CustomStringUtil customStringUtil;
 
-
     @Value("${path.java-library-project-path}")
     private String javaLibraryProjectPath;
 
