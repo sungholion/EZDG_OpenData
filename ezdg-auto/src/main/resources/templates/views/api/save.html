@@ -180,9 +180,9 @@
           const baseUrl = document.getElementById(`baseUrl_${index}`).value;
           const endpoint = document.getElementById(`endpoint_${index}`).value;
 
-          // 요청 및 응답 필드 수집
+          // 요청 필드 및 응답 필드 데이터를 각각 수집
           const requestFields = Array.from(
-            item.querySelectorAll("tr[th\\:each='requestField : ${api.requestFields}']")
+            item.querySelectorAll("table:nth-of-type(1) tbody tr")
           ).map((row) => ({
             type: row.cells[0].textContent,
             name: row.cells[1].textContent,
@@ -190,14 +190,14 @@
           }));
 
           const responseFields = Array.from(
-            item.querySelectorAll("tr[th\\:each='responseField : ${api.responseFields}']")
+            item.querySelectorAll("table:nth-of-type(2) tbody tr")
           ).map((row) => ({
             type: row.cells[0].textContent,
             name: row.cells[1].textContent,
             description: row.cells[2].textContent,
           }));
 
-          // apiList에 추가
+          // apiList에 수집한 데이터 추가
           apiList.push({
             title,
             description,
@@ -215,6 +215,8 @@
           mainDescription: document.querySelector("p").textContent,
           apiList,
         };
+
+        console.log("Collected API Data:", apiData);
 
         sendJsonToServer(apiData);
       }

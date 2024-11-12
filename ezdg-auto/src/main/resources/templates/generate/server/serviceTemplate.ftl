@@ -1,6 +1,6 @@
 package ${packageName};
 
-import ${packageName}.${className};
+<#--import ${packageName}.${className};-->
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;

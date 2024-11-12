@@ -77,7 +77,6 @@ public class FastApiCallService implements ExternalApiCallService {
                         log.error("Failed to generate code for {}: {}", apiSpec.getClassName(), e.getMessage());
                     }
                 }
-
                 return apiSpecs;
             }
             return new ArrayList<>();
