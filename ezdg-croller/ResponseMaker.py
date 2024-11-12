@@ -8,7 +8,7 @@ def make_response(title, description, url, requests, responses):
     service_name = parts[-2]  # 'VilageFcstInfoService_2.0'
     service_name = service_name.split('_')[0]
     endpoint_name = parts[-1]  # 'getUltraSrtFcst'
-    class_name = endpoint_name.split('get')[-1].title()
+    class_name = endpoint_name.lstrip("/get")
 
     api = {
         'title': title,
@@ -25,7 +25,7 @@ def make_response(title, description, url, requests, responses):
 
 
 def make_swagger_response(title_list, url, requestlist, responselist, description_text):
-    service_name = url.split('/')[-1]  # 'VilageFcstInfoService'
+    service_name = url.split('/')[-1].split('_')[0]  # 'VilageFcstInfoService'
 
     response_item = []
     #endpoint_list = requestlist.keys()
@@ -35,7 +35,7 @@ def make_swagger_response(title_list, url, requestlist, responselist, descriptio
                 'title': title,
                 'description': description,
                 'packageName': service_name,
-                'className': k.lstrip("/get"),
+                'className': k.lstrip("/get").split('_')[0],
                 'baseUrl': url,
                 'endpoint': k,
                 'requestFields': v,
