@@ -93,6 +93,7 @@ public class OpenApiController {
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<Void> saveApiData(@RequestBody ApiDataDto request) {
+        log.info("request parameters = {}", request);
         openApiService.generateLibraryCode(request.getApiList());
         datalistService.saveDocument(request);
         return ResponseEntity.ok().build();
