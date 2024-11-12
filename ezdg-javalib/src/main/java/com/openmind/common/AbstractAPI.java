@@ -1,4 +1,4 @@
-package common;
+package com.openmind.common;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
