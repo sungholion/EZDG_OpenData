@@ -39,10 +39,6 @@ public class CodeGenerator {
     public void generateCode(FastApiResponseDto apiSpec) {
         log.info("apiSpec = {}", apiSpec.getRequestFields());
         try {
-            // 엔드포인트로부터 클래스 이름 생성
-            String className = generateClassName(apiSpec.getEndpoint());
-            apiSpec.setClassName(className);
-
             Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("packageName", apiSpec.getPackageName());
             dataModel.put("className", apiSpec.getClassName());
