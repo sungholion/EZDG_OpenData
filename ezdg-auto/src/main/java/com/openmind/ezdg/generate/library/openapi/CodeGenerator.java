@@ -39,6 +39,10 @@ public class CodeGenerator {
     public void generateCode(FastApiResponseDto apiSpec) {
         log.info("apiSpec = {}", apiSpec.getRequestFields());
         try {
+            // 엔드포인트로부터 클래스 이름 생성
+            String className = generateClassName(apiSpec.getEndpoint());
+            apiSpec.setClassName(className);
+
             Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("packageName", apiSpec.getPackageName());
             dataModel.put("className", apiSpec.getClassName());
@@ -55,7 +59,7 @@ public class CodeGenerator {
             generateResponseDTO(dataModel, apiSpec, basePackagePath);
             generateAPIClass(dataModel, apiSpec, basePackagePath);
 
-            log.info("Generated code for {}", apiSpec.getClassName());
+            log.info("Generated code for {}", className);
         } catch (IOException | TemplateException e) {
             log.error("Failed to generate code for endpoint {}: {}", apiSpec.getEndpoint(), e.getMessage());
             throw new RuntimeException(e);

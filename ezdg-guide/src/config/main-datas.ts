@@ -1,3 +1,4 @@
+// TODO: 통신 연결 시 파라미터 변경 필요
 import { DataItem } from "@/types/data";
 
 export const DATA_ITEMS: DataItem[] = [

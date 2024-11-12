@@ -1,0 +1,81 @@
+/* 기본 코드 스타일 */
+.syntax-highlighted {
+  color: #f8f8f2;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+  tab-size: 4;
+  hyphens: none;
+}
+
+/* 키워드 */
+.syntax-highlighted .token.keyword {
+  color: #569CD6;
+}
+
+/* 문자열 */
+.syntax-highlighted .token.string {
+  color: #CE9178;
+}
+
+/* 함수 */
+.syntax-highlighted .token.function {
+  color: #DCDCAA;
+}
+
+/* 클래스 이름 */
+.syntax-highlighted .token.class-name {
+  color: #4EC9B0;
+}
+
+/* 주석 */
+.syntax-highlighted .token.comment {
+  color: #6A9955;
+}
+
+/* 숫자 */
+.syntax-highlighted .token.number {
+  color: #B5CEA8;
+}
+
+/* 연산자 */
+.syntax-highlighted .token.operator {
+  color: #D4D4D4;
+}
+
+/* Java 특화 스타일 */
+.language-java .token.keyword {
+  color: #569CD6;
+}
+
+.language-java .token.class-name {
+  color: #4EC9B0;
+}
+
+/* JavaScript 특화 스타일 */
+.language-javascript .token.keyword {
+  color: #C586C0;
+}
+
+.language-javascript .token.string {
+  color: #CE9178;
+}
+
+/* XML/Maven 특화 스타일 */
+.language-markup .token.tag {
+  color: #569CD6;
+}
+
+.language-markup .token.attr-name {
+  color: #9CDCFE;
+}
+
+/* Bash 특화 스타일 */
+.language-bash {
+  color: #B5CEA8;
+}
