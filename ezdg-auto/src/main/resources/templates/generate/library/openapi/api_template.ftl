@@ -16,38 +16,38 @@ public class ${className} {
     * ${field.description}
     */
     public ${className} ${field.name}(${field.type} ${field.name}) {
-        if(queryParams.length() == 0) queryParams.append("?");
+        if (queryParams.length() == 0) queryParams.append("?");
         else queryParams.append("&");
         queryParams.append("${field.name}=").append(${field.name});
         return this;
     }
 
 </#list>
-public ${className}Response fetch() throws Exception {
-    // API 호출
-    URL url = new URL(BASE_URL + queryParams.toString());
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-    conn.setRequestMethod("GET");
-    conn.setRequestProperty("Content-Type", "application/json");
 
-// 응답 읽기
-BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-String inputLine;
-StringBuilder content = new StringBuilder();
+    /**
+    * API 호출 및 응답 파싱
+    */
+    public ${className}Response fetch() {
+        try {
+            URL url = new URL(BASE_URL + queryParams.toString());
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-Type", "application/json");
 
-while ((inputLine = in.readLine()) != null) {
-    content.append(inputLine);
-}
-in.close();
-conn.disconnect();
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder content = new StringBuilder();
+            String inputLine;
 
+            while ((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+            }
+            in.close();
+            conn.disconnect();
 
-// JSON 파싱
-try {
-    return objectMapper.readValue(content.toString(), ${className}Response.class);
-    } catch (Exception e) {
-    e.printStackTrace();
-    throw new RuntimeException("Failed to parse JSON response", e);
-    }
-}
+            return objectMapper.readValue(content.toString(), ${className}Response.class);
+            } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("API 요청 또는 JSON 파싱 실패", e);
+            }
+        }
 }

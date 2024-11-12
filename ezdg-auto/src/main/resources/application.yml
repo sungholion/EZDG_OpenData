@@ -1,33 +1,21 @@
 spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://S11P21D207:7rPaud@ssafy.ngivl.mongodb.net/S11P21D207?authSource=admin&retryWrites=true&w=majority
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/ezdg?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: ssafy
+    password: ssafy
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
   servlet:
     multipart:
       enabled: true
       max-file-size: 200MB
       max-request-size: 200MB
-      file-size-threshold: 50MB
+      file-size-threshold: 100KB
       location: C:\\Users\\SSAFY\\Desktop\\temp-file\\
-  data:
-    mongodb:
-      uri: mongodb+srv://S11P21D207:7rPaud@ssafy.ngivl.mongodb.net/S11P21D207?authSource=admin&retryWrites=true&w=majority
-  #  datasource:
-  #    url: jdbc:mysql://localhost:3306/ezdg?useSSL=false&serverTimezone=UTC
-  #    username: root
-  #    password: 1234
-  #    driver-class-name: com.mysql.cj.jdbc.Driver
-  #  jpa:
-  #    hibernate:
-  #      ddl-auto: update
-  #      dialect: org.hibernate.dialect.MySQLDialect  #
-  #    show-sql: true
-  #    properties:
-  #      hibernate:
-  #        format_sql: true
-
-server:
-  servlet:
-    encoding:
-      charset: UTF-8
-      force: true
 
 springdoc:
   api-docs:
@@ -39,13 +27,18 @@ springdoc:
     operations-sorter: alpha
 
 path:
- java-library-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
- api-server-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
- temp-file-path: C:\\Users\\SSAFY\\Desktop\\temp-file\\
-
-admin:
-  base-url: /admin
+  java-library-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
+  api-server-project-path: C:\\Users\\SSAFY\\Desktop\\generated\\
+  temp-file-path: C:\\Users\\SSAFY\\Desktop\\temp-file\\
 
 external:
   api:
-    fastApi: http://k11d201.p.ssafy.io/croller
+    naver:
+      papago:
+        id: asdasd
+        key: asdasasdasdasd
+        glossarykey: asdadsadasdds9
+    fastApi: k11d201.p.ssafy.io/croller
+
+admin:
+  base-url: /admin
