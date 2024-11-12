@@ -94,7 +94,7 @@ public class OpenApiController {
     @ResponseBody
     public ResponseEntity<Void> saveApiData(@RequestBody ApiDataDto request) {
         openApiService.generateLibraryCode(request.getApiList());
-        // TODO mongoDB에 배포 데이터 저장
+        datalistService.saveDocument(request);
         return ResponseEntity.ok().build();
     }
 

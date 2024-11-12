@@ -26,6 +26,19 @@
       max-width: 700px;
       margin: 0 auto;
     }
+    .spinner-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        display: none; /* Initially hidden */
+    }
   </style>
 </head>
 <body>
@@ -63,6 +76,13 @@
       <button type="button" class="btn btn-primary mt-4" onclick="submitForm()">등록</button>
     </div>
   </form>
+</div>
+
+<!-- Spinner Overlay -->
+<div class="spinner-overlay" id="spinnerOverlay">
+  <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -129,6 +149,7 @@
                   originColumns,
                   code,
                 };
+                document.getElementById("spinnerOverlay").style.display = "flex";
 
                 fetch(url, {
                   method: "POST",
@@ -148,6 +169,10 @@
                         .catch(error => {
                           console.error("Error:", error);
                           alert("서버 오류가 발생했습니다.");
+                        })
+                        .finally(() => {
+                          // Hide spinner after the request completes
+                          document.getElementById("spinnerOverlay").style.display = "none";
                         });
               }
             })
