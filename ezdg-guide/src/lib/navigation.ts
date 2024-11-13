@@ -1,28 +1,41 @@
-import type { DataCategory } from "@/types/data";
+// lib/navigation.ts
+import { TramFront, FileText } from "lucide-react";
+import { isApiGuideItem } from "@/types/guide";
+import type { GuideMenuItem } from "@/types/guide";
 import type { NavDataItem } from "@/types/sidebar";
 
-// DataCategory를 NavItem으로 변환하는 유틸리티 함수
-export function convertDataCategoryToNavItem(category: DataCategory): NavDataItem {
-  // 기본 NavDataItem 구조
-  const navItem: NavDataItem = {
-    title: category.title,
-    url: `/datas/${category.id}`,
-    icon: category.icon,
-    items: []
-  };
+export function generateNavigationFromGuide(menuItems: GuideMenuItem[]): NavDataItem[] {
+  // API 아이템 그룹화
+  const apiItems = menuItems.filter(isApiGuideItem);
+  
+  const navItems: NavDataItem[] = [];
 
-  // endpoints가 있는 경우에만 하위 항목 추가
-  if (category.endpoints && category.endpoints.length > 0) {
-    navItem.items = category.endpoints.map(endpoint => ({
-      title: endpoint.title,
-      url: `/datas/${category.id}/${endpoint.path.replace("/", "")}`
-    }));
+  // API 그룹이 있는 경우
+  if (apiItems.length > 0) {
+    navItems.push({
+      title: "API Guides",
+      icon: TramFront,
+      type: 'api',
+      isActive: true,
+      items: apiItems.map(item => ({
+        title: item.originalName,
+        url: `/guide/detail?id=${item._id}`,
+      })),
+      deployed: apiItems.every(item => item.deployed)
+    });
   }
 
-  return navItem;
-}
+  // File 아이템들 추가
+  const fileItems = menuItems
+    .filter(item => item.type === 'file')
+    .map(item => ({
+      title: item.originalName,
+      icon: FileText,
+      type: 'file' as const,
+      url: `/guide/detail?id=${item._id}`,
+      isActive: false,
+      deployed: item.deployed
+    }));
 
-// 전체 데이터 카테고리를 네비게이션 아이템으로 변환
-export function generateNavigationFromCategories(categories: DataCategory[]): NavDataItem[] {
-  return categories.map(convertDataCategoryToNavItem);
+  return [...navItems, ...fileItems];
 }

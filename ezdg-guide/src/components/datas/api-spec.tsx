@@ -2,7 +2,7 @@
 
 import { CodeTabs } from "../code-example";
 import { Badge } from "../ui/badge";
-import type { ApiSpec } from "@/types/data";
+import type { ApiSpec } from "@/types/main-data";
 
 interface ApiSpecProps {
   spec: ApiSpec;

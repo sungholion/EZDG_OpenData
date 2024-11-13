@@ -24,15 +24,15 @@ function SearchResults({
   onItemClick: (item: Omit<HistoryItem, "timestamp">) => void;
 }) {
   const { hits } = useHits<SearchResult>();
-  // 검색 설정을 위한 hook
+  // 검색 설정을 위한 hook -> 수정 해야함, Types도 수정 필요
   useConfigure({
     hitsPerPage: 5,
     distinct: true,
     query,
     // 검색할 속성 지정
-    attributesToRetrieve: ["objectID", "id", "title", "description"],
+    attributesToRetrieve: ["objectID", "originalName", "translatedName", "code"],
     // 하이라이트할 속성 지정
-    attributesToHighlight: ["title", "description"],
+    attributesToHighlight: ["originalName", "translatedName"],
   } as UseConfigureProps);
 
   if (query && hits.length === 0) {
@@ -54,12 +54,12 @@ interface HitComponentProps {
   onItemClick: (item: Omit<HistoryItem, "timestamp">) => void;
 }
 
-// endpoints에 따라 다르게 주소를 라우팅하기 위한 함수
+// endpoints에 따라 다르게 주소를 라우팅하기 위한 함수 -> 수정해야함
 function getRouteFormHit(hit: SearchResult): string {
   if (hit.id) {
-    return `/datas/${hit.objectID}/${hit.id}`;
+    return `/datas/${hit.originalName}/${hit.translatedName}`;
   }
-  return `/datas/${hit.objectID}`;
+  return `/datas/${hit.originalName}`;
 }
 
 // TODO: 라우팅 해야하는 링크 주소에 맞게 objectID, id 수정 필요
@@ -70,12 +70,12 @@ function HitComponent({ hit, onClose, onItemClick }: HitComponentProps) {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
 
-    // 클릭한 항목을 기록
+    // 클릭한 항목을 기록 -> 수정해야함
     onItemClick({
       objectID: hit.objectID,
-      id: hit.id,
-      title: hit.title,
-      description: hit.description,
+      id: hit.code,
+      title: hit.originalName, // originalName을 title로 사용
+      description: hit.translatedName, // translatedName을 description으로 사용
     });
 
     onClose();
@@ -87,13 +87,13 @@ function HitComponent({ hit, onClose, onItemClick }: HitComponentProps) {
       <h3
         className="font-medium"
         dangerouslySetInnerHTML={{
-          __html: hit._highlightResult?.title?.value || hit.title,
+          __html: hit._highlightResult?.originalName?.value || hit.originalName,
         }}
       />
       <p
         className="text-sm text-gray-500 mt-1 line-clamp-2"
         dangerouslySetInnerHTML={{
-          __html: hit._highlightResult?.description?.value || hit.description,
+          __html: hit._highlightResult?.translatedName?.value || hit.translatedName,
         }}
       />
     </Link>
@@ -101,17 +101,14 @@ function HitComponent({ hit, onClose, onItemClick }: HitComponentProps) {
 }
 
 // 클릭했던 데이터에 관한 기록을 남기게 해주는 로직
-function HistoryList({
-  items,
-  onItemClick,
-  onItemRemove,
-  onClear,
-}: {
+interface HistoryListProps {
   items: HistoryItem[];
   onItemClick: (item: HistoryItem) => void;
   onItemRemove: (objectID: string) => void;
   onClear: () => void;
-}) {
+}
+
+function HistoryList({ items, onItemClick, onItemRemove, onClear }: HistoryListProps) {
   if (items.length === 0) {
     return <div className="px-3 py-8 text-center text-gray-500">최근 조회 기록이 없습니다</div>;
   }
@@ -125,12 +122,12 @@ function HistoryList({
         </button>
       </div>
       {items.map((item) => (
-        <div key={item.objectID} className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-100">
+        <div key={item.objectID} className="flex items-center justify-between py-2 rounded-lg hover:bg-gray-100">
           <button className="flex items-start gap-2 flex-1 text-left" onClick={() => onItemClick(item)}>
             <Clock className="w-4 h-4 mt-1 text-gray-400 flex-shrink-0" />
             <div>
-              <div className="font-medium">{item.title}</div>
-              <div className="text-sm text-gray-500 line-clamp-1">{item.description}</div>
+              <div className="font-medium">{String(item.title)}</div>
+              <div className="text-sm text-gray-500 line-clamp-1">{String(item.description)}</div>
             </div>
           </button>
           <button
