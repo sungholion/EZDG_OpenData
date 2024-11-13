@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -104,4 +105,11 @@ public class DatalistService {
     }
 
 
+    public void deployDocument() {
+        System.out.println("배포 시작");
+        Query query = new Query(Criteria.where("deployed").is(false));
+        Update update = new Update().set("deployed", true);
+        mongoTemplate.updateMulti(query, update, "data_list");
+
+    }
 }
