@@ -19,9 +19,13 @@ public abstract class AbstractAPI<T> {
     private final ObjectMapper mapper = new ObjectMapper();
     protected URIBuilder uriBuilder;
 
-
     public AbstractAPI(String endpoint) {
-        uriBuilder = new URIBuilder().setScheme("http").setHost("localhost:8080").setPath(endpoint);
+        String scheme = Config.getProperty("api.scheme");
+        String host = Config.getProperty("api.host");
+        uriBuilder = new URIBuilder()
+                .setScheme(scheme != null ? scheme : "http")
+                .setHost(host != null ? host : "localhost:8080")
+                .setPath(endpoint);
     }
 
     protected String encode(String str) {
@@ -53,7 +57,6 @@ public abstract class AbstractAPI<T> {
 
     public List<T> fetch() throws URISyntaxException, IOException {
         URL url = uriBuilder.build().toURL();
-        System.out.println(url);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json");
