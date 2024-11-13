@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Getter
 @Setter
 public class ${className} {
+
     private Response response;
 
     @Getter
@@ -39,7 +40,7 @@ public class ${className} {
     @Setter
     public static class Items {
         private List<Item> item;
-        }
+    }
 
     @Getter
     @Setter
@@ -49,7 +50,7 @@ public class ${className} {
         <#if field.name != "resultCode" && field.name != "resultMsg" &&
         field.name != "numOfRows" && field.name != "pageNo" &&
         field.name != "totalCount" && field.name != "dataType">
-            private String ${field.name};
+        private String ${field.name};
         </#if>
     </#list>
 </#if>
@@ -62,7 +63,7 @@ public class ${className} {
             <#if field.name != "resultCode" && field.name != "resultMsg" &&
             field.name != "numOfRows" && field.name != "pageNo" &&
             field.name != "totalCount" && field.name != "dataType">
-                sb.append("${field.name?cap_first}: ").append(this.get${field.name?cap_first}()).append("\n");
+            sb.append("${field.name?cap_first}: ").append(this.get${field.name?cap_first}()).append("\n");
             </#if>
         </#list>
     </#if>
@@ -76,7 +77,7 @@ public class ${className} {
         ObjectMapper mapper = new ObjectMapper();
         try {
              return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
-    } catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
             return super.toString();
         }
