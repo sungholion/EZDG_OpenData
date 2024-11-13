@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>API Response Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+<h1>요약재무제표조회</h1>
+
+<div class="row">
+    <div th:each="item : ${response.response.body.items.item}" class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">법인등록번호: <span th:text="${item.crno}"></span></h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>계정과목명:</strong> <span th:text="${item.acitNm}"></span></li>
+                    <li class="list-group-item"><strong>계정과목ID:</strong> <span th:text="${item.acitId}"></span></li>
+                    <li class="list-group-item"><strong>사업연도:</strong> <span th:text="${item.bizYear}"></span></li>
+                    <li class="list-group-item"><strong>전전기계정과목금액:</strong> <span th:text="${item.bpvtrAcitAmt}"></span></li>
+                    <li class="list-group-item"><strong>당기계정과목금액:</strong> <span th:text="${item.crtmAcitAmt}"></span></li>
+                    <li class="list-group-item"><strong>통화코드:</strong> <span th:text="${item.curCd}"></span></li>
+                    <li class="list-group-item"><strong>재무제표구분코드:</strong> <span th:text="${item.fnclDcd}"></span></li>
+                    <li class="list-group-item"><strong>재무제표구분코드명:</strong> <span th:text="${item.fnclDcdNm}"></span></li>
+                    <li class="list-group-item"><strong>전분기계정과목금액:</strong> <span th:text="${item.lsqtAcitAmt}"></span></li>
+                    <li class="list-group-item"><strong>전기계정과목금:</strong> <span th:text="${item.pvtrAcitAmt}"></span></li>
+                    <li class="list-group-item"><strong>당분기계정과목금액:</strong> <span th:text="${item.thqrAcitAmt}"></span></li>
+                    <li class="list-group-item"><strong>기준일자:</strong> <span th:text="${item.basDt}"></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

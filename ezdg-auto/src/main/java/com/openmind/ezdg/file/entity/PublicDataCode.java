@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 public class PublicDataCode {
     @Id
     private String id;
-    
+
     // 공공데이터 각 데이터 별 식별코드
     private String code;
-    
+
     // 코드 저장 일시
     private LocalDateTime regDate;
 }
