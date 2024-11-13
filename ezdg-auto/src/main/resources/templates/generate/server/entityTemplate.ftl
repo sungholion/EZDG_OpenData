@@ -5,9 +5,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import lombok.Setter;
 
-@Document(collection = "${collectionName}")
 @Getter
 @Setter
+@Document(collection = "${collectionName}")
 public class ${className} {
     @Id
     private String id;

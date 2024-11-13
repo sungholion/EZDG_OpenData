@@ -39,15 +39,15 @@ public class ${className} {
             String inputLine;
 
             while ((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
+                content.append(inputLine);
             }
             in.close();
             conn.disconnect();
 
             return objectMapper.readValue(content.toString(), ${className}Response.class);
-            } catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("API 요청 또는 JSON 파싱 실패", e);
-            }
         }
+    }
 }
