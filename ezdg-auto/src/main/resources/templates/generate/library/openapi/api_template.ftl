@@ -1,6 +1,7 @@
 package ${packageName};
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.charset.StandardCharsets;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -24,14 +25,14 @@ public class ${className} {
 <#list requestFields as field>
     <#if field.name == "serviceKey" || field.name == "ServiceKey">
     public ${className} (String serviceKey) {
-        queryParams.append("${field.name}=").append(serviceKey);
+        queryParams.append("?${field.name}=").append(encode(serviceKey));
     }
     <#else>
     /**
     * ${field.description}
     */
     public ${className} ${field.name}(${field.type} ${field.name}) {
-        queryParams.append("&${field.name}=").append(${field.name});
+        queryParams.append("&${field.name}=").append(encode(${field.name}));
         return this;
     }
     </#if>
@@ -45,7 +46,7 @@ public class ${className} {
         List<String> exceptedParams = new ArrayList<>();
         for (String requiredParam : requiredParams) {
             if(!queryParamStr.contains(requiredParam)) {
-            exceptedParams.add(requiredParam);
+                exceptedParams.add(requiredParam);
             }
         }
         if(exceptedParams.size() > 0) {
@@ -71,6 +72,15 @@ public class ${className} {
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("API 요청 또는 JSON 파싱 실패", e);
+        }
+    }
+
+
+    private String encode(String value) {
+        try {
+            return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
+        } catch (Exception e) {
+            throw new RuntimeException("Encoding error", e);
         }
     }
 }
