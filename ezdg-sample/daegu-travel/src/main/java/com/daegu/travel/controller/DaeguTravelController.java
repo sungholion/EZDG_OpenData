@@ -29,7 +29,7 @@ public class DaeguTravelController {
     public List<DaeguTourismCourseInformationDto> getAllDaeguTourismCourseInformationForDB() {
         return DaeguTravelService.getAllDaeguTourismCourseInformationForDB();
     }
-
+//
     @Operation(summary = "(내 DB로부터) 대구 숙박 조회 API", description = "라이브러리를 통해 조회한 공공 데이터를 내 DB에서 저장한 후, 대구광역시_관광코스 정보_20231215.csv 파일 데이터를 조회합니다.")
     @GetMapping("/getAllDaeguMetropolitanCityStatusOfTourismAccommodationBusinessForDB")
     public List<DaeguMetropolitanCityStatusOfTourismAccommodationBusinessDto> getAllDaeguMetropolitanCityStatusOfTourismAccommodationBusinessForDB() {
