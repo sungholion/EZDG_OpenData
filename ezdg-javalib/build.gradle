@@ -1,11 +1,32 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'com.openmind'
 version = '1.0-SNAPSHOT'
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url = project.hasProperty("repositoryUrl") ? project.property("repositoryUrl") : "https://default-url"
+            credentials {
+                username = project.hasProperty("repositoryUsername") ? project.property("repositoryUsername") : ""
+                password = project.hasProperty("repositoryPassword") ? project.property("repositoryPassword") : ""
+            }
+        }
+    }
+}
+
 repositories {
+    maven {
+        url "https://lab.ssafy.com/api/v4/projects/823781/packages/maven"
+    }
     mavenCentral()
 }
 
@@ -21,4 +42,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
