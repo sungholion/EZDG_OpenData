@@ -66,9 +66,10 @@ public class CsvSaveService {
         // 첫 번째 행의 데이터를 기준으로 초기 타입 설정
         for (int j = 0; j < translatedColumns.size(); j++) {
             String columnName = translatedColumns.get(j);
+            String camelColumnName = customStringUtil.snakeCaseToCamelCase(columnName);
             String value = j < firstRow.length ? firstRow[j] : null;
             String dataType = typeConvertUtil.getDataTypeFromString(value);
-            columnDataTypes.put(columnName, dataType); // 초기 데이터 타입 설정
+            columnDataTypes.put(camelColumnName, dataType); // 초기 데이터 타입 설정
         }
 
         // 두 번째 행부터 타입 검증 시작
