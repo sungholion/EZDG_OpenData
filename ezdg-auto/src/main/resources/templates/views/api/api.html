@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open API 페이지</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      .step-circle {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 0.5rem;
+        color: white;
+      }
+      .active {
+        background-color: #007bff;
+      }
+      .inactive {
+        background-color: gray;
+      }
+      .form-container {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .btn-next {
+        margin-right: 150px;
+      }
+      .input-container {
+        max-width: 600px;
+        margin-left: 150px;
+      }
+      .spinner-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        display: none; /* Initially hidden */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5" id="file-container" th:data-baseurl="${baseUrl}">
+      <div class="text-center">
+        <span class="step-circle active">1</span>
+        <span class="step-circle inactive">2</span>
+        <span class="step-circle inactive">3</span>
+      </div>
+      <h2 class="text-center mt-3">Open API 페이지</h2>
+      <form id="openApiForm" class="form-container mt-3">
+        <div class="text-center">
+          <div class="input-container">
+            <div class="input-group mt-3">
+              <span class="input-group-text identify text-center">URL</span>
+              <input type="text" class="form-control" placeholder="URL" id="urlInput" name="url" />
+            </div>
+          </div>
+          <div class="form-text">※ 공공데이터 Open API URL을 입력하세요</div>
+
+          <!-- Toggle for "테이블" or "Swagger" -->
+          <div class="mt-3 d-flex justify-content-center">
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="crollerOption"
+                id="tableOption"
+                value="테이블"
+                checked
+              />
+              <label class="form-check-label" for="tableOption">테이블</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="crollerOption"
+                id="swaggerOption"
+                value="Swagger"
+              />
+              <label class="form-check-label" for="swaggerOption">Swagger</label>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end mt-4">
+            <button type="button" class="btn btn-primary btn-next" onclick="submitForm()">
+              다음
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Spinner Overlay -->
+    <div class="spinner-overlay" id="spinnerOverlay">
+      <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function submitForm() {
+        // 모델로 넘어온 baseUrl을 포함하여 URL 설정
+        let baseUrl = document.getElementById("file-container").getAttribute("data-baseurl");
+        if (!baseUrl) {
+          baseUrl = "";
+        }
+
+        // URL과 선택한 displayOption 값을 가져옵니다
+        const url = document.getElementById("urlInput").value;
+        const crollerOption = document.querySelector('input[name="crollerOption"]:checked').value;
+
+        // 서버로 보낼 데이터 설정
+        const data = { url: url, crollerOption: crollerOption };
+
+        document.getElementById("spinnerOverlay").style.display = "flex";
+
+        // Fetch API를 사용해 비동기 방식으로 데이터 전송
+        fetch(`${baseUrl}/openapi`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then((data) => {
+          // 서버 응답에 따라 처리
+          // console.log("서버 응답: ", data);
+          return fetch(data.saveUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data),
+          });
+        })
+        .then(() => {
+           window.location.href = `${baseUrl}/openapi/save`
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("서버 오류가 발생했습니다.");
+        })
+        .finally(() => {
+            // Hide spinner after the request completes
+            document.getElementById("spinnerOverlay").style.display = "none";
+        });
+      }
+    </script>
+  </body>
+</html>

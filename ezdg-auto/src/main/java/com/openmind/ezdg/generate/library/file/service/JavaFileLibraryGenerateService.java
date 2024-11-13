@@ -1,6 +1,6 @@
 package com.openmind.ezdg.generate.library.file.service;
 
-import com.openmind.ezdg.file.dto.filesave.AutoLibraryInfoDto;
+import com.openmind.ezdg.file.dto.filesave.FileInfoDto;
 import com.openmind.ezdg.file.util.CustomStringUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -23,19 +23,18 @@ public class JavaFileLibraryGenerateService {
 
     private final CustomStringUtil customStringUtil;
 
-
     @Value("${path.java-library-project-path}")
     private String javaLibraryProjectPath;
 
-    public void generate(AutoLibraryInfoDto dto) {
+    public void generate(FileInfoDto dto) {
         Map<String, Object> data = new HashMap<>();
-        data.put("collectionName", dto.getClassInfo());
-        data.put("className", customStringUtil.capitalizeFirstLetter(customStringUtil.snakeCaseToCamelCase(dto.getClassInfo())));
+        data.put("collectionName", dto.getTranslatedFileName());
+        data.put("className", customStringUtil.capitalizeFirstLetter(customStringUtil.snakeCaseToCamelCase(dto.getTranslatedFileName())));
         List<Map<String, String>> fields = new ArrayList<>();
-        dto.getColumnInfo().forEach(columnInfo -> {
+        dto.getFields().forEach(columnInfo -> {
             Map<String, String> field = new HashMap<>();
-            field.put("type", columnInfo.getColumnType());
-            field.put("name", columnInfo.getColumnName());
+            field.put("type", columnInfo.getType());
+            field.put("name", columnInfo.getTranslatedName());
             fields.add(field);
         });
         data.put("fields", fields);
