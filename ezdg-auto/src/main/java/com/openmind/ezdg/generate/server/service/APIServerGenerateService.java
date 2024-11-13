@@ -1,6 +1,6 @@
 package com.openmind.ezdg.generate.server.service;
 
-import com.openmind.ezdg.file.dto.filesave.AutoLibraryInfoDto;
+import com.openmind.ezdg.file.dto.filesave.FileInfoDto;
 import com.openmind.ezdg.file.util.CustomStringUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -25,16 +25,16 @@ public class APIServerGenerateService {
     @Value("${path.api-server-project-path}")
     private String apiServerProjectPath;
 
-    public void generate(AutoLibraryInfoDto dto) {
+    public void generate(FileInfoDto dto) {
         Map<String, Object> data = new HashMap<>();
-        data.put("collectionName", dto.getClassInfo());
-        data.put("className", customStringUtil.capitalizeFirstLetter(customStringUtil.snakeCaseToCamelCase(dto.getClassInfo())));
+        data.put("collectionName", dto.getTranslatedFileName());
+        data.put("className", customStringUtil.capitalizeFirstLetter(customStringUtil.snakeCaseToCamelCase(dto.getTranslatedFileName())));
 
         List<Map<String, String>> fields = new ArrayList<>();
-        dto.getColumnInfo().forEach(columnInfo -> {
+        dto.getFields().forEach(columnInfo -> {
             Map<String, String> field = new HashMap<>();
-            field.put("type", columnInfo.getColumnType());
-            field.put("name", columnInfo.getColumnName());
+            field.put("type", columnInfo.getType());
+            field.put("name", columnInfo.getTranslatedName());
             fields.add(field);
         });
         data.put("fields", fields);
@@ -58,10 +58,8 @@ public class APIServerGenerateService {
         // java library 프로젝트의 패키지명
         data.put("packageName", "com.openmind.ezdg_api_server." + data.get("collectionName"));
 
-
-        Template controllerTemplate = null;
         try {
-            controllerTemplate = cfg.getTemplate("controllerTemplate.ftl");
+            Template controllerTemplate = cfg.getTemplate("controllerTemplate.ftl");
             String controllerPath = new StringBuilder()
                     .append(apiServerProjectPath)
                     .append(data.get("collectionName"))

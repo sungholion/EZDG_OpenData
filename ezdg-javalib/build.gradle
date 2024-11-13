@@ -1,0 +1,66 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'com.openmind'
+version = project.hasProperty("version") ? project.property("version") : "1.0-SNAPSHOT"
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact javadocJar // javadoc 포함
+            artifact sourcesJar // sources 포함
+        }
+    }
+    repositories {
+        maven {
+            url = project.hasProperty("repositoryUrl") ? project.property("repositoryUrl") : "https://default-url"
+            credentials {
+                username = project.hasProperty("repositoryUsername") ? project.property("repositoryUsername") : ""
+                password = project.hasProperty("repositoryPassword") ? project.property("repositoryPassword") : ""
+            }
+        }
+    }
+}
+
+// javadoc.jar 파일 생성
+task javadocJar(type: Jar) {
+    archiveClassifier.set('javadoc')
+    from tasks.javadoc
+}
+
+// sources.jar 파일 생성
+task sourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    // 테스트 라이브러리
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ["-g", "-parameters"] // javadoc 주석을 유지하도록 설정
+}
