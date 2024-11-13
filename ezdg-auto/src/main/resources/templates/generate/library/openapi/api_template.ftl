@@ -54,6 +54,7 @@ public class ${className} {
         }
         try {
             URL url = new URL(BASE_URL + queryParams.toString());
+            System.out.println("Generated URL: " + url);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json");
