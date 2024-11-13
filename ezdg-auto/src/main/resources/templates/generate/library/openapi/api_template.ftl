@@ -5,29 +5,51 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 
 public class ${className} {
     private static final String BASE_URL = "${baseUrl}${endpoint}";
     private StringBuilder queryParams = new StringBuilder();
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final String[] requiredParams = {
+<#list requestFields as field>
+    <#if (field.name != "serviceKey" && field.name != "ServiceKey") && field.required == "필수" || field.required == "true">
+        "${field.name}",
+    </#if>
+</#list>
+    };
 
 <#list requestFields as field>
+    <#if field.name == "serviceKey" || field.name == "ServiceKey">
+    public ${className} (String serviceKey) {
+        queryParams.append("${field.name}=").append(serviceKey);
+    }
+    <#else>
     /**
     * ${field.description}
     */
     public ${className} ${field.name}(${field.type} ${field.name}) {
-        if (queryParams.length() == 0) queryParams.append("?");
-        else queryParams.append("&");
-        queryParams.append("${field.name}=").append(${field.name});
+        queryParams.append("&${field.name}=").append(${field.name});
         return this;
     }
+    </#if>
 
 </#list>
-
     /**
     * API 호출 및 응답 파싱
     */
     public ${className}Response fetch() {
+        String queryParamStr = queryParams.toString();
+        List<String> exceptedParams = new ArrayList<>();
+        for (String requiredParam : requiredParams) {
+            if(!queryParamStr.contains(requiredParam)) {
+            exceptedParams.add(requiredParam);
+            }
+        }
+        if(exceptedParams.size() > 0) {
+            throw new RuntimeException(exceptedParams.toString() + " 파라미터는 필수입니다.");
+        }
         try {
             URL url = new URL(BASE_URL + queryParams.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
