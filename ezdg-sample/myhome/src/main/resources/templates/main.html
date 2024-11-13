@@ -1,15 +1,102 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Main Page</title>
+    <title>기업 기본 정보 조회</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 </head>
-<body class="container mt-5">
-<h1 class="text-center mb-4">금융위원회 기업정보 확인 서비스</h1>
-<div class="d-flex justify-content-center">
-    <a href="/financial-form" class="btn btn-primary btn-lg m-2">재무 상태표 조회</a>
-    <a href="/basic-info-form" class="btn btn-secondary btn-lg m-2">기본 정보 조회</a>
+
+<body class="container my-5">
+<h2 class="text-center mb-4">기업 기본 정보 조회 API</h2>
+
+<div class="row justify-content-center">
+    <!-- 검색 폼 -->
+    <form action="/submitForm" method="get" accept-charset="utf-8" class="d-flex align-items-center col-md-8 col-lg-6 mb-5">
+        <label for="corpNm" class="form-label me-2 mb-0 fw-bold">기업명:</label>
+        <input type="text" id="corpNm" name="corpNm" class="form-control me-2" placeholder="예: 삼성전자" style="width: 400px;"required>
+        <input type="hidden" name="numOfRows" value="10">
+        <input type="hidden" name="pageNo" value="1">
+        <input type="hidden" name="resultType" value="json">
+        <button type="submit" class="btn btn-primary">검색</button>
+    </form>
 </div>
+
+<!-- 검색 결과 -->
+<div th:if="${basicResponse != null}" class="mt-4">
+    <div class="card p-4 shadow">
+        <table class="table table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th>법인명</th>
+                <th>법인 등록 번호</th>
+                <th>대표자 성명</th>
+                <th>종업원 수</th>
+                <th>평균 근속 기간</th>
+                <th>1인 평균 급여</th>
+                <th>기본 주소</th>
+                <th>홈페이지</th>
+                <th>설립 일자</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${basicResponse.response.body.items.item}">
+                <td><a th:href="@{/submitFinForm(crno=${item.crno}, corpNm=${item.corpNm})}" th:text="${item.corpNm}" class="text-decoration-none text-primary"></a></td>
+                <td th:text="${item.crno}"></td>
+                <td th:text="${item.enpRprFnm}"></td>
+                <td th:text="${item.enpEmpeCnt}"></td>
+                <td th:text="${item.empeAvgCnwkTermCtt}"></td>
+                <td th:text="${item.enpPn1AvgSlryAmt}"></td>
+                <td th:text="${item.enpBsadr}"></td>
+                <td><a th:href="${item.enpHmpgUrl}" th:text="${item.enpHmpgUrl}" target="_blank" class="text-decoration-none"></a></td>
+                <td th:text="${item.enpEstbDt}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 페이지네이션 -->
+    <nav th:if="${totalPages > 1}" aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <!-- 이전 페이지로 이동 -->
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a class="page-link" th:href="@{/submitForm(pageNo=${currentPage - 1}, numOfRows=${numOfRows}, corpNm=${corpNm}, resultType='json')}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <!-- 첫 페이지 표시 및 ... -->
+            <li class="page-item" th:if="${currentPage > 4}">
+                <a class="page-link" th:href="@{/submitForm(pageNo=1, numOfRows=${numOfRows}, corpNm=${corpNm}, resultType='json')}">1</a>
+            </li>
+            <li class="page-item disabled" th:if="${currentPage > 4}">
+                <a class="page-link">...</a>
+            </li>
+
+            <!-- 현재 페이지 주변 페이지 링크 (현재 페이지 - 3 ~ 현재 페이지 + 3) -->
+            <li class="page-item" th:each="pageNum : ${#numbers.sequence(currentPage - 3 > 1 ? currentPage - 3 : 1, currentPage + 3 < totalPages ? currentPage + 3 : totalPages)}"
+                th:classappend="${pageNum == currentPage} ? 'active'">
+                <a class="page-link" th:href="@{/submitForm(pageNo=${pageNum}, numOfRows=${numOfRows}, corpNm=${corpNm}, resultType='json')}" th:text="${pageNum}"></a>
+            </li>
+
+            <!-- ... 및 마지막 페이지 표시 -->
+            <li class="page-item disabled" th:if="${currentPage < totalPages - 3}">
+                <a class="page-link">...</a>
+            </li>
+            <li class="page-item" th:if="${currentPage < totalPages - 3}">
+                <a class="page-link" th:href="@{/submitForm(pageNo=${totalPages}, numOfRows=${numOfRows}, corpNm=${corpNm}, resultType='json')}" th:text="${totalPages}"></a>
+            </li>
+
+            <!-- 다음 페이지로 이동 -->
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a class="page-link" th:href="@{/submitForm(pageNo=${currentPage + 1}, numOfRows=${numOfRows}, corpNm=${corpNm}, resultType='json')}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- 오류 메시지 -->
+<div th:if="${basicError != null}" class="alert alert-danger mt-4 text-center" th:text="${basicError}"></div>
 </body>
 </html>

@@ -75,6 +75,7 @@ public class GetCorpOutline_V2Api {
 public GetCorpOutline_V2ApiResponse fetch() throws Exception {
     // API 호출
     URL url = new URL(BASE_URL + queryParams.toString());
+    System.out.println("url:" + url);
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
     conn.setRequestMethod("GET");
     conn.setRequestProperty("Content-Type", "application/json");
@@ -87,6 +88,9 @@ StringBuilder content = new StringBuilder();
 while ((inputLine = in.readLine()) != null) {
     content.append(inputLine);
 }
+
+System.out.println(content);
+
 in.close();
 conn.disconnect();
 
