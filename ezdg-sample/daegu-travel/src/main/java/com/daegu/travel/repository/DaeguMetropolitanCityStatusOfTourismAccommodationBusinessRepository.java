@@ -1,0 +1,7 @@
+package com.daegu.travel.repository;
+
+import com.daegu.travel.entity.DaeguMetropolitanCityStatusOfTourismAccommodationBusinessEntity;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface DaeguMetropolitanCityStatusOfTourismAccommodationBusinessRepository extends MongoRepository<DaeguMetropolitanCityStatusOfTourismAccommodationBusinessEntity, String> {
+}

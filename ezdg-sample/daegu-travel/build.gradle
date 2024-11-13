@@ -14,10 +14,14 @@ java {
 }
 
 repositories {
+	maven {
+		url 'https://lab.ssafy.com/api/v4/projects/823781/packages/maven'
+	}
 	mavenCentral()
 }
 
 dependencies {
+	implementation 'com.openmind:ezdg:1.1-SNAPSHOT'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'com.opencsv:opencsv:5.5.2'
