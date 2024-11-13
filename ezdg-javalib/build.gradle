@@ -23,10 +23,17 @@ publishing {
     }
 }
 
+// sources.jar 파일 생성
+task sourcesJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
 repositories {
-    maven {
-        url "https://lab.ssafy.com/api/v4/projects/823781/packages/maven"
-    }
     mavenCentral()
 }
 
