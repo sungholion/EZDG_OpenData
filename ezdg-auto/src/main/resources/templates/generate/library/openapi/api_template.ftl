@@ -24,7 +24,7 @@ public class ${className} {
 <#list requestFields as field>
     <#if field.name == "serviceKey" || field.name == "ServiceKey">
     public ${className} (String serviceKey) {
-        queryParams.append("${field.name}=").append(serviceKey);
+        queryParams.append("?${field.name}=").append(serviceKey);
     }
     <#else>
     /**
