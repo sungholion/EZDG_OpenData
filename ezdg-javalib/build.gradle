@@ -10,8 +10,8 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            artifact javadocJar // javadoc 포함
-            artifact sourcesJar // sources 포함
+//            artifact javadocJar // javadoc 포함
+//            artifact sourcesJar // sources 포함
         }
     }
     repositories {
@@ -26,21 +26,21 @@ publishing {
 }
 
 // javadoc.jar 파일 생성
-task javadocJar(type: Jar) {
-    archiveClassifier.set('javadoc')
-    from tasks.javadoc
-}
+//task javadocJar(type: Jar) {
+//    archiveClassifier.set('javadoc')
+//    from tasks.javadoc
+//}
 
 // sources.jar 파일 생성
-task sourcesJar(type: Jar) {
-    archiveClassifier.set('sources')
-    from sourceSets.main.allSource
-}
+//task sourcesJar(type: Jar) {
+//    archiveClassifier.set('sources')
+//    from sourceSets.main.allSource
+//}
 
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
+//artifacts {
+//   archives sourcesJar
+//    archives javadocJar
+//}
 
 repositories {
     mavenCentral()
