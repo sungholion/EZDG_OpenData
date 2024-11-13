@@ -100,12 +100,13 @@ public class CsvSaveService {
 
             for (int j = 0; j < row.length; j++) {
                 String columnName = translatedColumns.get(j);
+                String camelColumnName = customStringUtil.snakeCaseToCamelCase(columnName);
                 String value = row[j];
-                String dataType = columnDataTypes.get(columnName); // 최종 타입 가져오기
+                String dataType = columnDataTypes.get(camelColumnName); // 최종 타입 가져오기
 
 
                 // 결정된 타입으로 map에 put
-                putDocumentByDataType(dataType, documentMap, columnName, value);
+                putDocumentByDataType(dataType, documentMap, camelColumnName, value);
             }
             documents.add(new Document(documentMap));
         }
@@ -180,8 +181,4 @@ public class CsvSaveService {
      */
     public void insertCode(String code) {
         publicDataCodeRepository.save(PublicDataCode.builder()
-                .code(code)
-                .regDate(LocalDateTime.now())
-                .build());
-    }
-}
+                
