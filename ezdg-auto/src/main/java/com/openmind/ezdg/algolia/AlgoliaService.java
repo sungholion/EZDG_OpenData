@@ -1,6 +1,7 @@
 package com.openmind.ezdg.algolia;
 
 import com.algolia.api.SearchClient;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +21,12 @@ public class AlgoliaService {
     @Value("${external.api.algolia.key}")
     private String applicationKey;
 
-    SearchClient client = new SearchClient(applicationId, applicationKey);
+    private SearchClient client;
+
+    @PostConstruct
+    public void init() {
+        this.client = new SearchClient(applicationId, applicationKey);
+    }
 
     public void addEzdgGuideSearchObject(AlgoliaSearchFileDto param) {
         log.info("Reuqest add Algolia Object for file {}", param.toString());
@@ -29,6 +35,7 @@ public class AlgoliaService {
         Map<String, Object> data = new HashMap<>();
         data.put("originalName", param.getOriginalName());
         data.put("translatedName", param.getTranslatedName());
+        data.put("code", param.getCode());
         data.put("route", param.getRoute());
 
         client.addOrUpdateObject(
