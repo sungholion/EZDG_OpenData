@@ -100,13 +100,12 @@ public class CsvSaveService {
 
             for (int j = 0; j < row.length; j++) {
                 String columnName = translatedColumns.get(j);
-                String camelColumnName = customStringUtil.snakeCaseToCamelCase(columnName);
                 String value = row[j];
-                String dataType = columnDataTypes.get(camelColumnName); // 최종 타입 가져오기
+                String dataType = columnDataTypes.get(columnName); // 최종 타입 가져오기
 
 
                 // 결정된 타입으로 map에 put
-                putDocumentByDataType(dataType, documentMap, camelColumnName, value);
+                putDocumentByDataType(dataType, documentMap, columnName, value);
             }
             documents.add(new Document(documentMap));
         }
@@ -169,7 +168,7 @@ public class CsvSaveService {
     public ValidateDuplicateCodeDto validateDuplicateCode(String code) {
         Optional<PublicDataCode> publicDataCodeOpt = publicDataCodeRepository.findByCode(code);
 
-        if(publicDataCodeOpt.isEmpty()) {
+        if (publicDataCodeOpt.isEmpty()) {
             return new ValidateDuplicateCodeDto(false, null);
         }
         return new ValidateDuplicateCodeDto(true, publicDataCodeOpt.orElseThrow().getRegDate());
@@ -179,6 +178,7 @@ public class CsvSaveService {
      * 중복 검사를 하기 위해 새로운 데이터 삽입 시 공공데이터 code 값 mongoDB에 저장
      *
      */
-    public void insertCode(String code) {
-        publicDataCodeRepository.save(PublicDataCode.builder()
-                
+//    public void insertCode(String code) {
+//        publicDataCodeRepository.save(PublicDataCode.builder();
+//    }
+}
