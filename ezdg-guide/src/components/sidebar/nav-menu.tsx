@@ -12,7 +12,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
+  // DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import type { NavGuideItem } from "@/types/sidebar";
