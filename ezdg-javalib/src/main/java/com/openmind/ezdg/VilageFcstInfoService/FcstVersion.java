@@ -5,29 +5,29 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 
 public class FcstVersion {
     private static final String BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getFcstVersion";
     private StringBuilder queryParams = new StringBuilder();
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final String[] requiredParams = {
+        "pageNo",
+        "numOfRows",
+        "ftype",
+        "basedatetime",
+    };
 
-    /**
-    * 공공데이터포털에서 받은 인증키
-    */
-    public FcstVersion ServiceKey(String ServiceKey) {
-        if (queryParams.length() == 0) queryParams.append("?");
-        else queryParams.append("&");
-        queryParams.append("ServiceKey=").append(ServiceKey);
-        return this;
+    public FcstVersion (String serviceKey) {
+        queryParams.append("ServiceKey=").append(serviceKey);
     }
 
     /**
     * 페이지번호
     */
     public FcstVersion pageNo(String pageNo) {
-        if (queryParams.length() == 0) queryParams.append("?");
-        else queryParams.append("&");
-        queryParams.append("pageNo=").append(pageNo);
+        queryParams.append("&pageNo=").append(pageNo);
         return this;
     }
 
@@ -35,9 +35,7 @@ public class FcstVersion {
     * 한 페이지 결과 수
     */
     public FcstVersion numOfRows(String numOfRows) {
-        if (queryParams.length() == 0) queryParams.append("?");
-        else queryParams.append("&");
-        queryParams.append("numOfRows=").append(numOfRows);
+        queryParams.append("&numOfRows=").append(numOfRows);
         return this;
     }
 
@@ -45,9 +43,7 @@ public class FcstVersion {
     * 요청자료형식(XML/JSON) Default: XML
     */
     public FcstVersion dataType(String dataType) {
-        if (queryParams.length() == 0) queryParams.append("?");
-        else queryParams.append("&");
-        queryParams.append("dataType=").append(dataType);
+        queryParams.append("&dataType=").append(dataType);
         return this;
     }
 
@@ -55,9 +51,7 @@ public class FcstVersion {
     * 파일구분 -ODAM: 동네예보실황 -VSRT: 동네예보초단기 -SHRT: 동네예보단기
     */
     public FcstVersion ftype(String ftype) {
-        if (queryParams.length() == 0) queryParams.append("?");
-        else queryParams.append("&");
-        queryParams.append("ftype=").append(ftype);
+        queryParams.append("&ftype=").append(ftype);
         return this;
     }
 
@@ -65,17 +59,24 @@ public class FcstVersion {
     * 각각의 base_time 로 검색
     */
     public FcstVersion basedatetime(String basedatetime) {
-        if (queryParams.length() == 0) queryParams.append("?");
-        else queryParams.append("&");
-        queryParams.append("basedatetime=").append(basedatetime);
+        queryParams.append("&basedatetime=").append(basedatetime);
         return this;
     }
-
 
     /**
     * API 호출 및 응답 파싱
     */
     public FcstVersionResponse fetch() {
+        String queryParamStr = queryParams.toString();
+        List<String> exceptedParams = new ArrayList<>();
+        for (String requiredParam : requiredParams) {
+            if(!queryParamStr.contains(requiredParam)) {
+            exceptedParams.add(requiredParam);
+            }
+        }
+        if(exceptedParams.size() > 0) {
+            throw new RuntimeException(exceptedParams.toString() + " 파라미터는 필수입니다.");
+        }
         try {
             URL url = new URL(BASE_URL + queryParams.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
