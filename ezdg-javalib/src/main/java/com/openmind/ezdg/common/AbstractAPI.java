@@ -20,11 +20,9 @@ public abstract class AbstractAPI<T> {
     protected URIBuilder uriBuilder;
 
     public AbstractAPI(String endpoint) {
-        String scheme = Config.getProperty("api.scheme");
-        String host = Config.getProperty("api.host");
         uriBuilder = new URIBuilder()
-                .setScheme(scheme != null ? scheme : "http")
-                .setHost(host != null ? host : "localhost:8080")
+                .setScheme("https")
+                .setHost("k11d201.p.ssafy.io/api")
                 .setPath(endpoint);
     }
 
