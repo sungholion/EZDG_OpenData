@@ -20,19 +20,19 @@ import java.util.List;
 public class DaeguTravelAPIController {
 
     @Operation(summary = "대구 여행 코스 조회 API", description = "API 서버로 대구광역시_관광코스 정보_20231215.csv 파일 데이터를 조회합니다.")
-    @GetMapping("/getAllDaeguTourismFromAPI")
+    @GetMapping("/getAllDaeguTourism")
     public List<DaeguTourism> getAllDaeguTourismFromAPI() throws URISyntaxException, IOException {
         return DaeguTravelAPIService.getAllDaeguTourismFromAPI();
     }
 
     @Operation(summary = "대구 숙박 조회 API", description = "API 서버로 대구광역시_관광코스 정보_20231215.csv 파일 데이터를 조회합니다.")
-    @GetMapping("/getAllDaeguAccommodationFromAPI")
+    @GetMapping("/getAllDaeguAccommodation")
     public List<DaeguAccommodation> getAllDaeguAccommodationFromAPI() throws URISyntaxException, IOException {
         return DaeguTravelAPIService.getAllDaeguAccommodationFromAPI();
     }
 
     @Operation(summary = "대구 여행 코스 조회 API", description = "API 서버로 대구광역시_관광코스 정보_20231215.csv 파일 데이터를 조회합니다.")
-    @GetMapping("/getAllDaeguRestaurantFromAPI")
+    @GetMapping("/getAllDaeguRestaurant")
     public List<DaeguRestaurant> getAllDaeguRestaurantFromAPI() throws URISyntaxException, IOException {
         return DaeguTravelAPIService.getAllDaeguRestaurantFromAPI();
     }
