@@ -1,92 +1,195 @@
-// src/pages/TravelPage.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { fetchTravelCourses } from '../api/travelApi';
+import Navigation from '../components/Navigation';
+import RegionFilter from '../components/RegionFilter';
 import TravelList from '../components/TravelList';
-import TravelTabs from '../components/TravelTabs';
+import { fetchTourData, fetchHotelData, fetchFoodData } from '../api/travelApi';
+import { MapPin, Hotel, UtensilsCrossed } from 'lucide-react';
 
 const TravelPage = () => {
-  const [activeTab, setActiveTab] = useState('region'); 
+  const [activeCategory, setActiveCategory] = useState('tour');
   const [selectedRegion, setSelectedRegion] = useState('전체');
-  const [selectedCourse, setSelectedCourse] = useState('대구 Best of Best');
-  
-  const { data: courses = [], isLoading, error } = useQuery({
-    queryKey: ['travelCourses'],
-    queryFn: fetchTravelCourses
-  });
 
-  if (isLoading) return (
-    <div className="flex justify-center items-center min-h-screen bg-background">
-      <div className="animate-spin rounded-full h-12 w-12 border-4 border-violet-200 border-t-violet-600"></div>
-    </div>
-  );
-
-  if (error) return (
-    <div className="flex justify-center items-center min-h-screen bg-background">
-      <div className="text-red-500 bg-red-50 px-6 py-4 rounded-lg">
-        에러가 발생했습니다: {error.message}
-      </div>
-    </div>
-  );
-
-  const filteredCourses = courses.filter(course => {
-    if (activeTab === 'region') {
-      return selectedRegion === '전체' ? true : course.region === selectedRegion;
-    } else {
-      return course.title === selectedCourse;
+  const { data: items = [], isLoading } = useQuery({
+    queryKey: [activeCategory],
+    queryFn: () => {
+      switch (activeCategory) {
+        case 'tour':
+          return fetchTourData();
+        case 'hotel':
+          return fetchHotelData();
+        case 'food':
+          return fetchFoodData();
+        default:
+          return [];
+      }
     }
   });
 
-  if (activeTab === 'course') {
-    filteredCourses.sort((a, b) => a.courseNum - b.courseNum);
-  }
+  const handleCategoryChange = (category) => {
+    setActiveCategory(category);
+    setSelectedRegion('전체');
+  };
+
+  const getFilteredItems = () => {
+    if (selectedRegion === '전체') return items;
+
+    return items.filter(item => {
+      switch (activeCategory) {
+        case 'tour':
+          return item.region === selectedRegion;
+        case 'hotel':
+          return item.region === selectedRegion;
+        case 'food':
+          return item.businessType === selectedRegion;
+        default:
+          return false;
+      }
+    });
+  };
+
+  const getCategoryContent = () => {
+    switch (activeCategory) {
+      case 'tour':
+        return {
+          icon: <MapPin className="w-8 h-8 text-primary" />,
+          title: "대구의 명소",
+          description: "대구의 역사와 현재가 공존하는 특별한 관광지를 만나보세요.",
+          stats: [
+            { value: `${items.length}+`, label: "관광 명소" },
+            { value: "8+", label: "지역" },
+            { value: "4+", label: "테마" }
+          ]
+        };
+      case 'hotel':
+        return {
+          icon: <Hotel className="w-8 h-8 text-primary" />,
+          title: "대구의 숙소",
+          description: "편안한 휴식과 특별한 경험을 선사할 대구의 숙소를 찾아보세요.",
+          stats: [
+            { value: `${items.length}+`, label: "숙박 시설" },
+            { value: "8+", label: "지역" },
+            { value: "3+", label: "유형" }
+          ]
+        };
+      case 'food':
+        return {
+          icon: <UtensilsCrossed className="w-8 h-8 text-primary" />,
+          title: "대구의 맛집",
+          description: "대구의 특색있는 맛집들을 만나보세요.",
+          stats: [
+            { value: `${items.length}+`, label: "맛집" },
+            { value: "10+", label: "음식 종류" },
+            { value: "8+", label: "지역" }
+          ]
+        };
+      default:
+        return {};
+    }
+  };
+
+  const useCountUp = (end, duration = 300, shouldAnimate) => {
+    const [count, setCount] = useState(shouldAnimate ? 0 : end);
+  
+    useEffect(() => {
+      if (!shouldAnimate) {
+        setCount(end);
+        return;
+      }
+  
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        setCount(Math.floor(progress * end));
+        
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        } else {
+          setCount(end);
+        }
+      };
+      
+      window.requestAnimationFrame(step);
+    }, [end, duration, shouldAnimate]);
+  
+    return count;
+  };
+  
+  const AnimatedStat = ({ value, label, shouldAnimate }) => {
+    const numericValue = parseInt(value);
+    const animatedValue = useCountUp(
+      isNaN(numericValue) ? 0 : numericValue,
+      1000,
+      shouldAnimate
+    );
+  
+    return (
+      <div className="text-center">
+        <div className="text-2xl md:text-3xl font-bold text-primary mb-1">
+          {animatedValue}+
+        </div>
+        <div className="text-sm text-gray-600">
+          {label}
+        </div>
+      </div>
+    );
+  };
+
+  if (isLoading) return (
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+    </div>
+  );
+
+  const filteredItems = getFilteredItems();
+  const content = getCategoryContent();
 
   return (
-    <div className="min-h-screen bg-background px-[20%]">
+    <div className="min-h-screen bg-background">
+      <Navigation 
+        activeCategory={activeCategory} 
+        setActiveCategory={handleCategoryChange}
+      />
+      
       {/* 히어로 섹션 */}
-      <div className="py-16">
-        <div className="container mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-4">
-            대구 여행의 모든 것
-          </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-          역사와 현대가 어우러진 대구에서 잊지 못할 여행을 시작해보세요. 전통이 숨 쉬는 골목길부터 
-  트렌디한 핫플레이스까지, 대구가 품은 특별한 이야기와 숨겨진 명소들을 만나보세요. 당신만의 
-  여행을 만들어줄 맞춤형 추천 코스와 다양한 정보가 준비되어 있습니다.
-          </p>
-
-          {/* 총계 섹션 */}
-          <div className="flex justify-center gap-8 mt-12">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-violet-600">8</div>
-              <div className="text-gray-600">지역</div>
+      <div className="bg-gradient-to-b from-primary-light/30 to-background border-b border-primary-light/20">
+        <div className="container mx-auto px-4 lg:px-[20%] py-12">
+          <div className="flex flex-col items-center text-center">
+            <div className="flex items-center gap-3 mb-4">
+              {content.icon}
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+                {content.title}
+              </h1>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-violet-600">{courses.length}</div>
-              <div className="text-gray-600">여행코스</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-violet-600">30+</div>
-              <div className="text-gray-600">관광명소</div>
+            <p className="text-lg text-gray-600 mb-8 max-w-2xl">
+              {content.description}
+            </p>
+            <div className="flex justify-center gap-16">
+              {content.stats?.map((stat, idx) => (
+                <AnimatedStat 
+                  key={`${activeCategory}-${idx}`} 
+                  value={stat.value.replace('+', '')} 
+                  label={stat.label}
+                  shouldAnimate={selectedRegion === '전체'}
+                />
+              ))}
             </div>
           </div>
         </div>
       </div>
 
       {/* 메인 콘텐츠 */}
-      <div className="container mx-auto py-8">
-        <TravelTabs 
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
+      <div className="container mx-auto px-4 lg:px-[20%] py-8">
+        <RegionFilter 
           selectedRegion={selectedRegion}
           setSelectedRegion={setSelectedRegion}
-          selectedCourse={selectedCourse}
-          setSelectedCourse={setSelectedCourse}
-          courses={courses}
+          activeCategory={activeCategory}
+          items={items}
         />
         <TravelList 
-          courses={filteredCourses} 
-          activeTab={activeTab}
+          items={filteredItems}
+          category={activeCategory}
         />
       </div>
     </div>
