@@ -35,6 +35,23 @@ public class DatalistService {
     private final AlgoliaService algoliaService;
     private final CustomStringUtil customStringUtil;
 
+    public Document getDetail(String id) {
+        Query query = new Query(Criteria.where("_id").is(id));
+        return mongoTemplate.findOne(query, Document.class, "data_list");
+    }
+
+    public Document getDetail(String id, String className) {
+        Query query = new Query(Criteria.where("_id").is(id));
+        Document document = mongoTemplate.findOne(query, Document.class, "data_list");
+
+        if (document == null) return null;
+        List<Document> apiList = (List<Document>) document.get("apiList");
+        return apiList.stream()
+                .filter(apiDoc -> className.equals(apiDoc.getString("className")))
+                .findFirst()
+                .orElse(null);
+    }
+
     public List<Document> getMenuList() {
         Query query = new Query();
 
@@ -55,6 +72,16 @@ public class DatalistService {
         List<Document> apiResults = mongoTemplate.find(apiQuery, Document.class, "data_list")
                 .stream().map(doc -> {
                     doc.put("_id", new ObjectId(doc.get("_id").toString()).toHexString());
+                    List<Document> filteredApiList = ((List<Document>) doc.get("apiList"))
+                            .stream()
+                            .map(apiDoc -> {
+                                Document filteredDoc = new Document();
+                                filteredDoc.put("title", apiDoc.getString("title"));
+                                filteredDoc.put("className", apiDoc.getString("className"));
+                                return filteredDoc;
+                            })
+                            .collect(Collectors.toList());
+                    doc.put("apiList", filteredApiList);
                     return doc;
                 }).collect(Collectors.toList());
 
