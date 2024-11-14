@@ -43,6 +43,16 @@ public class DatalistService {
         List<Document> apiResults = mongoTemplate.find(apiQuery, Document.class, "data_list")
                 .stream().map(doc -> {
                     doc.put("_id", new ObjectId(doc.get("_id").toString()).toHexString());
+                    List<Document> filteredApiList = ((List<Document>) doc.get("apiList"))
+                            .stream()
+                            .map(apiDoc -> {
+                                Document filteredDoc = new Document();
+                                filteredDoc.put("title", apiDoc.getString("title"));
+                                filteredDoc.put("className", apiDoc.getString("className"));
+                                return filteredDoc;
+                            })
+                            .collect(Collectors.toList());
+                    doc.put("apiList", filteredApiList);
                     return doc;
                 }).collect(Collectors.toList());
 
