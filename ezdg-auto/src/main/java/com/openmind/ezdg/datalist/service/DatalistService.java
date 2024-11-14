@@ -145,7 +145,8 @@ public class DatalistService {
                 AlgoliaSearchApiDto dto = new AlgoliaSearchApiDto(
                         customStringUtil.normalizeOriginalName(apiDto.getMainTitle()) + "_" + apiListInfo.getTitle(),
                         apiDto.getId(),
-                        apiListInfo.getClassName()
+                        apiListInfo.getClassName(),
+                        apiDto.getType()
                 );
                 log.info("insert algolia api data for {}", dto);
                 algoliaService.addEzdgGuideSearchObject(dto);
@@ -160,8 +161,8 @@ public class DatalistService {
         for (MongoFileDto fileDto : fileDtos) {
             AlgoliaSearchFileDto dto = new AlgoliaSearchFileDto(
                     customStringUtil.normalizeOriginalName(fileDto.getOriginalFileName()),
-                    fileDto.getId()
-//                    customStringUtil.snakeCaseToCamelCase(fileDto.getTranslatedFileName())
+                    fileDto.getId(),
+                    fileDto.getType()
             );
             log.info("insert algolia file data for {}", dto);
             algoliaService.addEzdgGuideSearchObject(dto);

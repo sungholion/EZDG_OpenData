@@ -11,5 +11,6 @@ import lombok.ToString;
 @ToString
 public class AlgoliaSearchFileDto {
     private String originalName;
-    private String routeTitle;
+    private String id;
+    private String type;
 }

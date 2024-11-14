@@ -13,6 +13,7 @@ import java.util.List;
 @ToString
 public class AlgoliaSearchApiDto {
     private String originalName;
-    private String routeTitle;
-    private String routeSub;
+    private String id;
+    private String className;
+    private String type;
 }
