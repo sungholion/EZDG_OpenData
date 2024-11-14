@@ -1,51 +1,18 @@
-// app/page.tsx
 import MainDescription from "@/components/main/maindescription";
 import DataDescription from "@/components/main/datadescription";
 import Languages from "@/components/main/languages";
 import Feature from "@/components/main/feature";
 import { guideAPI } from "./api/guide";
-import type { GuideData, ApiGuideData, FileGuideData } from "@/types/guide";
 
 export default async function Home() {
   try {
     // 메뉴 아이템 목록 가져오기
     const menuItems = await guideAPI.getGuideMenu();
 
-    // 각 아이템의 상세 정보 가져오기
-    const detailedItems = await Promise.all(
-      menuItems.map(async (item) => {
-        try {
-          const detailData = await guideAPI.getGuideDetail(item._id);
-
-          if (!detailData) {
-            throw new Error(`No detail data for item ${item._id}`);
-          }
-
-          const isApiData = (detailData as ApiGuideData).type === "api";
-
-          return {
-            id: item._id,
-            type: detailData.type,
-            title: isApiData ? (detailData as ApiGuideData).mainTitle : (detailData as FileGuideData).originalFileName,
-            description: isApiData
-              ? (detailData as ApiGuideData).mainDescription
-              : (detailData as FileGuideData).translatedFileName, // originalFileName 대신 translatedFileName 사용
-            deployed: detailData.deployed,
-          };
-        } catch (error) {
-          console.error(`Failed to fetch details for ${item._id}:`, error);
-          return null;
-        }
-      })
-    );
-
-    // null값 제거
-    const validItems = detailedItems.filter((item): item is NonNullable<typeof item> => item !== null);
-
     return (
       <div className="container items-center mx-auto px-8 sm:px-12 md:px-16 lg:px-32">
         <MainDescription />
-        <DataDescription items={validItems} />
+        <DataDescription items={menuItems} />
         <Languages />
         <Feature
           title="손쉬운 OpenAPI 활용"
@@ -61,7 +28,6 @@ export default async function Home() {
     );
   } catch (error) {
     console.error("Failed to fetch guide data:", error);
-    // 에러 UI 렌더링 또는 에러 페이지로 리다이렉트
     return <div>Failed to load data</div>;
   }
 }

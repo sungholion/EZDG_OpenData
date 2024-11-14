@@ -1,6 +1,3 @@
-// components/search/command.tsx
-"use client";
-
 import { useEffect, useState } from "react";
 import { InstantSearch, useConfigure, Hits, useHits } from "react-instantsearch";
 import type { UseConfigureProps } from "react-instantsearch";
@@ -24,14 +21,11 @@ function SearchResults({
   onItemClick: (item: Omit<HistoryItem, "timestamp">) => void;
 }) {
   const { hits } = useHits<SearchResult>();
-  // 검색 설정을 위한 hook -> 수정 해야함, Types도 수정 필요
   useConfigure({
     hitsPerPage: 5,
     distinct: true,
     query,
-    // 검색할 속성 지정
     attributesToRetrieve: ["objectID", "originalName", "translatedName", "code"],
-    // 하이라이트할 속성 지정
     attributesToHighlight: ["originalName", "translatedName"],
   } as UseConfigureProps);
 
@@ -54,7 +48,6 @@ interface HitComponentProps {
   onItemClick: (item: Omit<HistoryItem, "timestamp">) => void;
 }
 
-// endpoints에 따라 다르게 주소를 라우팅하기 위한 함수 -> 수정해야함
 function getRouteFormHit(hit: SearchResult): string {
   if (hit.id) {
     return `/datas/${hit.originalName}/${hit.translatedName}`;
@@ -62,22 +55,17 @@ function getRouteFormHit(hit: SearchResult): string {
   return `/datas/${hit.originalName}`;
 }
 
-// TODO: 라우팅 해야하는 링크 주소에 맞게 objectID, id 수정 필요
-// 검색 시 나오는 데이터 클릭 시 해당 데이터에 관련된 가이드가 나오는 페이지로 이동하는 로직
 function HitComponent({ hit, onClose, onItemClick }: HitComponentProps) {
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-
-    // 클릭한 항목을 기록 -> 수정해야함
     onItemClick({
       objectID: hit.objectID,
       id: hit.code,
-      title: hit.originalName, // originalName을 title로 사용
-      description: hit.translatedName, // translatedName을 description으로 사용
+      title: hit.originalName,
+      description: hit.translatedName,
     });
-
     onClose();
     router.push(getRouteFormHit(hit));
   };
@@ -100,7 +88,6 @@ function HitComponent({ hit, onClose, onItemClick }: HitComponentProps) {
   );
 }
 
-// 클릭했던 데이터에 관한 기록을 남기게 해주는 로직
 interface HistoryListProps {
   items: HistoryItem[];
   onItemClick: (item: HistoryItem) => void;
@@ -144,7 +131,6 @@ function HistoryList({ items, onItemClick, onItemRemove, onClear }: HistoryListP
   );
 }
 
-// 검색 기능
 export function SearchCommand() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -202,7 +188,11 @@ export function SearchCommand() {
                   placeholder="검색어를 입력하세요..."
                   className="w-full bg-transparent outline-none placeholder:text-gray-400"
                 />
-                <span className="outline outline-offset-4 rounded-lg content-center text-xs outline-gray-200">ESC</span>
+                <span
+                  className="outline outline-offset-4 rounded-lg content-center text-xs outline-gray-200 cursor-pointer"
+                  onClick={onClose}>
+                  ESC
+                </span>
               </div>
               <hr className="border-gray-200" />
               <Command.List className="max-h-[60vh] overflow-y-auto p-2">

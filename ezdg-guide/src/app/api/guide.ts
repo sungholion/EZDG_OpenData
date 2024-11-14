@@ -22,6 +22,7 @@ export const guideAPI = {
       return response.data
     } catch (error) {
       console.log('Failed to fetch guide detail:', error)
+      throw error;
     }
   },
 

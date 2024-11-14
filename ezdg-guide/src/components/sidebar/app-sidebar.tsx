@@ -4,7 +4,6 @@ import * as React from "react";
 import { NavData } from "@/components/sidebar/nav-data";
 import { NavGuide } from "@/components/sidebar/nav-guide";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/ui/sidebar";
-import { generateNavigationFromGuide } from "@/lib/navigation";
 import { NAV_MENU } from "@/config/sidebar-guide";
 import { Separator } from "../ui/separator";
 import { SearchCommand } from "../algolia-search/search-modal";
@@ -26,7 +25,7 @@ function SidebarSkeleton() {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const [menuItems, setMenuitems] = React.useState<GuideMenuItem[]>([]);
+  const [menuItems, setMenuItems] = React.useState<GuideMenuItem[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -35,9 +34,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       try {
         setIsLoading(true);
         const data = await guideAPI.getGuideMenu();
-        setMenuitems(data);
+        setMenuItems(data);
       } catch (error) {
-        console.log("Failed to fetch menu items:", error);
+        console.error("Failed to fetch menu items:", error);
         setError("메뉴를 불러오는데 실패했습니다.");
       } finally {
         setIsLoading(false);
@@ -46,8 +45,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
     fetchMenuItems();
   }, []);
-
-  const navData = React.useMemo(() => generateNavigationFromGuide(menuItems), [menuItems]);
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -59,10 +56,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ) : error ? (
           <div className="p-4 text-red-500">{error}</div>
         ) : (
-          <NavData items={navData} />
+          <NavData items={menuItems} />
         )}
         <Separator />
         <NavGuide projects={NAV_MENU} />
+        <Separator />
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
