@@ -34,9 +34,7 @@ public class AlgoliaService {
 
         Map<String, Object> data = new HashMap<>();
         data.put("originalName", param.getOriginalName());
-        data.put("translatedName", param.getTranslatedName());
-        data.put("code", param.getCode());
-        data.put("route", param.getRoute());
+        data.put("routeTitle", param.getRouteTitle());
 
         client.addOrUpdateObject(
                 "ezdg",
@@ -51,8 +49,8 @@ public class AlgoliaService {
 
         Map<String, Object> data = new HashMap<>();
         data.put("originalName", param.getOriginalName());
-        data.put("translatedName", param.getTranslatedName());
-        data.put("details", param.getDetails());
+        data.put("routeTitle", param.getRouteTitle());
+        data.put("routeSub", param.getRouteSub());
 
         client.addOrUpdateObject(
                 "ezdg",
