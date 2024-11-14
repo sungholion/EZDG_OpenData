@@ -13,19 +13,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 @Document(collection = "daegu_restaurant")
 public class DaeguRestaurantEntity {
-
     @Id
     private String id;
-
     private String number;
     private String businessName;
     private String businessType;
     private String businessAddress;
 }
-
-//    private String nameOfBusiness;
-//    private String businessType;
-//    private String businessName;
-//    private String locationNew;
-//    private String locationOld;
-//    private String phone;

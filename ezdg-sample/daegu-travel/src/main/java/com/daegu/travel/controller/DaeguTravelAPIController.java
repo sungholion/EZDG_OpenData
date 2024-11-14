@@ -16,26 +16,24 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/daeguTravelAPI")
-@Tag(name = "대구 여행 코스 조회 From Library", description = "대구 여행 코스를 조회하는 공공 데이터 서비스")
+@Tag(name = "대구 여행 관련 정보 조회 From Library", description = "대구 여행을 위해 관광 코스, 숙박 업소, 맛집을 알려주는 API")
 public class DaeguTravelAPIController {
 
-    @Operation(summary = "대구 여행 코스 조회 API", description = "API 서버로 대구광역시_관광코스 정보_20231215.csv 파일 데이터를 조회합니다.")
+    @Operation(summary = "대구 관광 코스 조회", description = "대구의 관광 코스를 조회합니다")
     @GetMapping("/getAllDaeguTourism")
     public List<DaeguTourism> getAllDaeguTourismFromAPI() throws URISyntaxException, IOException {
         return DaeguTravelAPIService.getAllDaeguTourismFromAPI();
     }
 
-    @Operation(summary = "대구 숙박 조회 API", description = "API 서버로 대구광역시_관광코스 정보_20231215.csv 파일 데이터를 조회합니다.")
+    @Operation(summary = "대구 숙박 업소 조회", description = "대구의 숙박 업소를 조회합니다")
     @GetMapping("/getAllDaeguAccommodation")
     public List<DaeguAccommodation> getAllDaeguAccommodationFromAPI() throws URISyntaxException, IOException {
         return DaeguTravelAPIService.getAllDaeguAccommodationFromAPI();
     }
 
-    @Operation(summary = "대구 여행 코스 조회 API", description = "API 서버로 대구광역시_관광코스 정보_20231215.csv 파일 데이터를 조회합니다.")
+    @Operation(summary = "대구 맛집 식당 조회", description = "대구의 맛집 식당을 조회합니다")
     @GetMapping("/getAllDaeguRestaurant")
     public List<DaeguRestaurant> getAllDaeguRestaurantFromAPI() throws URISyntaxException, IOException {
         return DaeguTravelAPIService.getAllDaeguRestaurantFromAPI();
     }
-
-
 }

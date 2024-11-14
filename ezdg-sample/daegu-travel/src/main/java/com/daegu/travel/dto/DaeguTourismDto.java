@@ -7,15 +7,15 @@ import lombok.Data;
 @AllArgsConstructor
 public class DaeguTourismDto {
     private String id;
-    private String classification;    // 분류
-    private String courseTitle;   // 코스 타이틀
-    private int courseNumber;  // 코스 번호
-    private String courseTopic;   // 코스 주제
-    private String courseTopicDescription;    // 코스 주제 설명
-    private String region;  // 지역
-    private String touristDestination;    //관광지
-    private String courseDescription;   // 코스 설명
-    private String address; // 주소
-    private String phoneNumber;   // 전화 번호
-    private String homepage;    // 홈페이지
+    private String classification;
+    private String courseTitle;
+    private int courseNumber;
+    private String courseTopic;
+    private String courseTopicDescription;
+    private String region;
+    private String touristDestination;
+    private String courseDescription;
+    private String address;
+    private String phoneNumber;
+    private String homepage;
 }

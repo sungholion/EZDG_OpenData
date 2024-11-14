@@ -77,7 +77,7 @@ public class DaeguTravelDBService {
     public static List<DaeguRestaurantDto> getAllDaeguRestaurantFromDB() {
         String[] regions = {"중구", "동구", "서구", "남구", "북구", "수성구", "달서구", "달성군", "군위군"};
 
-        int size = 50;  // Number of entries per region
+        int size = 50;
         Pageable pageable = PageRequest.of(0, size);
 
         List<DaeguRestaurantDto> allData = new ArrayList<>();
