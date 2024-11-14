@@ -13,6 +13,14 @@ public class ${className}API extends AbstractAPI<${className}> {
         super("/${collectionName}");
     }
 
+    public ${className}API page(int page) {
+        return (${className}API) super.page(page);
+    }
+
+    public ${className}API perPage(int perPage) {
+        return (${className}API) super.perPage(perPage);
+    }
+
 <#-- 모든 필드에 대한 빌더 메서드 -->
 <#list fields as field>
     public ${className}API ${field.name}(${field.type} ${field.name}) {
