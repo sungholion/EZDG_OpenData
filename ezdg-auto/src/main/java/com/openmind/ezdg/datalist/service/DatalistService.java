@@ -33,11 +33,14 @@ public class DatalistService {
         Document document = mongoTemplate.findOne(query, Document.class, "data_list");
 
         if (document == null) return null;
-        List<Document> apiList = (List<Document>) document.get("apiList");
-        return apiList.stream()
+
+        Document api = ((List<Document>) document.get("apiList")).stream()
                 .filter(apiDoc -> className.equals(apiDoc.getString("className")))
                 .findFirst()
                 .orElse(null);
+        document.put("api", api);
+        document.remove("apiList");
+        return document;
     }
 
     public List<Document> getMenuList() {
