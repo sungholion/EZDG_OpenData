@@ -2,10 +2,10 @@ package com.daegu.travel.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-//
+
 @Data
 @AllArgsConstructor
-public class DaeguMetropolitanCityStatusOfTourismAccommodationBusinessDto {
+public class DaeguAccommodationDto {
 
     private String id;
     private int number;  // number 필드

@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-//
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
-@Document(collection = "daegu_metropolitan_city_tourism_course_information")
-public class DaeguTourismCourseInformationEntity {
+@Document(collection = "daegu_tourism")
+public class DaeguTourismEntity {
 
     @Id
     private String id;

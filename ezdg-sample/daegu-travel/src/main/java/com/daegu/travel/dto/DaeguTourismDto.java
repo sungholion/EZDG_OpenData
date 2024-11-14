@@ -2,10 +2,10 @@ package com.daegu.travel.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-//
+
 @Data
 @AllArgsConstructor
-public class DaeguTourismCourseInformationDto {
+public class DaeguTourismDto {
     private String id;
     private String classification;    // 분류
     private String courseTitle;   // 코스 타이틀
