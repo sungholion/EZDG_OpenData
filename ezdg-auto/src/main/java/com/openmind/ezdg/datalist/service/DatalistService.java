@@ -1,7 +1,6 @@
 package com.openmind.ezdg.datalist.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openmind.ezdg.algolia.AlgoliaSearchApiDetailDto;
 import com.openmind.ezdg.algolia.AlgoliaSearchApiDto;
 import com.openmind.ezdg.algolia.AlgoliaSearchFileDto;
 import com.openmind.ezdg.algolia.AlgoliaService;
