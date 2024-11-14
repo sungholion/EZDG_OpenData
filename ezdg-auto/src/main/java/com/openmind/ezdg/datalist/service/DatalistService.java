@@ -23,6 +23,23 @@ public class DatalistService {
     private final MongoTemplate mongoTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    public Document getDetail(String id) {
+        Query query = new Query(Criteria.where("_id").is(id));
+        return mongoTemplate.findOne(query, Document.class, "data_list");
+    }
+
+    public Document getDetail(String id, String className) {
+        Query query = new Query(Criteria.where("_id").is(id));
+        Document document = mongoTemplate.findOne(query, Document.class, "data_list");
+
+        if (document == null) return null;
+        List<Document> apiList = (List<Document>) document.get("apiList");
+        return apiList.stream()
+                .filter(apiDoc -> className.equals(apiDoc.getString("className")))
+                .findFirst()
+                .orElse(null);
+    }
+
     public List<Document> getMenuList() {
         Query query = new Query();
 
