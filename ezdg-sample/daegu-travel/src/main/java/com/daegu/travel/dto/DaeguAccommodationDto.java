@@ -6,18 +6,17 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class DaeguAccommodationDto {
-
     private String id;
-    private int number;  // number 필드
-    private String industryClassification;  // industryClassification
-    private int guestMistakeStandard;  // guestMistakeStandard
-    private int guestMistakeCount;  // guestMistakeCount
-    private String phoneNumber;  // phoneNumber
-    private int guestMistakeOneRoom;  // guestMistakeOneRoom
-    private int guestMistakeDeluxe;  // guestMistakeDeluxe
-    private String location;  // location
-    private String region;  // region
-    private int guestMistakeSuite;  // guestMistakeSuite
-    private String guestMistakeOther;  // guestMistakeOther
-    private String hotelName;  // hotelName
+    private int number;
+    private String industryClassification;
+    private int guestMistakeStandard;
+    private int guestMistakeCount;
+    private String phoneNumber;
+    private int guestMistakeOneRoom;
+    private int guestMistakeDeluxe;
+    private String location;
+    private String region;
+    private int guestMistakeSuite;
+    private String guestMistakeOther;
+    private String hotelName;
 }

@@ -2,7 +2,6 @@ spring:
   data:
     mongodb:
       uri: mongodb://admin:openmindd201mongo@k11d201.p.ssafy.io:27017/data?authSource=admin&retryWrites=true&w=majority
-#      mongodb+srv://S11P21D207:7rPaud@ssafy.ngivl.mongodb.net/S11P21D207?authSource=admin&retryWrites=true&w=majority
 
   jpa:
     hibernate:
