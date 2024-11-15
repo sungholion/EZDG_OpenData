@@ -7,25 +7,32 @@ import type { Hit } from "instantsearch.js";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Clock, Search, X } from "lucide-react";
-import { useSearchHistory, HistoryItem } from "@/hooks/use-searchhistory";
-import type { SearchResult } from "@/types/search";
+import { useSearchHistory } from "@/hooks/use-searchhistory";
+import type { SearchResult, HistoryItem } from "@/types/search";
+import { formatFieldName } from "@/lib/format";
 
-// 검색을 가능하게 하는 useConfigure Props
-function SearchResults({
-  query,
-  onClose,
-  onItemClick,
-}: {
+function getRouteFromHit(hit: SearchResult): string {
+  // API 타입이고 className이 있는 경우 /datas/{id}/{className}으로 라우팅
+  if (hit.type === "api" && hit.className) {
+    return `/datas/${hit._id}/${hit.className}`;
+  }
+  // File 타입이거나 className이 없는 경우 /datas/{id}로 라우팅
+  return `/datas/${hit._id}`;
+}
+
+interface SearchResultProps {
   query: string;
   onClose: () => void;
   onItemClick: (item: Omit<HistoryItem, "timestamp">) => void;
-}) {
+}
+
+function SearchResults({ query, onClose, onItemClick }: SearchResultProps) {
   const { hits } = useHits<SearchResult>();
   useConfigure({
     hitsPerPage: 5,
     distinct: true,
     query,
-    attributesToRetrieve: ["objectID", "originalName", "translatedName", "code"],
+    attributesToRetrieve: ["objectID", "_id", "originalName", "translatedName", "type", "className"],
     attributesToHighlight: ["originalName", "translatedName"],
   } as UseConfigureProps);
 
@@ -48,30 +55,24 @@ interface HitComponentProps {
   onItemClick: (item: Omit<HistoryItem, "timestamp">) => void;
 }
 
-function getRouteFormHit(hit: SearchResult): string {
-  if (hit.id) {
-    return `/datas/${hit.originalName}/${hit.translatedName}`;
-  }
-  return `/datas/${hit.originalName}`;
-}
-
 function HitComponent({ hit, onClose, onItemClick }: HitComponentProps) {
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     onItemClick({
-      objectID: hit.objectID,
-      id: hit.code,
+      objectID: hit._id,
       title: hit.originalName,
       description: hit.translatedName,
+      type: hit.type,
+      className: hit.className,
     });
     onClose();
-    router.push(getRouteFormHit(hit));
+    router.push(getRouteFromHit(hit));
   };
 
   return (
-    <Link href={getRouteFormHit(hit)} onClick={handleClick} className="block p-3 rounded-lg hover:bg-gray-100">
+    <Link href={getRouteFromHit(hit)} onClick={handleClick} className="block p-3 rounded-lg hover:bg-gray-100">
       <h3
         className="font-medium"
         dangerouslySetInnerHTML={{
@@ -113,8 +114,8 @@ function HistoryList({ items, onItemClick, onItemRemove, onClear }: HistoryListP
           <button className="flex items-start gap-2 flex-1 text-left" onClick={() => onItemClick(item)}>
             <Clock className="w-4 h-4 mt-1 text-gray-400 flex-shrink-0" />
             <div>
-              <div className="font-medium">{String(item.title)}</div>
-              <div className="text-sm text-gray-500 line-clamp-1">{String(item.description)}</div>
+              <div className="font-medium">{formatFieldName(String(item.title))}</div>
+              {/* <div className="text-sm text-gray-500 line-clamp-1">{String(item.description)}</div> */}
             </div>
           </button>
           <button
@@ -155,7 +156,10 @@ export function SearchCommand() {
   };
 
   const handleHistoryItemClick = (item: HistoryItem) => {
-    router.push(`/datas/${item.objectID}/${item.id}`);
+    const route =
+      item.type === "api" && item.className ? `/datas/${item.objectID}/${item.className}` : `/datas/${item.objectID}`;
+
+    router.push(route);
     onClose();
   };
 

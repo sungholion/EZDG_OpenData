@@ -1,5 +1,6 @@
 import React from "react";
 import type { FileGuideData } from "@/types/guide";
+import { formatFieldName } from "@/lib/format";
 
 interface FileGuideViewProps {
   data: FileGuideData;
@@ -14,7 +15,7 @@ export const FileGuideView: React.FC<FileGuideViewProps> = ({ data }) => {
         <div className="space-y-2">
           <div className="flex gap-2">
             <span className="font-medium">데이터 명:</span>
-            <span>{data.originalFileName}</span>
+            <span>{formatFieldName(data.originalFileName)}</span>
           </div>
           <div className="flex gap-2">
             <span className="font-medium">변역된 데이터 명:</span>

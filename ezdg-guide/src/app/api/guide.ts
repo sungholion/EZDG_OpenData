@@ -5,7 +5,7 @@ export const guideAPI = {
   // 가이드 메뉴 목록 조회
   getGuideMenu: async () => {
     try {
-      const response = await api.get<GuideMenuItem[]>("/admin/guide/menu")
+      const response = await api.get<GuideMenuItem[]>("/guide/menu")
       return response.data
     } catch (error) {
       console.log('Failed to fetch guide menu:', error);
@@ -13,17 +13,26 @@ export const guideAPI = {
     }
   },
 
-  // 특정 가이드 상세 정보 조회 (GuideMenuItem의 id를 쿼리 파라미터로 전달)
-  getGuideDetail: async (id: string) => {
+  // API 타입 가이드 상세 정보 조회
+  getGuideDetail: async (id: string, className: string) => {
     try {
-      const response = await api.get<GuideData>(`/admin/guide/detail`, {
-        params: { id }
-      })
+      const response = await api.get<ApiGuideData>(`/guide/${id}/${className}`);
       return response.data
     } catch (error) {
-      console.log('Failed to fetch guide detail:', error)
+      console.log('Failed to fetch api guide detail:', error)
       throw error;
     }
+  },
+
+  // File 타입 가이드 상세 정보 조회
+  getFileDetail: async (id: string) => {
+    try {
+      const response = await api.get<FileGuideData>(`/guide/${id}`)
+      return response.data;
+    } catch (error) {
+      console.log('Failed to fetch file guide detail:', error)
+      throw error
+    } 
   },
 
   // 타입 가드 함수들

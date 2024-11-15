@@ -1,12 +1,22 @@
 import type { BaseHit } from 'instantsearch.js';
 
 export interface SearchResult extends BaseHit {
-  objectID: string;
-  originalName: string;   // 원래 title로 사용할 필드
-  translatedName: string; // 원래 description으로 사용할 필드
-  code: string;
+  _id: string;
+  type: 'api' | 'file';
+  originalName: string;
+  translatedName: string;
+  className?: string;  // API 타입일 때만 존재
   _highlightResult?: {
     originalName?: { value: string };
     translatedName?: { value: string };
   };
+}
+
+export interface HistoryItem {
+  objectID: string;
+  title: string;
+  description: string;
+  type: 'api' | 'file';
+  className?: string;
+  timestamp: number;
 }

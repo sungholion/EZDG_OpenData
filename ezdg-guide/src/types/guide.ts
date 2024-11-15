@@ -14,7 +14,7 @@ interface RequestField {
   type: string;
   name: string;
   description: string;
-  required: boolean | null;
+  required: string | null;
   sampleData: string | null;
 }
 
@@ -22,12 +22,12 @@ interface ResponseField {
   type: string;
   name: string;
   description: string;
-  required?: boolean | null;
-  sampleData?: string | null;
+  required: boolean | null;
+  sampleData: string | null;
 }
 
 // API의 세부 엔드포인트 정보
-export interface ApiEndpointDetail {
+interface ApiEndpointDetail {
   title: string;
   description: string;
   packageName: string;
@@ -49,7 +49,7 @@ export interface ApiGuideData extends BaseGuideData {
   type: 'api';
   mainTitle: string;
   mainDescription: string;
-  apiList: ApiEndpointDetail[];  // 상세 정보에서는 전체 엔드포인트 정보
+  api: ApiEndpointDetail;  // 상세 정보에서는 전체 엔드포인트 정보
 }
 
 // 파일 필드 정의

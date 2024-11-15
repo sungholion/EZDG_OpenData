@@ -14,6 +14,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { GuideMenuItem, isApiGuideItem } from "@/types/guide";
+import { formatFieldName } from "@/lib/format";
 
 interface GuideMenuProps {
   items: GuideMenuItem[];
@@ -32,7 +33,7 @@ export function NavData({ items }: GuideMenuProps) {
                 <>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton tooltip={item.mainTitle}>
-                      <span>{item.mainTitle}</span>
+                      <span>{formatFieldName(item.mainTitle)}</span>
                       <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
@@ -55,7 +56,7 @@ export function NavData({ items }: GuideMenuProps) {
               // File 타입일 경우 단일 링크
               <Link href={`/datas/${item._id}`} onClick={(e) => e.stopPropagation()} className="block">
                 <SidebarMenuButton tooltip={item.originalFileName}>
-                  <span>{item.originalFileName}</span>
+                  <span>{formatFieldName(item.originalFileName)}</span>
                 </SidebarMenuButton>
               </Link>
             )}

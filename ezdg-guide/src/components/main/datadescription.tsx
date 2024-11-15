@@ -6,6 +6,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
 import { GuideMenuItem, isApiGuideItem } from "@/types/guide";
+import { formatFieldName } from "@/lib/format";
 
 interface DataDescriptionProps {
   items: GuideMenuItem[];
@@ -23,11 +24,11 @@ const DisplayCard = ({ item }: { item: GuideMenuItem }) => {
           <Image src={`/${item._id}.png`} alt={title} width={400} height={200} className="object-cover" />
         </div>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-2xl font-bold">{title}</CardTitle>
+          <CardTitle className="text-2xl font-bold">{formatFieldName(title)}</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="flex-1">
-        <p className="text-gray-600">{description}</p>
+        <p className="text-gray-600">{formatFieldName(description)}</p>
         {isApi && item.apiList.length > 0 && (
           <div className="mt-4">
             {/* <p className="font-medium mb-2">제공 API 목록:</p>
