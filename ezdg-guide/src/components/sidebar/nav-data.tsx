@@ -2,7 +2,6 @@
 
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
@@ -14,41 +13,37 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import type { NavDataItem } from "@/types/sidebar";
+import { GuideMenuItem, isApiGuideItem } from "@/types/guide";
+import { formatFieldName } from "@/lib/format";
 
-interface NavDataProps {
-  items: NavDataItem[];
+interface GuideMenuProps {
+  items: GuideMenuItem[];
 }
 
-export function NavData({ items }: NavDataProps) {
+export function NavData({ items }: GuideMenuProps) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Data</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
-          <SidebarMenuItem key={item.title}>
-            {item.items && item.items.length > 1 ? (
-              // items가 2개 이상일 때만 Collapsible 메뉴로 표시
-              <Collapsible asChild defaultOpen={item.isActive} className="group/collapsible">
+          <SidebarMenuItem key={item._id}>
+            {isApiGuideItem(item) ? (
+              // API 타입일 경우 Collapsible로 apiList 표시
+              <Collapsible asChild className="group/collapsible">
                 <>
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuButton tooltip={item.title}>
-                      {item.icon && <item.icon />}
-                      <span>{item.title}</span>
+                    <SidebarMenuButton tooltip={item.mainTitle}>
+                      <span>{formatFieldName(item.mainTitle)}</span>
                       <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <SidebarMenuSub>
-                      {item.items.map((subItem) => (
-                        <SidebarMenuSubItem key={subItem.title}>
+                      {item.apiList.map((api) => (
+                        <SidebarMenuSubItem key={api.className}>
                           <SidebarMenuSubButton asChild>
-                            <Link
-                              href={subItem.url}
-                              onClick={(e) => {
-                                e.stopPropagation(); // 이벤트 전파 중단
-                              }}>
-                              <span>{subItem.title}</span>
+                            <Link href={`/datas/${item._id}/${api.className}`} onClick={(e) => e.stopPropagation()}>
+                              <span>{api.title}</span>
                             </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
@@ -58,16 +53,10 @@ export function NavData({ items }: NavDataProps) {
                 </>
               </Collapsible>
             ) : (
-              // items가 없거나 1개일 경우 직접 링크로 처리
-              <Link
-                href={item.items?.length === 1 ? item.items[0].url : item.url}
-                onClick={(e) => {
-                  e.stopPropagation(); // 이벤트 전파 중단
-                }}
-                className="block">
-                <SidebarMenuButton tooltip={item.items?.length === 1 ? item.items[0].title : item.title}>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
+              // File 타입일 경우 단일 링크
+              <Link href={`/datas/${item._id}`} onClick={(e) => e.stopPropagation()} className="block">
+                <SidebarMenuButton tooltip={item.originalFileName}>
+                  <span>{formatFieldName(item.originalFileName)}</span>
                 </SidebarMenuButton>
               </Link>
             )}

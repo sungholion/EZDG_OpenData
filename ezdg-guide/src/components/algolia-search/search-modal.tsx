@@ -1,6 +1,3 @@
-// components/search/command.tsx
-"use client";
-
 import { useEffect, useState } from "react";
 import { InstantSearch, useConfigure, Hits, useHits } from "react-instantsearch";
 import type { UseConfigureProps } from "react-instantsearch";
@@ -10,29 +7,33 @@ import type { Hit } from "instantsearch.js";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Clock, Search, X } from "lucide-react";
-import { useSearchHistory, HistoryItem } from "@/hooks/use-searchhistory";
-import type { SearchResult } from "@/types/search";
+import { useSearchHistory } from "@/hooks/use-searchhistory";
+import type { SearchResult, HistoryItem } from "@/types/search";
+import { formatFieldName } from "@/lib/format";
 
-// 검색을 가능하게 하는 useConfigure Props
-function SearchResults({
-  query,
-  onClose,
-  onItemClick,
-}: {
+function getRouteFromHit(hit: SearchResult): string {
+  // API 타입이고 className이 있는 경우 /datas/{id}/{className}으로 라우팅
+  if (hit.type === "api" && hit.className) {
+    return `/datas/${hit._id}/${hit.className}`;
+  }
+  // File 타입이거나 className이 없는 경우 /datas/{id}로 라우팅
+  return `/datas/${hit._id}`;
+}
+
+interface SearchResultProps {
   query: string;
   onClose: () => void;
   onItemClick: (item: Omit<HistoryItem, "timestamp">) => void;
-}) {
+}
+
+function SearchResults({ query, onClose, onItemClick }: SearchResultProps) {
   const { hits } = useHits<SearchResult>();
-  // 검색 설정을 위한 hook
   useConfigure({
     hitsPerPage: 5,
     distinct: true,
     query,
-    // 검색할 속성 지정
-    attributesToRetrieve: ["objectID", "id", "title", "description"],
-    // 하이라이트할 속성 지정
-    attributesToHighlight: ["title", "description"],
+    attributesToRetrieve: ["objectID", "_id", "originalName", "translatedName", "type", "className"],
+    attributesToHighlight: ["originalName", "translatedName"],
   } as UseConfigureProps);
 
   if (query && hits.length === 0) {
@@ -54,64 +55,48 @@ interface HitComponentProps {
   onItemClick: (item: Omit<HistoryItem, "timestamp">) => void;
 }
 
-// endpoints에 따라 다르게 주소를 라우팅하기 위한 함수
-function getRouteFormHit(hit: SearchResult): string {
-  if (hit.id) {
-    return `/datas/${hit.objectID}/${hit.id}`;
-  }
-  return `/datas/${hit.objectID}`;
-}
-
-// TODO: 라우팅 해야하는 링크 주소에 맞게 objectID, id 수정 필요
-// 검색 시 나오는 데이터 클릭 시 해당 데이터에 관련된 가이드가 나오는 페이지로 이동하는 로직
 function HitComponent({ hit, onClose, onItemClick }: HitComponentProps) {
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-
-    // 클릭한 항목을 기록
     onItemClick({
-      objectID: hit.objectID,
-      id: hit.id,
-      title: hit.title,
-      description: hit.description,
+      objectID: hit._id,
+      title: hit.originalName,
+      description: hit.translatedName,
+      type: hit.type,
+      className: hit.className,
     });
-
     onClose();
-    router.push(getRouteFormHit(hit));
+    router.push(getRouteFromHit(hit));
   };
 
   return (
-    <Link href={getRouteFormHit(hit)} onClick={handleClick} className="block p-3 rounded-lg hover:bg-gray-100">
+    <Link href={getRouteFromHit(hit)} onClick={handleClick} className="block p-3 rounded-lg hover:bg-gray-100">
       <h3
         className="font-medium"
         dangerouslySetInnerHTML={{
-          __html: hit._highlightResult?.title?.value || hit.title,
+          __html: hit._highlightResult?.originalName?.value || hit.originalName,
         }}
       />
       <p
         className="text-sm text-gray-500 mt-1 line-clamp-2"
         dangerouslySetInnerHTML={{
-          __html: hit._highlightResult?.description?.value || hit.description,
+          __html: hit._highlightResult?.translatedName?.value || hit.translatedName,
         }}
       />
     </Link>
   );
 }
 
-// 클릭했던 데이터에 관한 기록을 남기게 해주는 로직
-function HistoryList({
-  items,
-  onItemClick,
-  onItemRemove,
-  onClear,
-}: {
+interface HistoryListProps {
   items: HistoryItem[];
   onItemClick: (item: HistoryItem) => void;
   onItemRemove: (objectID: string) => void;
   onClear: () => void;
-}) {
+}
+
+function HistoryList({ items, onItemClick, onItemRemove, onClear }: HistoryListProps) {
   if (items.length === 0) {
     return <div className="px-3 py-8 text-center text-gray-500">최근 조회 기록이 없습니다</div>;
   }
@@ -125,12 +110,12 @@ function HistoryList({
         </button>
       </div>
       {items.map((item) => (
-        <div key={item.objectID} className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-100">
+        <div key={item.objectID} className="flex items-center justify-between py-2 rounded-lg hover:bg-gray-100">
           <button className="flex items-start gap-2 flex-1 text-left" onClick={() => onItemClick(item)}>
             <Clock className="w-4 h-4 mt-1 text-gray-400 flex-shrink-0" />
             <div>
-              <div className="font-medium">{item.title}</div>
-              <div className="text-sm text-gray-500 line-clamp-1">{item.description}</div>
+              <div className="font-medium">{formatFieldName(String(item.title))}</div>
+              {/* <div className="text-sm text-gray-500 line-clamp-1">{String(item.description)}</div> */}
             </div>
           </button>
           <button
@@ -147,7 +132,6 @@ function HistoryList({
   );
 }
 
-// 검색 기능
 export function SearchCommand() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -172,7 +156,10 @@ export function SearchCommand() {
   };
 
   const handleHistoryItemClick = (item: HistoryItem) => {
-    router.push(`/datas/${item.objectID}/${item.id}`);
+    const route =
+      item.type === "api" && item.className ? `/datas/${item.objectID}/${item.className}` : `/datas/${item.objectID}`;
+
+    router.push(route);
     onClose();
   };
 
@@ -205,7 +192,11 @@ export function SearchCommand() {
                   placeholder="검색어를 입력하세요..."
                   className="w-full bg-transparent outline-none placeholder:text-gray-400"
                 />
-                <span className="outline outline-offset-4 rounded-lg content-center text-xs outline-gray-200">ESC</span>
+                <span
+                  className="outline outline-offset-4 rounded-lg content-center text-xs outline-gray-200 cursor-pointer"
+                  onClick={onClose}>
+                  ESC
+                </span>
               </div>
               <hr className="border-gray-200" />
               <Command.List className="max-h-[60vh] overflow-y-auto p-2">
