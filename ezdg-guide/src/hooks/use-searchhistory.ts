@@ -1,13 +1,9 @@
 // hooks/useSearchHistory.ts
 import { useState, useEffect } from 'react';
-import { SearchResult } from '@/types/search';
+import type { HistoryItem } from '@/types/search';
 
 const SEARCH_HISTORY_KEY = 'search_history';
 const MAX_HISTORY_ITEMS = 5;
-
-export interface HistoryItem extends Pick<SearchResult, 'objectID' | 'id' | 'title' | 'description'> {
-  timestamp: number;
-}
 
 export function useSearchHistory() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
