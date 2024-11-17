@@ -37,7 +37,7 @@ const FAQItems = [
 export default function FAQ() {
   return (
     <div className="flex flex-col items-center gap-6 sm:gap-6 text-center px-2 sm:px-4 py-8 sm:py-12 lg:py-24">
-      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold">
+      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold bg-gradient-to-r from-[#192f6a] via-[#0066cc] to-[#20b2aa] text-transparent bg-clip-text">
         FAQ
         <Separator />
       </h1>

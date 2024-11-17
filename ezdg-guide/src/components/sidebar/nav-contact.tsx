@@ -26,7 +26,7 @@ const contactItems: ContactItem[] = [
   },
   {
     name: "GitLab",
-    url: "https://gitlab.com/your-project",
+    url: "https://lab.ssafy.com/s11-final/S11P31D201",
     icon: GitlabIcon,
     description: "이슈 및 프로젝트 관리",
   },
