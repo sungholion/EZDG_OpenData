@@ -231,6 +231,11 @@ public class DatalistService {
         return result;
     }
 
+//    private Map<String, Object> libraryDetail(ApiDataDto dto) {
+//
+//    }
+
+
     public void saveDocument(ApiDataDto dto) {
         // DTO를 Map으로 변환
         Map<String, Object> dtoMap = objectMapper.convertValue(dto, Map.class);

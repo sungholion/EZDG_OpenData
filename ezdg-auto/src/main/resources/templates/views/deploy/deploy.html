@@ -86,7 +86,17 @@
         const columnsTable = document.getElementById("columnsTable");
         columnsTable.innerHTML = '';
         deployData.filter(v => v.deployed).forEach((data, index) => {
-            const {type, originalFileName, translatedFileName, deployed, createdAt, updatedAt, code} = data;
+            const {
+                type,
+                originalFileName,
+                translatedFileName,
+                mainTitle,
+                deployed,
+                apiList,
+                createdAt,
+                updatedAt,
+                code
+            } = data;
             const row = document.createElement("tr");
             if (index % 2 === 0) {
                 row.classList.add("table-secondary");
@@ -94,11 +104,11 @@
             row.innerHTML = `
                     <td>${index + 1}</td>
                     <td>${type}</td>
-                    <td>${originalFileName}</td>
-                    <td>${translatedFileName}</td>
+                    <td>${type === "api" ? mainTitle : originalFileName}</td>
+                    <td>${type === "api" ? apiList.map(api => api.className).join(",\n") : translatedFileName}</td>
                     <td>${formatDate(createdAt)}</td>
                     <td>${formatDate(updatedAt)}</td>
-                    <td>${code}</td>
+                    <td>${code || "-"}</td>
                 `;
             columnsTable.appendChild(row);
         });
@@ -109,7 +119,7 @@
         columnsTable.innerHTML = '';
         deployData.filter(v => !v.deployed).forEach((data, index) => {
             const row = document.createElement("tr");
-            const {type, originalFileName, translatedFileName, deployed, createdAt, updatedAt, code} = data;
+            const {type, originalFileName, translatedFileName, deployed, apiList, createdAt, updatedAt, code} = data;
             if (index % 2 === 0) {
                 row.classList.add("table-secondary");
             }
@@ -117,7 +127,7 @@
                     <td>${index + 1}</td>
                     <td>${type}</td>
                     <td>${originalFileName}</td>
-                    <td>${translatedFileName}</td>
+                    <td>${type === "api" ? apiList.map(api => api.className).join(",\n") : translatedFileName}</td>
                     <td>${formatDate(createdAt)}</td>
                     <td>${formatDate(updatedAt)}</td>
                     <td>${code || '-'}</td>
