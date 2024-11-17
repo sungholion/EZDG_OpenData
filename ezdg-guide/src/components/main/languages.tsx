@@ -2,7 +2,7 @@
 
 import { Card } from "../ui/card";
 import Image from "next/image";
-import { Lock } from "lucide-react"; // lucide-react 아이콘 사용
+// import { Lock } from "lucide-react"; // lucide-react 아이콘 사용
 
 const languages = [
   {

@@ -59,12 +59,20 @@ interface FileField {
   originalName: string;
 }
 
+// methodList의 메서드 정보를 위한 필드 정의
+interface FileMethod {
+  method: string;
+  description: string;
+  returnType: string;
+}
+
 // 파일 타입 데이터
 export interface FileGuideData extends BaseGuideData {
   type: 'file';
   originalFileName: string;
   translatedFileName: string;
   fields: FileField[];
+  methodList: FileMethod[];
 }
 
 // 통합 타입 (상세 정보)

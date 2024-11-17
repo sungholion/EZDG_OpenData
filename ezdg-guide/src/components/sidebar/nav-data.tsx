@@ -15,12 +15,24 @@ import {
 } from "@/components/ui/sidebar";
 import { GuideMenuItem, isApiGuideItem } from "@/types/guide";
 import { formatFieldName } from "@/lib/format";
+import { useState } from "react";
 
 interface GuideMenuProps {
   items: GuideMenuItem[];
 }
 
 export function NavData({ items }: GuideMenuProps) {
+  // 각 아이템의 open 상태를 관리하는 객체
+  const [openStates, setOpenStates] = useState<Record<string, boolean>>({});
+
+  // 특정 아이템의 open 상태를 토글하는 함수
+  const toggleOpen = (itemId: string) => {
+    setOpenStates((prev) => ({
+      ...prev,
+      [itemId]: !prev[itemId],
+    }));
+  };
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Data</SidebarGroupLabel>
@@ -29,12 +41,20 @@ export function NavData({ items }: GuideMenuProps) {
           <SidebarMenuItem key={item._id}>
             {isApiGuideItem(item) ? (
               // API 타입일 경우 Collapsible로 apiList 표시
-              <Collapsible asChild className="group/collapsible">
+              <Collapsible
+                asChild
+                className="group/collapsible"
+                open={openStates[item._id]}
+                onOpenChange={() => toggleOpen(item._id)}>
                 <>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton tooltip={item.mainTitle}>
                       <span>{formatFieldName(item.mainTitle)}</span>
-                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      <ChevronRight
+                        className={`ml-auto transition-transform duration-200 ${
+                          openStates[item._id] ? "rotate-90" : ""
+                        }`}
+                      />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
