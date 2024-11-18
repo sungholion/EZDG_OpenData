@@ -10,6 +10,7 @@ import { SearchCommand } from "../algolia-search/search-modal";
 import { guideAPI } from "@/app/api/guide";
 import type { GuideMenuItem } from "@/types/guide";
 import { Skeleton } from "../ui/skeleton";
+import { NavContact } from "./nav-contact";
 
 function SidebarSkeleton() {
   return (
@@ -61,6 +62,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <Separator />
         <NavGuide projects={NAV_MENU} />
         <Separator />
+        <NavContact />
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
