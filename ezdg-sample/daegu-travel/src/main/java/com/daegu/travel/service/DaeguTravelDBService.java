@@ -3,6 +3,7 @@ package com.daegu.travel.service;
 import com.daegu.travel.dto.DaeguAccommodationDto;
 import com.daegu.travel.dto.DaeguRestaurantDto;
 import com.daegu.travel.dto.DaeguTourismDto;
+import com.daegu.travel.entity.DaeguRestaurantEntity;
 import com.daegu.travel.repository.DaeguAccommodationRepository;
 import com.daegu.travel.repository.DaeguRestaurantRepository;
 import com.daegu.travel.repository.DaeguTourismRepository;
@@ -45,10 +46,21 @@ public class DaeguTravelDBService {
         return getAllDaeguAccommodationFromDB();
     }
 
-    @Cacheable(value = "daeguRestaurantCache", key = "'restaurant-all'")
     public List<DaeguRestaurantDto> getAllDaeguRestaurantFromCache() {
-        log.info("Cache miss: Fetching Daegu Restaurant data from DB");
-        return getAllDaeguRestaurantFromDB();
+        String[] regions = {"중구", "동구", "서구", "남구", "북구", "수성구", "달서구", "달성군", "군위군"};
+        List<DaeguRestaurantDto> allData = new ArrayList<>();
+
+        for (String region : regions) {
+            allData.addAll(getRegionDataFromCache(region));
+        }
+
+        return allData;
+    }
+
+    @Cacheable(value = "daeguRestaurantCache", key = "'restaurant-' + #region")
+    public List<DaeguRestaurantDto> getRegionDataFromCache(String region) {
+        log.info("Cache miss for region: {}", region);
+        return getRegionDataFromDB(region);
     }
 
 
@@ -114,39 +126,77 @@ public class DaeguTravelDBService {
     public List<DaeguRestaurantDto> getAllDaeguRestaurantFromDB() {
         String[] regions = {"중구", "동구", "서구", "남구", "북구", "수성구", "달서구", "달성군", "군위군"};
         List<DaeguRestaurantDto> allData = new ArrayList<>();
-        int size = 10; // 페이지당 가져올 개수
-        int maxPages = 3; // 최대 3페이지만 가져오기
-        int maxItemsPerRegion = 20; // 각 지역별 최대 30개
+        int maxItemsPerRegion = 20; // 각 지역별 최대 20개
 
-        // 각 지역별로 데이터를 조회하여 수집
         for (String region : regions) {
-            int page = 0;
-            List<DaeguRestaurantDto> pageData;
-            List<DaeguRestaurantDto> regionData = new ArrayList<>();
-
-            // 페이지별로 데이터를 가져와 추가 (최대 3페이지, 최대 30개)
-            do {
-                Pageable pageable = PageRequest.of(page, size);
-                pageData = daeguRestaurantRepository.findByBusinessAddressContaining(region, pageable)
-                        .map(entity -> new DaeguRestaurantDto(
-                                entity.getId(),
-                                entity.getNumber(),
-                                entity.getBusinessName(),
-                                entity.getBusinessStatus(),
-                                entity.getBusinessAddress()
-                        )).getContent();
-
-                regionData.addAll(pageData);
-                page++;
-
-            } while (!pageData.isEmpty() && page < maxPages && regionData.size() < maxItemsPerRegion);
-
-            // 최대 30개까지 데이터를 잘라서 추가
-            allData.addAll(regionData.subList(0, Math.min(regionData.size(), maxItemsPerRegion)));
+            List<DaeguRestaurantEntity> regionEntities = daeguRestaurantRepository.findTopByRegion(region, maxItemsPerRegion);
+            allData.addAll(regionEntities.stream()
+                    .map(entity -> new DaeguRestaurantDto(
+                            entity.getId(),
+                            entity.getNumber(),
+                            entity.getBusinessName(),
+                            entity.getBusinessStatus(),
+                            entity.getBusinessAddress()
+                    ))
+                    .toList());
         }
 
         return allData;
     }
+
+    private List<DaeguRestaurantDto> getRegionDataFromDB(String region) {
+        int maxItemsPerRegion = 20; // 지역별 최대 데이터 수
+        List<DaeguRestaurantEntity> regionEntities = daeguRestaurantRepository.findTopByRegion(region, maxItemsPerRegion);
+        return regionEntities.stream()
+                .map(entity -> new DaeguRestaurantDto(
+                        entity.getId(),
+                        entity.getNumber(),
+                        entity.getBusinessName(),
+                        entity.getBusinessStatus(),
+                        entity.getBusinessAddress()
+                ))
+                .toList();
+    }
+
+
+
+
+//    public List<DaeguRestaurantDto> getAllDaeguRestaurantFromDB() {
+//        String[] regions = {"중구", "동구", "서구", "남구", "북구", "수성구", "달서구", "달성군", "군위군"};
+//        List<DaeguRestaurantDto> allData = new ArrayList<>();
+//        int size = 10; // 페이지당 가져올 개수
+//        int maxPages = 3; // 최대 3페이지만 가져오기
+//        int maxItemsPerRegion = 20; // 각 지역별 최대 30개
+//
+//        // 각 지역별로 데이터를 조회하여 수집
+//        for (String region : regions) {
+//            int page = 0;
+//            List<DaeguRestaurantDto> pageData;
+//            List<DaeguRestaurantDto> regionData = new ArrayList<>();
+//
+//            // 페이지별로 데이터를 가져와 추가 (최대 3페이지, 최대 30개)
+//            do {
+//                Pageable pageable = PageRequest.of(page, size);
+//                pageData = daeguRestaurantRepository.findByBusinessAddressContaining(region, pageable)
+//                        .map(entity -> new DaeguRestaurantDto(
+//                                entity.getId(),
+//                                entity.getNumber(),
+//                                entity.getBusinessName(),
+//                                entity.getBusinessStatus(),
+//                                entity.getBusinessAddress()
+//                        )).getContent();
+//
+//                regionData.addAll(pageData);
+//                page++;
+//
+//            } while (!pageData.isEmpty() && page < maxPages && regionData.size() < maxItemsPerRegion);
+//
+//            // 최대 30개까지 데이터를 잘라서 추가
+//            allData.addAll(regionData.subList(0, Math.min(regionData.size(), maxItemsPerRegion)));
+//        }
+//
+//        return allData;
+//    }
 
 
 }
