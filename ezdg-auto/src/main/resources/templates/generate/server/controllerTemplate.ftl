@@ -10,6 +10,22 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+<#assign hasLocalDate = false>
+<#assign hasLocalDateTime = false>
+<#list fields as field>
+    <#if field.type == "LocalDate">
+        <#assign hasLocalDate = true>
+    </#if>
+    <#if field.type == "LocalDateTime">
+        <#assign hasLocalDateTime = true>
+    </#if>
+</#list>
+<#if hasLocalDate>
+    import java.time.LocalDate;
+</#if>
+<#if hasLocalDateTime>
+    import java.time.LocalDateTime;
+</#if>
 
 @RestController
 @RequiredArgsConstructor
