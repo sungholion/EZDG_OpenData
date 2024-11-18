@@ -1,12 +1,12 @@
-package com.ezdg.sample.myhome;
+package com.ezdg.sample.findMyCompany;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MyhomeApplication {
+public class FindMyCompanyApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(MyhomeApplication.class, args);
+		SpringApplication.run(FindMyCompanyApplication.class, args);
 	}
 
 }

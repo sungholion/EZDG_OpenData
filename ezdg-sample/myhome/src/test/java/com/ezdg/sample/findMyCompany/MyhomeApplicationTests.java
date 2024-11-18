@@ -1,4 +1,4 @@
-package com.ezdg.sample.myhome;
+package com.ezdg.sample.findMyCompany;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
