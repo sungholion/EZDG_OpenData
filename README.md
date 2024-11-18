@@ -15,10 +15,6 @@
 | <img src="https://github.com/brobac.png" width="100"/> | <img src="https://github.com/Park-taewoo.png" width="100"/> | <img src="https://github.com/kyoungmopark.png" width="100"/> | <img src="https://github.com/sungholion.png" width="100"/> | <img src="https://github.com/hhajae.png" width="100"/> | <img src="https://github.com/miiiingyuuu.png" width="100"/> |
 |:---------------------------------------------------------:|:-------------------------------------------------------:|:----------------------------------------------------------:|:---------------------------------------------------------:|:---------------------------------------------------------:|:---------------------------------------------------------:|
 |       [박형준 - BE, Infra](https://github.com/brobac)       |       [박태우 - MB](https://github.com/Park-taewoo)       |       [박경모 - BE](https://github.com/kyoungmopark)       |       [조성호 - BE](https://github.com/sungholion)       |       [하재훈 - FE](https://github.com/hhajae)       |       [박민규 - FE](https://github.com/miiiingyuuu)       |
-
-[팀노션](https://purple-okapi-e46.notion.site/11f17534f9e5806eabf7e5fe5a78b213?pvs=4) |
-| [개발 일지](https://worried-venom-487.notion.site/60fd1b1753314e9d89537ea47528ae4e)
-
 </div>
 
 
