@@ -17,7 +17,7 @@ function SidebarSkeleton() {
     <div className="space-y-4 p-4">
       <Skeleton className="h-5 w-32" />
       <div className="space-y-2">
-        {[...Array(3)].map((_, i) => (
+        {[...Array(30)].map((_, i) => (
           <Skeleton key={i} className="h-8 w-full" />
         ))}
       </div>
