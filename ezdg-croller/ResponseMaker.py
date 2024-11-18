@@ -30,12 +30,14 @@ def make_swagger_response(title_list, url, requestlist, responselist, descriptio
     response_item = []
     #endpoint_list = requestlist.keys()
     for (k, v), response, title, description in zip(requestlist.items(), responselist, title_list, description_text):
+        className = k.lstrip("/get").split('_')[0]
+        className = className[0].upper() + className[1:]
         response_item.append(
             {
                 'title': title,
                 'description': description,
                 'packageName': service_name,
-                'className': k.lstrip("/get").split('_')[0],
+                'className': className,
                 'baseUrl': url,
                 'endpoint': k,
                 'requestFields': v,
