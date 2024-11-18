@@ -1,4 +1,4 @@
-export type CodeLanguage = 'java' | 'javascript' | 'typescript' | 'xml' | 'bash' | 'python' | 'markdown' | 'json';
+export type CodeLanguage = 'java' | 'javascript' | 'typescript' | 'xml' | 'bash' | 'python' | 'markdown' | 'json' | 'kotlin';
 
 export interface CodeExample {
   title?: string;

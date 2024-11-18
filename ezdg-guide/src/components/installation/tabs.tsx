@@ -14,7 +14,7 @@ import "prismjs/components/prism-gradle";
 import "@/components/code-example/code-styles.css";
 
 // 언어 타입을 Java 관련 타입으로만 제한
-type CodeLanguage = "java" | "xml";
+type CodeLanguage = "java" | "gradle";
 
 interface CodeTabsProps {
   code: string;
@@ -23,7 +23,7 @@ interface CodeTabsProps {
 
 // XML 처리만 남기고 단순화
 const getEffectiveLanguage = (language: CodeLanguage): string => {
-  if (language === "xml") {
+  if (language === "gradle") {
     return "markup";
   }
   return language;

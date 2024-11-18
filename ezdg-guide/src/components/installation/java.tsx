@@ -13,7 +13,7 @@ const JAVA_EXAMPLES: CodeExample[] = [
 dependencies {
 	implementation 'com.openmind:ezdg:v1.10.0'
 }`,
-    language: "java",
+    language: "kotlin",
   },
   {
     title: "사용 예제",
