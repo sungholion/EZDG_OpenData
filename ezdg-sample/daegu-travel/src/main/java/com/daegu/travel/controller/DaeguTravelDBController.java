@@ -38,30 +38,6 @@ public class DaeguTravelDBController {
     public List<DaeguRestaurantDto> getAllDaeguRestaurantAll() {
         return daeguTravelDBService.getAllDaeguRestaurantFromCache();
     }
-
-    // ------------------------------------------------------
-
-
-    @Operation(summary = "대구 관광 코스 조회", description = "대구의 관광 코스를 조회합니다")
-    @GetMapping("/getAllDaeguTourism")
-    public List<DaeguTourismDto> getAllDaeguTourismFromDB() {
-        return daeguTravelDBService.getAllDaeguTourismFromDB();
-    }
-
-    @Operation(summary = "대구 숙박 업소 조회", description = "대구의 숙박 업소를 조회합니다")
-    @GetMapping("/getAllDaeguAccommodation")
-    public List<DaeguAccommodationDto> getAllDaeguAccommodationFromDB() {
-        return daeguTravelDBService.getAllDaeguAccommodationFromDB();
-    }
-
-    @Operation(summary = "대구 맛집 식당 조회", description = "대구의 맛집 식당을 조회합니다")
-    @GetMapping("/getAllDaeguRestaurant")
-    public List<DaeguRestaurantDto> getAllDaeguRestaurantFromDB() {
-        return daeguTravelDBService.getAllDaeguRestaurantFromDB();
-    }
-
-
-
 }
 
 

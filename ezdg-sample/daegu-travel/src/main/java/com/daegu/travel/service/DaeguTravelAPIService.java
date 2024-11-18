@@ -20,7 +20,6 @@ public class DaeguTravelAPIService {
         int page = 1;
         List<DaeguTourism> pageData;
 
-        // fetch()가 빈 리스트를 반환할 때까지 페이지별로 데이터를 가져옴
         do {
             pageData = api.page(page).fetch();
             allData.addAll(pageData);
@@ -36,7 +35,6 @@ public class DaeguTravelAPIService {
         int page = 1;
         List<DaeguAccommodation> pageData;
 
-        // fetch()가 빈 리스트를 반환할 때까지 페이지별로 데이터를 가져옴
         do {
             pageData = api.page(page).fetch();
             allData.addAll(pageData);

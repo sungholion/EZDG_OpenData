@@ -64,7 +64,7 @@ public class DaeguTravelDBService {
                             entity.getId(),
                             entity.getNumber(),
                             entity.getIndustryClassification(),
-                            entity.getGuestMistakeStandard(),
+                            entity.getGuestMistakeStard(),
                             entity.getGuestMistakeCount(),
                             entity.getPhoneNumber(),
                             entity.getGuestMistakeOneRoom(),
@@ -123,7 +123,7 @@ public class DaeguTravelDBService {
                             entity.getId(),
                             entity.getNumber(),
                             entity.getBusinessName(),
-                            entity.getBusinessType(),
+                            entity.getBusinessStatus(),
                             entity.getBusinessAddress()
                     )).getContent();
             allData.addAll(currentPage);
@@ -132,109 +132,5 @@ public class DaeguTravelDBService {
 
         return allData;
     }
-
-
-//    public List<DaeguTourismDto> getAllDaeguTourismFromDB(Pageable pageable) {
-//        return daeguTourismRepository.findAll(pageable)
-//                .map(entity -> new DaeguTourismDto(
-//                        entity.getId(),
-//                        entity.getClassification(),
-//                        entity.getCourseTitle(),
-//                        entity.getCourseNumber(),
-//                        entity.getCourseTopic(),
-//                        entity.getCourseTopicDescription(),
-//                        entity.getRegion(),
-//                        entity.getTouristDestination(),
-//                        entity.getCourseDescription(),
-//                        entity.getAddress(),
-//                        entity.getPhoneNumber(),
-//                        entity.getHomepage()
-//                ))
-//                .getContent(); // Page에서 List만 추출
-//    }
-//
-//    public List<DaeguAccommodationDto> getAllDaeguAccommodationFromDB(Pageable pageable) {
-//        return daeguAccommodationRepository.findAll(pageable)
-//                .map(entity -> new DaeguAccommodationDto(
-//                        entity.getId(),
-//                        entity.getNumber(),
-//                        entity.getIndustryClassification(),
-//                        entity.getGuestMistakeStandard(),
-//                        entity.getGuestMistakeCount(),
-//                        entity.getPhoneNumber(),
-//                        entity.getGuestMistakeOneRoom(),
-//                        entity.getGuestMistakeDeluxe(),
-//                        entity.getLocation(),
-//                        entity.getRegion(),
-//                        entity.getGuestMistakeSuite(),
-//                        entity.getGuestMistakeOther(),
-//                        entity.getHotelName()
-//                ))
-//                .getContent(); // Page에서 List만 추출
-//    }
-//
-//    public List<DaeguRestaurantDto> getAllDaeguRestaurantFromDB(Pageable pageable) {
-//        return daeguRestaurantRepository.findAll(pageable)
-//                .map(entity -> new DaeguRestaurantDto(
-//                        entity.getId(),
-//                        entity.getNumber(),
-//                        entity.getBusinessName(),
-//                        entity.getBusinessType(),
-//                        entity.getBusinessAddress()
-//                ))
-//                .getContent(); // Page에서 List만 추출
-//    }
-//
-//
-//    public List<DaeguTourismDto> getAllDaeguTourismFromDBNoRedis(Pageable pageable) {
-//        return daeguTourismRepository.findAll(pageable)
-//                .map(entity -> new DaeguTourismDto(
-//                        entity.getId(),
-//                        entity.getClassification(),
-//                        entity.getCourseTitle(),
-//                        entity.getCourseNumber(),
-//                        entity.getCourseTopic(),
-//                        entity.getCourseTopicDescription(),
-//                        entity.getRegion(),
-//                        entity.getTouristDestination(),
-//                        entity.getCourseDescription(),
-//                        entity.getAddress(),
-//                        entity.getPhoneNumber(),
-//                        entity.getHomepage()
-//                ))
-//                .getContent(); // Page에서 List만 추출
-//    }
-//
-//    public List<DaeguAccommodationDto> getAllDaeguAccommodationFromDBNoRedis(Pageable pageable){
-//        return daeguAccommodationRepository.findAll(pageable)
-//                .map(entity -> new DaeguAccommodationDto(
-//                        entity.getId(),
-//                        entity.getNumber(),
-//                        entity.getIndustryClassification(),
-//                        entity.getGuestMistakeStandard(),
-//                        entity.getGuestMistakeCount(),
-//                        entity.getPhoneNumber(),
-//                        entity.getGuestMistakeOneRoom(),
-//                        entity.getGuestMistakeDeluxe(),
-//                        entity.getLocation(),
-//                        entity.getRegion(),
-//                        entity.getGuestMistakeSuite(),
-//                        entity.getGuestMistakeOther(),
-//                        entity.getHotelName()
-//                ))
-//                .getContent(); // Page에서 List만 추출
-//    }
-//
-//    public List<DaeguRestaurantDto> getAllDaeguRestaurantFromDBNoRedis(Pageable pageable) {
-//        return daeguRestaurantRepository.findAll(pageable)
-//                .map(entity -> new DaeguRestaurantDto(
-//                        entity.getId(),
-//                        entity.getNumber(),
-//                        entity.getBusinessName(),
-//                        entity.getBusinessType(),
-//                        entity.getBusinessAddress()
-//                ))
-//                .getContent(); // Page에서 List만 추출
-//    }
 }
 

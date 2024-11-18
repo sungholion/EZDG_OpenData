@@ -17,6 +17,6 @@ public class DaeguRestaurantEntity {
     private String id;
     private String number;
     private String businessName;
-    private String businessType;
+    private String businessStatus;
     private String businessAddress;
 }

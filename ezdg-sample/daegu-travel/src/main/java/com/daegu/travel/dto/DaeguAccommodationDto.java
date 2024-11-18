@@ -11,7 +11,7 @@ public class DaeguAccommodationDto {
     private String id;
     private int number;
     private String industryClassification;
-    private int guestMistakeStandard;
+    private int guestMistakeStard;
     private int guestMistakeCount;
     private String phoneNumber;
     private int guestMistakeOneRoom;
