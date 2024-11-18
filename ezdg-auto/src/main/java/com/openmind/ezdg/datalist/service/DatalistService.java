@@ -247,14 +247,21 @@ public class DatalistService {
     }
 
     private List<Map<String, String>> getApiMethodList(FastApiResponseDto dto) {
-        return
-                dto.getRequestFields().stream().map(field -> {
-                    Map<String, String> item = new HashMap<>();
-                    item.put("returnType", dto.getClassName());
-                    item.put("method", "%s(%s %s)".formatted(field.getName(), field.getType(), field.getName()));
-                    item.put("description", field.getDescription());
-                    return item;
-                }).collect(Collectors.toList());
+        List<Map<String, String>> methodList = dto.getRequestFields().stream().map(field -> {
+            Map<String, String> item = new HashMap<>();
+            item.put("returnType", dto.getClassName());
+            item.put("method", "%s(%s %s)".formatted(field.getName(), field.getType(), field.getName()));
+            item.put("description", field.getDescription());
+            return item;
+        }).collect(Collectors.toList());
+        methodList.add(
+                Map.of(
+                        "returnType", "%sResponse".formatted(dto.getClassName()),
+                        "method", "fetch()",
+                        "description", "조건에 맞는 데이터를 조회합니다"
+                )
+        );
+        return methodList;
     }
 
 
