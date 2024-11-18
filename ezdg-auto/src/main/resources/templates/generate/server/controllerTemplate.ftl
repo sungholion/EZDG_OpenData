@@ -46,7 +46,7 @@ public class ${className}Controller {
         <#if field.type == "String">
         params.put("${field.name}Containing", ${field.name}Containing);
         </#if>
-        <#if field.type == "Date">
+        <#if field.type == "LocalDate" || field.type == "LocalDateTime">
         params.put("${field.name}After", ${field.name}After);
         params.put("${field.name}Before", ${field.name}Before);
         </#if>
