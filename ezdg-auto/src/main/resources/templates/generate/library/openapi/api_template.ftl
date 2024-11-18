@@ -1,5 +1,6 @@
 package ${packageName};
 
+import com.openmind.ezdg.common.Encoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import java.io.BufferedReader;
@@ -25,14 +26,14 @@ public class ${className} {
 <#list requestFields as field>
     <#if field.name == "serviceKey" || field.name == "ServiceKey">
     public ${className} (String serviceKey) {
-        queryParams.append("?${field.name}=").append(encode(serviceKey));
+        queryParams.append("?${field.name}=").append(Encoder.encode(serviceKey));
     }
     <#else>
     /**
     * ${field.description}
     */
     public ${className} ${field.name}(${field.type} ${field.name}) {
-        queryParams.append("&${field.name}=").append(encode(${field.name}));
+        queryParams.append("&${field.name}=").append(Encoder.encode(${field.name}));
         return this;
     }
     </#if>
@@ -73,15 +74,6 @@ public class ${className} {
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("API 요청 또는 JSON 파싱 실패", e);
-        }
-    }
-
-
-    private String encode(String value) {
-        try {
-            return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
-        } catch (Exception e) {
-            throw new RuntimeException("Encoding error", e);
         }
     }
 }
