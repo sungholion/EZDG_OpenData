@@ -35,10 +35,12 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SidebarProvider>
           <AppSidebar />
-          <main className="w-full">
+          <main className="w-full min-h-screen flex flex-col">
             <SidebarTrigger />
-            {children}
-            <Toaster />
+            <div className="flex-grow">
+              {children}
+              <Toaster />
+            </div>
             <AppFooter />
           </main>
         </SidebarProvider>
