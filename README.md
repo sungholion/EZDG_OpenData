@@ -1,7 +1,5 @@
-![image](/uploads/a599f2681a5cffea8a242278a4e31d5e/image.png)
-
 <h3>SSAFY 11기 2학기 자율 프로젝트</h3>
-
+![image](/uploads/a599f2681a5cffea8a242278a4e31d5e/image.png)
 </br>
 
 <div align="center">
@@ -116,6 +114,17 @@
 - 해당 투어에 대해 가이드랑 1:1 채팅이 가능하고, 번역이 가능
 
 # 🎇 서비스 이용 화면
+
+## 가이드 페이지 
+
+### 메인 페이지 소개 
+![image](/uploads/b0a070f62d00baad3ffdc042ca26bbbd/image.png) 
+
+### 검색 기능 
+![image](/uploads/86982c74f36778ebc63eb95998e452e8/image.png)
+
+### 설치 가이드
+[image](/uploads/d5ac26ea037ee9c1bff7e76e7110758b/image.png)
 
 ## 회원가입 & 로그인
 
