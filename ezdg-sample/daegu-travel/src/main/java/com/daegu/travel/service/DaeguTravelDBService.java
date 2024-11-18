@@ -52,10 +52,6 @@ public class DaeguTravelDBService {
     }
 
 
-    private String cacheKey(Pageable pageable) {
-        return pageable.getPageNumber() + "-" + pageable.getPageSize();
-    }
-
     public List<DaeguAccommodationDto> getAllDaeguAccommodationFromDB() {
         List<DaeguAccommodationDto> allData = new ArrayList<>();
         int page = 0;

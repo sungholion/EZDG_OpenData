@@ -6,8 +6,6 @@ import com.daegu.travel.dto.DaeguTourismDto;
 import com.daegu.travel.service.DaeguTravelDBService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,81 +22,43 @@ public class DaeguTravelDBController {
     }
 
     @Operation(summary = "대구 숙박 업소 전체 조회", description = "대구의 숙박 업소 전체 데이터를 조회합니다")
-    @GetMapping("/getAllDaeguAccommodation")
+    @GetMapping("/getAllDaeguAccommodationAll")
     public List<DaeguAccommodationDto> getAllDaeguAccommodationAll() {
         return daeguTravelDBService.getAllDaeguAccommodationFromCache();
     }
 
     @Operation(summary = "대구 관광 코스 전체 조회", description = "대구의 관광 코스 전체 데이터를 조회합니다")
-    @GetMapping("/getAllDaeguTourism")
+    @GetMapping("/getAllDaeguTourismAll")
     public List<DaeguTourismDto> getAllDaeguTourismAll() {
         return daeguTravelDBService.getAllDaeguTourismFromCache();
     }
 
     @Operation(summary = "대구 맛집 식당 전체 조회", description = "대구의 맛집 식당 전체 데이터를 조회합니다")
-    @GetMapping("/getAllDaeguRestaurant")
+    @GetMapping("/getAllDaeguRestaurantAll")
     public List<DaeguRestaurantDto> getAllDaeguRestaurantAll() {
         return daeguTravelDBService.getAllDaeguRestaurantFromCache();
     }
 
+    // ------------------------------------------------------
 
-//    @Operation(summary = "대구 관광 코스 조회", description = "대구의 관광 코스를 조회합니다")
-//    @GetMapping("/getAllDaeguTourism")
-//    public List<DaeguTourismDto> getAllDaeguTourismFromCache(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "100") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return daeguTravelDBService.getAllDaeguTourismFromCache(pageable);
-//    }
-//
-//    @Operation(summary = "대구 숙박 업소 조회", description = "대구의 숙박 업소를 조회합니다")
-//    @GetMapping("/getAllDaeguAccommodation")
-//    public List<DaeguAccommodationDto> getAllDaeguAccommodationFromDB(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "100") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return daeguTravelDBService.getAllDaeguAccommodationFromCache(pageable);
-//    }
-//
-//    @Operation(summary = "대구 맛집 식당 조회", description = "대구의 맛집 식당을 조회합니다")
-//    @GetMapping("/getAllDaeguRestaurant")
-//    public List<DaeguRestaurantDto> getAllDaeguRestaurantFromDB(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "100") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return daeguTravelDBService.getAllDaeguRestaurantFromCache(pageable);
-//    }
-//
-//    @Operation(summary = "대구 관광 코스 조회", description = "대구의 관광 코스를 조회합니다")
-//    @GetMapping("/getAllDaeguTourismNoRedis")
-//    public List<DaeguTourismDto> getAllDaeguTourismFromDBNoRedis(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "100") int size
-//    ) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return daeguTravelDBService.getAllDaeguTourismFromDBNoRedis(pageable);
-//    }
-//
-//    @Operation(summary = "대구 숙박 업소 조회", description = "대구의 숙박 업소를 조회합니다")
-//    @GetMapping("/getAllDaeguAccommodationNoRedis")
-//    public List<DaeguAccommodationDto> getAllDaeguAccommodationFromDBNoRedis(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "100") int size
-//    ) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return daeguTravelDBService.getAllDaeguAccommodationFromDBNoRedis(pageable);
-//    }
-//
-//    @Operation(summary = "대구 맛집 식당 조회", description = "대구의 맛집 식당을 조회합니다")
-//    @GetMapping("/getAllDaeguRestaurantNoRedis")
-//    public List<DaeguRestaurantDto> getAllDaeguRestaurantFromDBNoRedis(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "100") int size
-//    ) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return daeguTravelDBService.getAllDaeguRestaurantFromDBNoRedis(pageable);
-//    }
 
+    @Operation(summary = "대구 관광 코스 조회", description = "대구의 관광 코스를 조회합니다")
+    @GetMapping("/getAllDaeguTourism")
+    public List<DaeguTourismDto> getAllDaeguTourismFromDB() {
+        return daeguTravelDBService.getAllDaeguTourismFromDB();
+    }
+
+    @Operation(summary = "대구 숙박 업소 조회", description = "대구의 숙박 업소를 조회합니다")
+    @GetMapping("/getAllDaeguAccommodation")
+    public List<DaeguAccommodationDto> getAllDaeguAccommodationFromDB() {
+        return daeguTravelDBService.getAllDaeguAccommodationFromDB();
+    }
+
+    @Operation(summary = "대구 맛집 식당 조회", description = "대구의 맛집 식당을 조회합니다")
+    @GetMapping("/getAllDaeguRestaurant")
+    public List<DaeguRestaurantDto> getAllDaeguRestaurantFromDB() {
+        return daeguTravelDBService.getAllDaeguRestaurantFromDB();
+    }
 
 
 
