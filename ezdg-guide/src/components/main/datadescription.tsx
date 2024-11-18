@@ -21,7 +21,7 @@ const DisplayCard = ({ item }: { item: GuideMenuItem }) => {
     <Card className="bg-white shadow-xl hover:shadow-2xl transition-shadow h-[400px] flex flex-col">
       <CardHeader className="flex-none space-y-1 p-0">
         <div className="flex items-center justify-center w-full h-40 overflow-hidden">
-          <Image src={`/${item._id}.png`} alt={title} width={200} height={200} className="object-cover" />
+          <Image src={`/organ/${item._id}.png`} alt={title} width={200} height={200} className="object-cover" />
         </div>
         <div className="p-6">
           <CardTitle className="text-xl font-bold min-h-[3.5rem] line-clamp-2">{formatFieldName(title)}</CardTitle>
