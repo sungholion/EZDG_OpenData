@@ -20,7 +20,7 @@ interface ContactItem {
 const contactItems: ContactItem[] = [
   {
     name: "Discord",
-    url: "https://discord.gg/your-discord-invite",
+    url: "https://discord.gg/YJXHzF8k",
     icon: DiscordLogoIcon,
     description: "실시간 문의 및 피드백",
   },

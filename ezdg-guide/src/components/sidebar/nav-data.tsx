@@ -35,7 +35,7 @@ export function NavData({ items }: GuideMenuProps) {
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Datas</SidebarGroupLabel>
+      <SidebarGroupLabel>Data</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item._id}>
