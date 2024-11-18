@@ -19,6 +19,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,11 +35,15 @@ public class DatalistService {
     private final CustomStringUtil customStringUtil;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final AlgoliaService algoliaService;
-    private final CustomStringUtil customStringUtil;
 
     public Document getDetail(String id) {
         Query query = new Query(Criteria.where("_id").is(id));
-        return mongoTemplate.findOne(query, Document.class, "data_list");
+        Document document = mongoTemplate.findOne(query, Document.class, "data_list");
+
+        if (document == null) return null;
+
+        document.put("_id", new ObjectId(document.get("_id").toString()).toHexString());
+        return document;
     }
 
     public Document getDetail(String id, String className) {
@@ -52,6 +57,7 @@ public class DatalistService {
                 .findFirst()
                 .orElse(null);
         document.put("api", api);
+        document.put("_id", new ObjectId(document.get("_id").toString()).toHexString());
         document.remove("apiList");
         return document;
     }
