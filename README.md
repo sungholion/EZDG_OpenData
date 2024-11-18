@@ -12,9 +12,9 @@
 
 <div align="center">
 
-| <img src="https://github.com/dlguswls456.png" width="100"/> | <img src="https://github.com/ansehdwls.png" width="100"/> | <img src="https://github.com/suwhan2.png" width="100"/> | <img src="https://github.com/sungholion.png" width="100"/> | <img src="https://github.com/CHASANGGON.png" width="100"/> | <img src="https://github.com/SnowySparks.png" width="100"/> |
+| <img src="https://github.com/brobac.png" width="100"/> | <img src="https://github.com/Park-taewoo.png" width="100"/> | <img src="https://github.com/kyoungmopark.png" width="100"/> | <img src="https://github.com/sungholion.png" width="100"/> | <img src="https://github.com/hhajae.png" width="100"/> | <img src="https://github.com/miiiingyuuu.png" width="100"/> |
 |:---------------------------------------------------------:|:-------------------------------------------------------:|:----------------------------------------------------------:|:---------------------------------------------------------:|:---------------------------------------------------------:|:---------------------------------------------------------:|
-|       [박형준 - BE, Infra](https://github.com/dlguswls456)       |       [박태우 - MB](https://github.com/ansehdwls)       |       [박경모 - BE](https://github.com/suwhan2)       |       [조성호 - BE](https://github.com/sungholion)       |       [하재훈 - FE](https://github.com/CHASANGGON)       |       [박민규 - FE](https://github.com/SnowySparks)       |
+|       [박형준 - BE, Infra](https://github.com/brobac)       |       [박태우 - MB](https://github.com/Park-taewoo)       |       [박경모 - BE](https://github.com/kyoungmopark)       |       [조성호 - BE](https://github.com/sungholion)       |       [하재훈 - FE](https://github.com/hhajae)       |       [박민규 - FE](https://github.com/miiiingyuuu)       |
 
 [팀노션](https://purple-okapi-e46.notion.site/11f17534f9e5806eabf7e5fe5a78b213?pvs=4) |
 | [개발 일지](https://worried-venom-487.notion.site/60fd1b1753314e9d89537ea47528ae4e)
@@ -87,23 +87,26 @@
 
 ### 💎 서비스 기능
 
-공통
+### 1. 코드 자동 생성 (FREEMARKER)
 
-- 메인 화면에서 올라온 여러 투어 관련 글 볼 수 있음
-- 각 투어 글마다 리뷰 확인 가능
-- 특정 조건 달성 시 스탬프를 획득하는 재미 요소
+- DTO 클래스 자동 생성
+- API 연동 코드 템플릿 제공
+- 커스텀 코드 생성 템플릿 지원
+- 다양한 프레임워크 지원
 
-가이트(현지인) 입장
+### 2. 자동 배포 시스템
 
-- 가이드는 생각해 둔 투어 일정에 대한 글 작성
-- 관광객과 1:1 채팅이 가능하고, 채팅을 통해 협의되었을 경우 예약 가능
-- 둘이 만났을 경우에 QR체크를 통해 확인이 가능
+- GitLab Package Registry 연동
+- CI/CD 파이프라인 자동화
+- 버전 관리 및 릴리즈 자동화
+- 배포 로그 및 모니터링
 
-관광객(특히 외국인 관광객) 입장
+### 3. 동적 웹 크롤링 (Selenium)
 
-- 관심 있어 하는 투어글에 대해 위시리시트에 담을 수 있음
-- 해당 투어에 대해 가이드랑 1:1 채팅이 가능하고, 번역이 가능
-
+- 실시간 데이터 수집
+- 자동 데이터 업데이트
+- 페이지네이션 자동 처리
+- 에러 복구 메커니즘
 # 🎇 서비스 이용 화면
 
 ## 가이드 페이지 
