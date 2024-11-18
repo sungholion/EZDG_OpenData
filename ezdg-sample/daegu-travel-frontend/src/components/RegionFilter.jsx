@@ -5,7 +5,7 @@ const RegionFilter = ({ selectedRegion, setSelectedRegion, activeCategory, items
   // 맛집 카테고리일 때는 비즈니스 타입으로 필터 생성
   const getFilterOptions = () => {
     if (activeCategory === 'food') {
-      const uniqueTypes = ['전체', ...new Set(items.map(item => item.businessType))];
+      const uniqueTypes = ['전체', ...new Set(items.map(item => item.businessStatus))];
       return uniqueTypes.filter(type => type); // null, undefined 제거
     }
     // 관광, 숙박은 기존 지역 필터 사용
