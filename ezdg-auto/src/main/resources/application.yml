@@ -49,4 +49,4 @@ admin:
 
 external:
   api:
-    fastApi: http://k11d201.p.ssafy.io/croller
+    fastApi: https://k11d201.p.ssafy.io/croller

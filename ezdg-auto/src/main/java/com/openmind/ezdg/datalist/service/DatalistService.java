@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openmind.ezdg.datalist.dto.ApiDataDto;
 import com.openmind.ezdg.file.dto.filesave.FileInfoDto;
 import com.openmind.ezdg.file.util.CustomStringUtil;
+import com.openmind.ezdg.generate.library.openapi.FastApiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -231,15 +232,30 @@ public class DatalistService {
         return result;
     }
 
-//    private Map<String, Object> libraryDetail(ApiDataDto dto) {
-//
-//    }
+    private List<Map<String, String>> getApiMethodList(FastApiResponseDto dto) {
+        return
+                dto.getRequestFields().stream().map(field -> {
+                    Map<String, String> item = new HashMap<>();
+                    item.put("returnType", dto.getClassName());
+                    item.put("method", "%s(%s %s)".formatted(field.getName(), field.getType(), field.getName()));
+                    item.put("description", field.getDescription());
+                    return item;
+                }).collect(Collectors.toList());
+    }
 
 
     public void saveDocument(ApiDataDto dto) {
         // DTO를 Map으로 변환
         Map<String, Object> dtoMap = objectMapper.convertValue(dto, Map.class);
 
+        List<Map<String, Object>> methodList = dto.getApiList().stream().map(api -> {
+            Map<String, Object> map = objectMapper.convertValue(api, Map.class);
+            map.put("methodList", getApiMethodList(api));
+            return map;
+
+        }).collect(Collectors.toList());
+        System.out.println(methodList);
+        dtoMap.put("apiList", methodList);
         // 추가 필드와 병합
         LocalDateTime currentDateTime = LocalDateTime.now();
         dtoMap.put("createdAt", currentDateTime);
