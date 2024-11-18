@@ -97,7 +97,7 @@
                 <td>${data.purpose}</td>
                 <td>${data.additionalRequest}</td>
                 <td>
-                    ${data.isAccept ? 'Yes' : `<button id="acceptBtn_${data.id}" class="btn btn-primary" onclick="sendRequest(${data.id})">처리</button>`}
+                    ${data.isAccepted ? 'Yes' : `<button id="acceptBtn_${data.id}" class="btn btn-primary" onclick="sendRequest(${data.id})">처리</button>`}
                 </td>
             `;
             columnsTable.appendChild(row);
