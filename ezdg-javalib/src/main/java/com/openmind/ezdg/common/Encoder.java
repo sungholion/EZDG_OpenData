@@ -4,7 +4,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class Encoder {
-    private String encode(String value) {
+    public String encode(String value) {
         try {
             return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
         } catch (Exception e) {
@@ -12,7 +12,7 @@ public class Encoder {
         }
     }
 
-    private String encode(Number value){
+    public String encode(Number value){
         return encode(value.toString());
     }
 }
