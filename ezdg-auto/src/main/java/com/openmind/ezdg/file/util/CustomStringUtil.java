@@ -37,6 +37,40 @@ public class CustomStringUtil {
     }
 
     /**
+     * 한글 original 이름 정규화
+     */
+    public String normalizeOriginalName(String originalName) {
+        String result = deleteExtract(originalName);
+
+        // 양쪽 공백 제거
+        result = result.trim();
+
+        // 괄호 및 값 제거
+        result = result.replaceAll("\\(.*?\\)", "");
+
+        // - 제거
+        result = result.replaceAll("-", "");
+
+        // , 제거
+        result = result.replaceAll(",", "");
+
+        // . 제거
+        result = result.replaceAll("\\.", "");
+
+        // _ 제거
+        result = result.replaceAll("_", "");
+
+        // (, ) 제거
+        result = result.replaceAll("\\(", "");
+        result = result.replaceAll("\\)", "");
+
+        // 숫자 제거
+        result = result.replaceAll("\\d", "");
+
+        return result;
+    }
+
+    /**
      * value를 감싸고 있는 BsonValue에서 value만 추출
      *
      * @param value
@@ -94,7 +128,8 @@ public class CustomStringUtil {
      * @return 확장자가 제거된 파일 이름
      */
     public String deleteExtract(String str) {
-        int extractInd = str.indexOf(".");
+        if(!str.contains(".")) return str;
+        int extractInd = str.lastIndexOf(".");
         return str.substring(0, extractInd);
     }
 
@@ -119,7 +154,9 @@ public class CustomStringUtil {
      */
     public String snakeCaseToCamelCase(String snakeCaseStr) {
         if (!isSnakeCase(snakeCaseStr)) {
-            throw new RuntimeException("input string is not snake case -> " + snakeCaseStr);
+            snakeCaseStr = normalizeString(snakeCaseStr);
+            snakeCaseStr = deleteLastUnderScore(snakeCaseStr);
+            if(!isSnakeCase(snakeCaseStr)) return snakeCaseStr;
         }
         StringBuilder sb = new StringBuilder();
         StringTokenizer st = new StringTokenizer(snakeCaseStr, "_");

@@ -66,9 +66,10 @@ public class CsvSaveService {
         // 첫 번째 행의 데이터를 기준으로 초기 타입 설정
         for (int j = 0; j < translatedColumns.size(); j++) {
             String columnName = translatedColumns.get(j);
+            String camelColumnName = customStringUtil.snakeCaseToCamelCase(columnName);
             String value = j < firstRow.length ? firstRow[j] : null;
             String dataType = typeConvertUtil.getDataTypeFromString(value);
-            columnDataTypes.put(columnName, dataType); // 초기 데이터 타입 설정
+            columnDataTypes.put(camelColumnName, dataType); // 초기 데이터 타입 설정
         }
 
         // 두 번째 행부터 타입 검증 시작
@@ -77,16 +78,17 @@ public class CsvSaveService {
 
             for (int j = 0; j < row.length; j++) {
                 String columnName = translatedColumns.get(j);
+                String camelColumnName = customStringUtil.snakeCaseToCamelCase(columnName);
                 String value = row[j];
                 String currentDataType = typeConvertUtil.getDataTypeFromString(value);
 
                 // 기존 타입과 다른 타입이 있으면 해당 열의 타입을 String으로 고정하고 더 이상 검사하지 않음
-                if (!"String".equals(columnDataTypes.get(columnName)) &&
-                        !currentDataType.equals(columnDataTypes.get(columnName))) {
-                    log.info("Expected Type : " + columnDataTypes.get(columnName));
-                    columnDataTypes.put(columnName, "String");
-                    log.info("Current Type : " + columnDataTypes.get(columnName));
-                    log.info("Because : " + columnName);
+                if (!"String".equals(columnDataTypes.get(camelColumnName)) &&
+                        !currentDataType.equals(columnDataTypes.get(camelColumnName))) {
+                    log.info("Expected Type : " + columnDataTypes.get(camelColumnName));
+                    columnDataTypes.put(camelColumnName, "String");
+                    log.info("Current Type : " + columnDataTypes.get(camelColumnName));
+                    log.info("Because : " + camelColumnName);
                     break;
                 }
             }
@@ -99,12 +101,13 @@ public class CsvSaveService {
 
             for (int j = 0; j < row.length; j++) {
                 String columnName = translatedColumns.get(j);
+                String camelColumnName = customStringUtil.snakeCaseToCamelCase(columnName);
                 String value = row[j];
-                String dataType = columnDataTypes.get(columnName); // 최종 타입 가져오기
+                String dataType = columnDataTypes.get(camelColumnName); // 최종 타입 가져오기
 
 
                 // 결정된 타입으로 map에 put
-                putDocumentByDataType(dataType, documentMap, columnName, value);
+                putDocumentByDataType(dataType, documentMap, camelColumnName, value);
             }
             documents.add(new Document(documentMap));
         }
@@ -167,7 +170,7 @@ public class CsvSaveService {
     public ValidateDuplicateCodeDto validateDuplicateCode(String code) {
         Optional<PublicDataCode> publicDataCodeOpt = publicDataCodeRepository.findByCode(code);
 
-        if(publicDataCodeOpt.isEmpty()) {
+        if (publicDataCodeOpt.isEmpty()) {
             return new ValidateDuplicateCodeDto(false, null);
         }
         return new ValidateDuplicateCodeDto(true, publicDataCodeOpt.orElseThrow().getRegDate());
@@ -177,10 +180,7 @@ public class CsvSaveService {
      * 중복 검사를 하기 위해 새로운 데이터 삽입 시 공공데이터 code 값 mongoDB에 저장
      *
      */
-    public void insertCode(String code) {
-        publicDataCodeRepository.save(PublicDataCode.builder()
-                .code(code)
-                .regDate(LocalDateTime.now())
-                .build());
-    }
+//    public void insertCode(String code) {
+//        publicDataCodeRepository.save(PublicDataCode.builder();
+//    }
 }
