@@ -3,7 +3,7 @@ spring:
     mongodb:
       uri: mongodb://admin:openmindd201mongo@k11d201.p.ssafy.io:27017/data?authSource=admin&retryWrites=true&w=majority
     redis:
-      host: localhost
+      host: redis
       port: 6379
       cache:
         serialization:
