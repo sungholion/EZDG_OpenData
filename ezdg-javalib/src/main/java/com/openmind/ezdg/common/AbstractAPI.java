@@ -1,4 +1,4 @@
-package com.openmind.common;
+package com.openmind.ezdg.common;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,16 +19,17 @@ public abstract class AbstractAPI<T> {
     private final ObjectMapper mapper = new ObjectMapper();
     protected URIBuilder uriBuilder;
 
-
     public AbstractAPI(String endpoint) {
-        uriBuilder = new URIBuilder().setScheme("http").setHost("localhost:8080").setPath(endpoint);
+        uriBuilder = new URIBuilder()
+                .setScheme("https")
+                .setHost("k11d201.p.ssafy.io/api")
+                .setPath(endpoint);
     }
 
     protected String encode(String str) {
         try {
             return URLEncoder.encode(str, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            // 발생할 가능성이 거의 없기 때문에 런타임 예외로 래핑하여 던집니다.
             throw new RuntimeException("UTF-8 encoding is not supported", e);
         }
     }
@@ -51,24 +52,27 @@ public abstract class AbstractAPI<T> {
         return this;
     }
 
-    public List<T> fetch() throws URISyntaxException, IOException {
-        URL url = uriBuilder.build().toURL();
-        System.out.println(url);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-type", "application/json");
+    public List<T> fetch() {
+        try {
+            URL url = uriBuilder.build().toURL();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-type", "application/json");
 
-        if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            JsonNode rootNode = mapper.readTree(reader);
-            JsonNode contentNode = rootNode;
-            List<T> result = mapper.convertValue(contentNode, new TypeReference<List<T>>() {
-            });
-            reader.close();
-            conn.disconnect();
-            return result;
-        } else {
-            throw new IOException("Failed to fetch data. HTTP response code: " + conn.getResponseCode());
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                JsonNode rootNode = mapper.readTree(reader);
+                JsonNode contentNode = rootNode;
+                List<T> result = mapper.convertValue(contentNode, new TypeReference<List<T>>() {
+                });
+                reader.close();
+                conn.disconnect();
+                return result;
+            } else {
+                throw new IOException("Failed to fetch data. HTTP response code: " + conn.getResponseCode());
+            }
+        } catch (URISyntaxException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
