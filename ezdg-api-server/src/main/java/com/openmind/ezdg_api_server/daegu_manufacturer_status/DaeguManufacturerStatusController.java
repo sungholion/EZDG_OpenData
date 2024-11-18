@@ -29,10 +29,10 @@ public class DaeguManufacturerStatusController {
             @RequestParam(required = false) String complexNameContaining,
             @RequestParam(required = false) String companyName,
             @RequestParam(required = false) String companyNameContaining,
-            @RequestParam(required = false) String factoryRepresentativeAddress,
-            @RequestParam(required = false) String factoryRepresentativeAddressContaining,
-            @RequestParam(required = false) String factoryRepresentativeAddress,
-            @RequestParam(required = false) String factoryRepresentativeAddressContaining,
+            @RequestParam(required = false) String factoryRepresentativeDoroAddress,
+            @RequestParam(required = false) String factoryRepresentativeDoroAddressContaining,
+            @RequestParam(required = false) String factoryRepresentativeJibunAddress,
+            @RequestParam(required = false) String factoryRepresentativeJibunAddressContaining,
             @RequestParam(required = false) String representativeBusinessNumber,
             @RequestParam(required = false) String representativeBusinessNumberContaining,
             @RequestParam(required = false) String businessNumber,
@@ -59,10 +59,10 @@ public class DaeguManufacturerStatusController {
         params.put("complexNameContaining", complexNameContaining);
         params.put("companyName", companyName);
         params.put("companyNameContaining", companyNameContaining);
-        params.put("factoryRepresentativeAddress", factoryRepresentativeAddress);
-        params.put("factoryRepresentativeAddressContaining", factoryRepresentativeAddressContaining);
-        params.put("factoryRepresentativeAddress", factoryRepresentativeAddress);
-        params.put("factoryRepresentativeAddressContaining", factoryRepresentativeAddressContaining);
+        params.put("factoryRepresentativeDoroAddress", factoryRepresentativeDoroAddress);
+        params.put("factoryRepresentativeDoroAddressContaining", factoryRepresentativeDoroAddressContaining);
+        params.put("factoryRepresentativeJibunAddress", factoryRepresentativeJibunAddress);
+        params.put("factoryRepresentativeJibunAddressContaining", factoryRepresentativeJibunAddressContaining);
         params.put("representativeBusinessNumber", representativeBusinessNumber);
         params.put("representativeBusinessNumberContaining", representativeBusinessNumberContaining);
         params.put("businessNumber", businessNumber);

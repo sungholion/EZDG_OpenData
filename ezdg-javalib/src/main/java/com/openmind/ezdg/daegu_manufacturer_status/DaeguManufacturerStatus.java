@@ -6,8 +6,8 @@ public class DaeguManufacturerStatus {
     private Long orderNumber;
     private String complexName;
     private String companyName;
-    private String factoryRepresentativeAddress;
-    private String factoryRepresentativeAddress;
+    private String factoryRepresentativeDoroAddress;
+    private String factoryRepresentativeJibunAddress;
     private String representativeBusinessNumber;
     private String businessNumber;
     private String businessName;
@@ -40,20 +40,20 @@ public class DaeguManufacturerStatus {
         this.companyName = companyName;
     }
 
-    public String getFactoryRepresentativeAddress() {
-        return factoryRepresentativeAddress;
+    public String getFactoryRepresentativeDoroAddress() {
+        return factoryRepresentativeDoroAddress;
     }
 
-    public void setFactoryRepresentativeAddress(String factoryRepresentativeAddress) {
-        this.factoryRepresentativeAddress = factoryRepresentativeAddress;
+    public void setFactoryRepresentativeDoroAddress(String factoryRepresentativeDoroAddress) {
+        this.factoryRepresentativeDoroAddress = factoryRepresentativeDoroAddress;
     }
 
-    public String getFactoryRepresentativeAddress() {
-        return factoryRepresentativeAddress;
+    public String getFactoryRepresentativeJibunAddress() {
+        return factoryRepresentativeJibunAddress;
     }
 
-    public void setFactoryRepresentativeAddress(String factoryRepresentativeAddress) {
-        this.factoryRepresentativeAddress = factoryRepresentativeAddress;
+    public void setFactoryRepresentativeJibunAddress(String factoryRepresentativeJibunAddress) {
+        this.factoryRepresentativeJibunAddress = factoryRepresentativeJibunAddress;
     }
 
     public String getRepresentativeBusinessNumber() {

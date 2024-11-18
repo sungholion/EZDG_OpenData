@@ -15,8 +15,8 @@ public class DaeguManufacturerStatus {
     private Long orderNumber;
     private String complexName;
     private String companyName;
-    private String factoryRepresentativeAddress;
-    private String factoryRepresentativeAddress;
+    private String factoryRepresentativeDoroAddress;
+    private String factoryRepresentativeJibunAddress;
     private String representativeBusinessNumber;
     private String businessNumber;
     private String businessName;

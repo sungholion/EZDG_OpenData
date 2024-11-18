@@ -62,23 +62,23 @@ public class DaeguManufacturerStatusAPI extends AbstractAPI<DaeguManufacturerSta
         return this;
     }
 
-    public DaeguManufacturerStatusAPI factoryRepresentativeAddress(String factoryRepresentativeAddress) {
-        uriBuilder.setParameter("factoryRepresentativeAddress", String.valueOf(factoryRepresentativeAddress));
+    public DaeguManufacturerStatusAPI factoryRepresentativeDoroAddress(String factoryRepresentativeDoroAddress) {
+        uriBuilder.setParameter("factoryRepresentativeDoroAddress", String.valueOf(factoryRepresentativeDoroAddress));
         return this;
     }
 
-    public DaeguManufacturerStatusAPI factoryRepresentativeAddressContaining(String factoryRepresentativeAddress) {
-        uriBuilder.setParameter("factoryRepresentativeAddressContaining", factoryRepresentativeAddress);
+    public DaeguManufacturerStatusAPI factoryRepresentativeDoroAddressContaining(String factoryRepresentativeDoroAddress) {
+        uriBuilder.setParameter("factoryRepresentativeDoroAddressContaining", factoryRepresentativeDoroAddress);
         return this;
     }
 
-    public DaeguManufacturerStatusAPI factoryRepresentativeAddress(String factoryRepresentativeAddress) {
-        uriBuilder.setParameter("factoryRepresentativeAddress", String.valueOf(factoryRepresentativeAddress));
+    public DaeguManufacturerStatusAPI factoryRepresentativeJibunAddress(String factoryRepresentativeJibunAddress) {
+        uriBuilder.setParameter("factoryRepresentativeJibunAddress", String.valueOf(factoryRepresentativeJibunAddress));
         return this;
     }
 
-    public DaeguManufacturerStatusAPI factoryRepresentativeAddressContaining(String factoryRepresentativeAddress) {
-        uriBuilder.setParameter("factoryRepresentativeAddressContaining", factoryRepresentativeAddress);
+    public DaeguManufacturerStatusAPI factoryRepresentativeJibunAddressContaining(String factoryRepresentativeJibunAddress) {
+        uriBuilder.setParameter("factoryRepresentativeJibunAddressContaining", factoryRepresentativeJibunAddress);
         return this;
     }
 
