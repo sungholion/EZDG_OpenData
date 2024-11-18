@@ -16,7 +16,7 @@
 |:---------------------------------------------------------:|:-------------------------------------------------------:|:----------------------------------------------------------:|:---------------------------------------------------------:|:---------------------------------------------------------:|:---------------------------------------------------------:|
 |       [박형준 - BE, Infra](https://github.com/dlguswls456)       |       [박태우 - MB](https://github.com/ansehdwls)       |       [박경모 - BE](https://github.com/suwhan2)       |       [조성호 - BE](https://github.com/sungholion)       |       [하재훈 - FE](https://github.com/CHASANGGON)       |       [박민규 - FE](https://github.com/SnowySparks)       |
 
-[팀노션](https://worried-venom-487.notion.site/Circus-NativeNavs-s-Notion-db7c7ef8b35e4ba4b2f731fb45ca0b98) | [백로그](https://docs.google.com/spreadsheets/d/15WcJPjiMF_tzAu-eFwJ_k6g8Dr8fRtLvuA1UcCKHaHk/edit?usp=sharing) | [디자인](https://www.figma.com/design/EfS4sC3ONU5kXkS4gsEiUn/D110?node-id=0-1&node-type=canvas&t=d7ufe8EIAsDE6PCF-0)
+[팀노션](https://purple-okapi-e46.notion.site/11f17534f9e5806eabf7e5fe5a78b213?pvs=4) |
 | [개발 일지](https://worried-venom-487.notion.site/60fd1b1753314e9d89537ea47528ae4e)
 
 </div>
@@ -291,12 +291,11 @@
 
 # 🔨 사용한 기술
 
-## Hybrid App
+## 예시 서비스2 Dague Travel - 조회 성능 개선
 
-이 프로젝트는 모바일 앱 안에 웹 뷰 (Webview)를 띄우는 방식을 사용하였습니다.  
-따라서 앱에서 미리 함수를 정의하여, 이를 웹에서 실행하면 마치 앱에서 함수를 실행하는 효과를 가질 수 있습니다
-
-반대로 웹에서 미리 함수를 정의하고, 앱에서 이를 읽어서 명령어를 실행시키는 방식도 가능합니다
+- Aggregation
+- Redis
+- Batch
 
 <img src ="./READMEimg/HybridApp.png" style="width:200px">
 
