@@ -41,7 +41,7 @@ public class ${className}Controller {
         <#if field.type == "String">
             @RequestParam(required = false) ${field.type} ${field.name}Containing,
         </#if>
-        <#if field.type == "Date">
+        <<#if field.type == "LocalDate" || field.type == "LocalDateTime">
             @RequestParam(required = false) ${field.type} ${field.name}After,
             @RequestParam(required = false) ${field.type} ${field.name}Before,
         </#if>
