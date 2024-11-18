@@ -1,4 +1,4 @@
-package com.openmind.common;
+package com.openmind.ezdg.common;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
