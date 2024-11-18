@@ -17,10 +17,10 @@ export const FileGuideView: React.FC<FileGuideViewProps> = ({ data }) => {
             <span className="font-medium min-w-[120px]">데이터 명:</span>
             <span className="text-gray-600">{formatFieldName(data.originalFileName)}</span>
           </div>
-          <div className="flex gap-2">
+          {/* <div className="flex gap-2">
             <span className="font-medium min-w-[120px]">변역된 데이터 명:</span>
             <span className="text-gray-600">{data.translatedFileName}</span>
-          </div>
+          </div> */}
         </div>
       </section>
 
