@@ -22,13 +22,13 @@ public class DaeguRestaurantController {
     public List<DaeguRestaurant> search (
             @RequestParam(required = false) String number,
             @RequestParam(required = false) String numberContaining,
-        <            @RequestParam(required = false) String businessName,
+            @RequestParam(required = false) String businessName,
             @RequestParam(required = false) String businessNameContaining,
-        <            @RequestParam(required = false) String businessStatus,
+            @RequestParam(required = false) String businessStatus,
             @RequestParam(required = false) String businessStatusContaining,
-        <            @RequestParam(required = false) String businessAddress,
+            @RequestParam(required = false) String businessAddress,
             @RequestParam(required = false) String businessAddressContaining,
-        <            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int perPage) {
 
         Map <String, Object> params = new HashMap<>();

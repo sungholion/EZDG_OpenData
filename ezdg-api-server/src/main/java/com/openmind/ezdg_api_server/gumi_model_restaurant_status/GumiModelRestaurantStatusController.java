@@ -21,21 +21,21 @@ public class GumiModelRestaurantStatusController {
     @GetMapping("")
     public List<GumiModelRestaurantStatus> search (
             @RequestParam(required = false) Long number,
-        <            @RequestParam(required = false) Long numberLt,
+            @RequestParam(required = false) Long numberLt,
             @RequestParam(required = false) Long numberLte,
             @RequestParam(required = false) Long numberGt,
             @RequestParam(required = false) Long numberGte,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String categoryContaining,
-        <            @RequestParam(required = false) String businessName,
+            @RequestParam(required = false) String businessName,
             @RequestParam(required = false) String businessNameContaining,
-        <            @RequestParam(required = false) String locationRoadNameAddress,
+            @RequestParam(required = false) String locationRoadNameAddress,
             @RequestParam(required = false) String locationRoadNameAddressContaining,
-        <            @RequestParam(required = false) String phoneNumber,
+            @RequestParam(required = false) String phoneNumber,
             @RequestParam(required = false) String phoneNumberContaining,
-        <            @RequestParam(required = false) String representativeMenu,
+            @RequestParam(required = false) String representativeMenu,
             @RequestParam(required = false) String representativeMenuContaining,
-        <            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int perPage) {
 
         Map <String, Object> params = new HashMap<>();

@@ -22,11 +22,11 @@ public class BusanProtectionCctvInformationController {
     public List<BusanProtectionCctvInformation> search (
             @RequestParam(required = false) String cctvName,
             @RequestParam(required = false) String cctvNameContaining,
-        <            @RequestParam(required = false) String cctvCoordinates,
+            @RequestParam(required = false) String cctvCoordinates,
             @RequestParam(required = false) String cctvCoordinatesContaining,
-        <            @RequestParam(required = false) String cctvGroup,
+            @RequestParam(required = false) String cctvGroup,
             @RequestParam(required = false) String cctvGroupContaining,
-        <            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int perPage) {
 
         Map <String, Object> params = new HashMap<>();

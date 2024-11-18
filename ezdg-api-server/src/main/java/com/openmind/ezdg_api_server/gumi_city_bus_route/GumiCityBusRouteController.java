@@ -22,13 +22,13 @@ public class GumiCityBusRouteController {
     public List<GumiCityBusRoute> search (
             @RequestParam(required = false) String routeNumber,
             @RequestParam(required = false) String routeNumberContaining,
-        <            @RequestParam(required = false) String mainStop,
+            @RequestParam(required = false) String mainStop,
             @RequestParam(required = false) String mainStopContaining,
-        <            @RequestParam(required = false) String departure,
+            @RequestParam(required = false) String departure,
             @RequestParam(required = false) String departureContaining,
-        <            @RequestParam(required = false) String destination,
+            @RequestParam(required = false) String destination,
             @RequestParam(required = false) String destinationContaining,
-        <            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int perPage) {
 
         Map <String, Object> params = new HashMap<>();

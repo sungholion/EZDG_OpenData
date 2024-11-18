@@ -22,20 +22,20 @@ public class DaeguEducationSchoolStatusController {
     public List<DaeguEducationSchoolStatus> search (
             @RequestParam(required = false) String schoolName,
             @RequestParam(required = false) String schoolNameContaining,
-        <            @RequestParam(required = false) String districtCountyOffice,
+            @RequestParam(required = false) String districtCountyOffice,
             @RequestParam(required = false) String districtCountyOfficeContaining,
-        <            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String address,
             @RequestParam(required = false) String addressContaining,
-        <            @RequestParam(required = false) Long postcode,
-        <            @RequestParam(required = false) Long postcodeLt,
+            @RequestParam(required = false) Long postcode,
+            @RequestParam(required = false) Long postcodeLt,
             @RequestParam(required = false) Long postcodeLte,
             @RequestParam(required = false) Long postcodeGt,
             @RequestParam(required = false) Long postcodeGte,
             @RequestParam(required = false) String phoneNumber,
             @RequestParam(required = false) String phoneNumberContaining,
-        <            @RequestParam(required = false) String faxNumber,
+            @RequestParam(required = false) String faxNumber,
             @RequestParam(required = false) String faxNumberContaining,
-        <            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int perPage) {
 
         Map <String, Object> params = new HashMap<>();

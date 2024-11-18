@@ -21,19 +21,19 @@ public class BusanManufacturingFactoryRegistrationStatusController {
     @GetMapping("")
     public List<BusanManufacturingFactoryRegistrationStatus> search (
             @RequestParam(required = false) Long order,
-        <            @RequestParam(required = false) Long orderLt,
+            @RequestParam(required = false) Long orderLt,
             @RequestParam(required = false) Long orderLte,
             @RequestParam(required = false) Long orderGt,
             @RequestParam(required = false) Long orderGte,
             @RequestParam(required = false) String companyName,
             @RequestParam(required = false) String companyNameContaining,
-        <            @RequestParam(required = false) String factoryRepresentativeAddress,
+            @RequestParam(required = false) String factoryRepresentativeAddress,
             @RequestParam(required = false) String factoryRepresentativeAddressContaining,
-        <            @RequestParam(required = false) String businessName,
+            @RequestParam(required = false) String businessName,
             @RequestParam(required = false) String businessNameContaining,
-        <            @RequestParam(required = false) String phoneNumber,
+            @RequestParam(required = false) String phoneNumber,
             @RequestParam(required = false) String phoneNumberContaining,
-        <            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int perPage) {
 
         Map <String, Object> params = new HashMap<>();

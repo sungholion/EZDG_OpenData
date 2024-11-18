@@ -22,9 +22,9 @@ public class DaeguLocalCompanyInformationStatusController {
     public List<DaeguLocalCompanyInformationStatus> search (
             @RequestParam(required = false) String companyName,
             @RequestParam(required = false) String companyNameContaining,
-        <            @RequestParam(required = false) String companySize,
+            @RequestParam(required = false) String companySize,
             @RequestParam(required = false) String companySizeContaining,
-        <            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int perPage) {
 
         Map <String, Object> params = new HashMap<>();
