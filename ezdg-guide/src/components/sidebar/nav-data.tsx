@@ -48,7 +48,7 @@ export function NavData({ items }: GuideMenuProps) {
                 onOpenChange={() => toggleOpen(item._id)}>
                 <>
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuButton className="my-1" tooltip={item.mainTitle}>
+                    <SidebarMenuButton tooltip={item.mainTitle}>
                       <span>{formatFieldName(item.mainTitle)}</span>
                       <ChevronRight
                         className={`ml-auto transition-transform duration-200 ${
