@@ -40,7 +40,7 @@ public class CodeGenerator {
         log.info("apiSpec = {}", apiSpec.getRequestFields());
         try {
             Map<String, Object> dataModel = new HashMap<>();
-            dataModel.put("packageName", apiSpec.getPackageName());
+            dataModel.put("packageName", "com.openmind.ezdg." + apiSpec.getPackageName());
             dataModel.put("className", apiSpec.getClassName());
             dataModel.put("baseUrl", apiSpec.getBaseUrl());
             dataModel.put("endpoint", apiSpec.getEndpoint());

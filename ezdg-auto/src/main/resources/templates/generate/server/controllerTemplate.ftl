@@ -12,13 +12,14 @@ import java.util.Map;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("/${collectionName}")
 @RequiredArgsConstructor
+@RequestMapping("/${collectionName}")
 public class ${className}Controller {
-private final ${className}Service service;
+
+    private final ${className}Service service;
 
     @GetMapping("")
-    public List<${className}> search(
+    public List<${className}> search (
     <#list fields as field>
             @RequestParam(required = false) ${field.type} ${field.name},
         <#if field.type == "String">
@@ -37,13 +38,15 @@ private final ${className}Service service;
     </#list>
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int perPage) {
+
         Map <String, Object> params = new HashMap<>();
+
     <#list fields as field>
         params.put("${field.name}", ${field.name});
         <#if field.type == "String">
         params.put("${field.name}Containing", ${field.name}Containing);
         </#if>
-        <#if field.type == "Date">
+        <#if field.type == "LocalDate" || field.type == "LocalDateTime">
         params.put("${field.name}After", ${field.name}After);
         params.put("${field.name}Before", ${field.name}Before);
         </#if>
