@@ -22,10 +22,8 @@ interface GuideMenuProps {
 }
 
 export function NavData({ items }: GuideMenuProps) {
-  // 각 아이템의 open 상태를 관리하는 객체
   const [openStates, setOpenStates] = useState<Record<string, boolean>>({});
 
-  // 특정 아이템의 open 상태를 토글하는 함수
   const toggleOpen = (itemId: string) => {
     setOpenStates((prev) => ({
       ...prev,
@@ -40,7 +38,6 @@ export function NavData({ items }: GuideMenuProps) {
         {items.map((item) => (
           <SidebarMenuItem key={item._id}>
             {isApiGuideItem(item) ? (
-              // API 타입일 경우 Collapsible로 apiList 표시
               <Collapsible
                 asChild
                 className="group/collapsible"
@@ -48,22 +45,38 @@ export function NavData({ items }: GuideMenuProps) {
                 onOpenChange={() => toggleOpen(item._id)}>
                 <>
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuButton tooltip={item.mainTitle}>
-                      <span>{formatFieldName(item.mainTitle)}</span>
-                      <ChevronRight
-                        className={`ml-auto transition-transform duration-200 ${
-                          openStates[item._id] ? "rotate-90" : ""
-                        }`}
-                      />
+                    <SidebarMenuButton
+                      tooltip={openStates[item._id] ? undefined : item.mainTitle}
+                      className={openStates[item._id] ? "pb-2" : ""}>
+                      <div className="flex items-center w-full">
+                        <span
+                          className={`${openStates[item._id] ? "whitespace-normal leading-snug py-0.5" : "truncate"}`}>
+                          {formatFieldName(item.mainTitle)}
+                        </span>
+                        <ChevronRight
+                          className={`ml-auto flex-shrink-0 transition-transform duration-200 ${
+                            openStates[item._id] ? "rotate-90" : ""
+                          }`}
+                        />
+                      </div>
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
-                    <SidebarMenuSub>
+                    <SidebarMenuSub className="pt-1">
                       {item.apiList.map((api) => (
                         <SidebarMenuSubItem key={api.className}>
                           <SidebarMenuSubButton asChild>
-                            <Link href={`/datas/${item._id}/${api.className}`} onClick={(e) => e.stopPropagation()}>
-                              <span>{api.title}</span>
+                            <Link
+                              href={`/datas/${item._id}/${api.className}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="w-full">
+                              <span
+                                className={`block ${
+                                  openStates[item._id] ? "whitespace-normal leading-snug py-0.5" : "truncate"
+                                }`}
+                                title={openStates[item._id] ? undefined : api.title}>
+                                {api.title}
+                              </span>
                             </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
@@ -73,10 +86,9 @@ export function NavData({ items }: GuideMenuProps) {
                 </>
               </Collapsible>
             ) : (
-              // File 타입일 경우 단일 링크
-              <Link href={`/datas/${item._id}`} onClick={(e) => e.stopPropagation()} className="block">
+              <Link href={`/datas/${item._id}`} onClick={(e) => e.stopPropagation()} className="block w-full">
                 <SidebarMenuButton tooltip={item.originalFileName}>
-                  <span>{formatFieldName(item.originalFileName)}</span>
+                  <span className="truncate">{formatFieldName(item.originalFileName)}</span>
                 </SidebarMenuButton>
               </Link>
             )}
