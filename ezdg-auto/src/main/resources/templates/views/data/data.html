@@ -8,7 +8,7 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-5">
+<div class="container mt-5" id="data-container" th:data-baseurl="${baseUrl}">
     <h2 class="text-center">데이터 추가 요청 현황</h2>
     <div class="mt-4">
         <table class="table table-bordered w-85 mx-auto">
@@ -105,7 +105,10 @@
     });
 
     function sendRequest(id) {
-        const baseUrl = document.querySelector(".container").getAttribute("th:data-baseurl") || "";
+        let baseUrl = document.getElementById("data-container").getAttribute("data-baseurl");
+        if (!baseUrl) {
+            baseUrl = "";
+        }
         fetch(`${baseUrl}/accept/${id}`, {
             method: "POST",
             headers: {
