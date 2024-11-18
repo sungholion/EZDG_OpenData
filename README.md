@@ -1,4 +1,4 @@
-# NativeNavs
+# EZDG - '공공 데이터 조회 Java 라이브러리'
 
 
 <h3>SSAFY 11기 2학기 자율 프로젝트</h3>
@@ -30,6 +30,15 @@
 <center>
 <h1>Tech Stack</h1>
 
+### BackEnd
+
+<img src="https://img.shields.io/badge/JAVA-FBBA00?logoColor=000&style=for-the-badge"> 
+<img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=fff&style=for-the-badge">
+<img src="https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=fff&style=for-the-badge"> <img src="https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=fff&style=for-the-badge">
+<img src="https://img.shields.io/badge/Redis-FF4438?logoColor=fff&style=for-the-badge">
+<img src="https://img.shields.io/badge/Jmeter-D22128?logoColor=fff&style=for-the-badge">
+
+
 ### FrontEnd
 
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"> <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
@@ -37,32 +46,14 @@
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white">
 <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white">
 <img src="https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white">
-<img src="https://img.shields.io/badge/Android WebView-3DDC84?logoColor=fff&style=for-the-badge">
 
-### BackEnd
 
-<img src="https://img.shields.io/badge/JAVA-FBBA00?logoColor=000&style=for-the-badge"> <img src="https://img.shields.io/badge/Spring-6DB33F?logo=spring&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/Spring%20Security-6DB33F?logo=springsecurity&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/WebSocket-337AB7?&logoColor=fff&style=for-the-badge">
 
-### Android
 
-<img src="https://img.shields.io/badge/Android-34A853?logo=android&logoColor=fff&style=for-the-badge"> <img src="https://img.shields.io/badge/Android%20Studio-3DDC84?logo=androidstudio&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/Android%20Jetpack-4285F4?logo=jetpackcompose&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/FCM-4285F4?logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/WebSocket-337AB7?&logoColor=fff&style=for-the-badge">
-
-### DB
-
-<img src="https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=fff&style=for-the-badge"> <img src="https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/Redis-FF4438?logoColor=fff&style=for-the-badge">
 
 ### CI/CD
 
 <img src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff&style=for-the-badge"> <img src="https://img.shields.io/badge/Jenkins-D24939?logo=jenkins&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/Amazon%20S3-569A31?logo=amazons3&logoColor=fff&style=for-the-badge">
 <img src="https://img.shields.io/badge/Amazon%20EC2-F90?logo=amazonec2&logoColor=fff&style=for-the-badge">
 <img src="https://img.shields.io/badge/NGINX-009639?logo=nginx&logoColor=fff&style=for-the-badge">
 
