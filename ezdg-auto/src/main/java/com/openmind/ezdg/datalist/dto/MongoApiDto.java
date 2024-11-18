@@ -33,6 +33,7 @@ public class MongoApiDto {
         private String endpoint;
         private List<ApiFieldInfo> requestFields;
         private List<ApiFieldInfo> responseFields;
+        private List<MethodFieldInfo> methodList;
     }
 
     @Getter @Setter
@@ -43,5 +44,13 @@ public class MongoApiDto {
         private String description;
         private String required;
         private String sampleData;
+    }
+
+    @Getter @Setter
+    @AllArgsConstructor
+    public class MethodFieldInfo {
+        private String method;
+        private String description;
+        private String returnType;
     }
 }

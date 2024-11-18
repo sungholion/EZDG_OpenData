@@ -25,11 +25,21 @@ public class MongoFileDto {
     private String type;
     private Boolean deployed;
 
+    private List<MethodFieldInfo> methodList;
+
     @Getter @Setter
     @AllArgsConstructor
     public class FileFieldInfo {
         private String type;
         private String translatedName;
         private String originalName;
+    }
+
+    @Getter @Setter
+    @AllArgsConstructor
+    public class MethodFieldInfo {
+        private String method;
+        private String description;
+        private String returnType;
     }
 }

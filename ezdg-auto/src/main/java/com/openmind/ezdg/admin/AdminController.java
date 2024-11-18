@@ -140,10 +140,10 @@ public class AdminController {
     @ResponseBody
     public boolean release() {
         // web hook을 통해 쉘 스크립트를 실행시켜서 master 브랜치에 코드를 올린다.
-        boolean uploaded = scriptService.releaseHook();
-        log.info("uploaded = {}", uploaded);
-        if (!uploaded) return false;
-        datalistService.deployDocument();
+//        boolean uploaded = scriptService.releaseHook();
+//        log.info("uploaded = {}", uploaded);
+//        if (!uploaded) return false;
+//        datalistService.deployDocument();
         return true;
     }
 
