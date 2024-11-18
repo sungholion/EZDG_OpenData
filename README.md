@@ -1,5 +1,4 @@
-# NativeNavs
-
+![image](/uploads/a599f2681a5cffea8a242278a4e31d5e/image.png)
 
 <h3>SSAFY 11기 2학기 자율 프로젝트</h3>
 
@@ -77,7 +76,7 @@
 </br>
 </br>
 <h1>Architecture</h1>
-<img src=https://github.com/user-attachments/assets/7ca266ab-d01e-4baa-a000-84db0dbac579>
+![image](/uploads/7bba05073e56303f04d0d46d997df3ab/image.png)
 
 # 소개
 
