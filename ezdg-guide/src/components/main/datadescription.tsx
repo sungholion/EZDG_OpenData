@@ -13,15 +13,28 @@ interface DataDescriptionProps {
 }
 
 const DisplayCard = ({ item }: { item: GuideMenuItem }) => {
+  const [imageError, setImageError] = useState(false);
   const isApi = isApiGuideItem(item);
   const title = isApi ? item.mainTitle : item.originalFileName;
   const description = isApi ? item.mainDescription : item.originalFileName;
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   return (
     <Card className="bg-white shadow-xl hover:shadow-2xl transition-shadow h-[400px] flex flex-col">
       <CardHeader className="flex-none space-y-1 p-0">
         <div className="flex items-center justify-center w-full h-40 overflow-hidden">
-          <Image src={`/organ/${item._id}.png`} alt={title} width={200} height={200} className="object-cover" />
+          <Image
+            src={imageError ? "/organ/null.png" : `/organ/${item._id}.png`}
+            alt={title}
+            width={200}
+            height={200}
+            className="object-cover"
+            onError={handleImageError}
+            priority={false}
+          />
         </div>
         <div className="p-6">
           <CardTitle className="text-xl font-bold min-h-[3.5rem] line-clamp-2">{formatFieldName(title)}</CardTitle>
