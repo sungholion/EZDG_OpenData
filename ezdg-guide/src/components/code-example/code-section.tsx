@@ -14,10 +14,7 @@ export function CodeSection({ installations, className }: CodeSectionProps) {
             )}
           </div>
           <div className="rounded-lg border p-4">
-            <CodeTabs
-              code={installation.code}
-              language={installation.language}
-            />
+            <CodeTabs code={installation.code} language="java" />
           </div>
         </section>
       ))}
