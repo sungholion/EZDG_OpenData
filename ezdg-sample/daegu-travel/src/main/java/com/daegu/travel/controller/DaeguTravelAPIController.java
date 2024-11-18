@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -21,19 +19,19 @@ public class DaeguTravelAPIController {
 
     @Operation(summary = "대구 관광 코스 조회", description = "대구의 관광 코스를 조회합니다")
     @GetMapping("/getAllDaeguTourism")
-    public List<DaeguTourism> getAllDaeguTourismFromAPI() throws URISyntaxException, IOException {
+    public List<DaeguTourism> getAllDaeguTourismFromAPI() {
         return DaeguTravelAPIService.getAllDaeguTourismFromAPI();
     }
 
     @Operation(summary = "대구 숙박 업소 조회", description = "대구의 숙박 업소를 조회합니다")
     @GetMapping("/getAllDaeguAccommodation")
-    public List<DaeguAccommodation> getAllDaeguAccommodationFromAPI() throws URISyntaxException, IOException {
+    public List<DaeguAccommodation> getAllDaeguAccommodationFromAPI() {
         return DaeguTravelAPIService.getAllDaeguAccommodationFromAPI();
     }
 
     @Operation(summary = "대구 맛집 식당 조회", description = "대구의 맛집 식당을 조회합니다")
     @GetMapping("/getAllDaeguRestaurant")
-    public List<DaeguRestaurant> getAllDaeguRestaurantFromAPI() throws URISyntaxException, IOException {
+    public List<DaeguRestaurant> getAllDaeguRestaurantFromAPI() {
         return DaeguTravelAPIService.getAllDaeguRestaurantFromAPI();
     }
 }
