@@ -108,14 +108,18 @@
 
 ## 가이드 페이지 
 
-### 메인 페이지 소개 
-![image](/uploads/b0a070f62d00baad3ffdc042ca26bbbd/image.png) 
+### 메인 페이지 
+![EZDG_-_Chrome_2024-11-18_20-43-48](/uploads/eded36693883f0fa9b1472e49af7ceef/EZDG_-_Chrome_2024-11-18_20-43-48.gif)
+### 검색 기능
+![EZDG_-_Chrome_2024-11-18_20-44-52](/uploads/4f5713af43feb223a2e0ef6ccf12880c/EZDG_-_Chrome_2024-11-18_20-44-52.gif)
+### 설치 가이드 
+![EZDG_-_Chrome_2024-11-18_20-45-09__1_](/uploads/73189ed9d80bbdf5ac52807829ce34c5/EZDG_-_Chrome_2024-11-18_20-45-09__1_.gif)
 
-### 검색 기능 
-![image](/uploads/86982c74f36778ebc63eb95998e452e8/image.png)
+## 예시프로젝트 - 대구의 자랑
+![대구의_자랑_-_Chrome_2024-11-18_14-49-00](/uploads/f80384aecaa80ffb7851edb91d55d59a/대구의_자랑_-_Chrome_2024-11-18_14-49-00.gif)
 
-### 설치 가이드
-[image](/uploads/d5ac26ea037ee9c1bff7e76e7110758b/image.png)
+## 예시프로젝트 - Find My Company!
+![기업_기본_정보_조회_-_Chrome_2024-11-18_14-25-12](/uploads/374606ad619279dace61abe1224c9944/기업_기본_정보_조회_-_Chrome_2024-11-18_14-25-12.gif)
 
 ## 회원가입 & 로그인
 
