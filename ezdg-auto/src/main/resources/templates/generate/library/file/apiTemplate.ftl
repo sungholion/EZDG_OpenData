@@ -49,13 +49,13 @@ public class ${className}API extends AbstractAPI<${className}> {
         return this;
     }
 
-<#elseif field.type == "LocalDate">
-    public ${className}API ${field.name}After(LocalDate ${field.name}After) {
+<#elseif field.type == "LocalDate" || field.type == "LocalDateTime">
+    public ${className}API ${field.name}After(${field.type} ${field.name}After) {
         uriBuilder.setParameter("${field.name}After", ${field.name}After.toString());
         return this;
     }
 
-    public ${className}API ${field.name}Before(LocalDate ${field.name}Before) {
+    public ${className}API ${field.name}Before(${field.type} ${field.name}Before) {
         uriBuilder.setParameter("${field.name}Before", ${field.name}Before.toString());
         return this;
     }
