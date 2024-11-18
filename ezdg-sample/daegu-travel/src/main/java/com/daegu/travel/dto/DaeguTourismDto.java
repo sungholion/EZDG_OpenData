@@ -2,10 +2,14 @@ package com.daegu.travel.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
-public class DaeguTourismDto {
+@NoArgsConstructor
+public class DaeguTourismDto implements Serializable {
     private String id;
     private String classification;
     private String courseTitle;
