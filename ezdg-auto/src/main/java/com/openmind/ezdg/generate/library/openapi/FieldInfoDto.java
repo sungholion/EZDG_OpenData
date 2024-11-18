@@ -11,6 +11,6 @@ public class FieldInfoDto {
     private String type;
     private String name;
     private String description;
-    private String required;      // 추가
-    private String sampleData;    // 추가
+    private String required;
+    private String sampleData;
 }

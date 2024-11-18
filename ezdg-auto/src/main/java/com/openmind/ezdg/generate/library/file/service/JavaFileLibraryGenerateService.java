@@ -64,7 +64,7 @@ public class JavaFileLibraryGenerateService {
                     .append(data.get("collectionName"))
                     .append(System.getProperty("os.name").startsWith("Windows") ? "\\" : "/")
                     .append(data.get("className"))
-                    .append("DTO.java")
+                    .append(".java")
                     .toString();
 
             FileWriter writer = new FileWriter(dtoPath);

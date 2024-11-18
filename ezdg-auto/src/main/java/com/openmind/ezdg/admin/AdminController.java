@@ -1,7 +1,7 @@
 package com.openmind.ezdg.admin;
 
 import com.openmind.ezdg.datalist.service.DatalistService;
-import com.openmind.ezdg.user.entity.DataApplyEntity;
+import com.openmind.ezdg.script.ScriptService;
 import com.openmind.ezdg.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -22,11 +20,11 @@ import java.util.Map;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AdminController {
 
-    @Value("${admin.base-url}")
-    private String baseUrl;
-
     private final UserService userService;
     private final DatalistService datalistService;
+    private final ScriptService scriptService;
+    @Value("${admin.base-url}")
+    private String baseUrl;
 
     /**
      * 관리자 페이지 호출
@@ -76,9 +74,9 @@ public class AdminController {
     @GetMapping("${admin.base-url}/file")
     public String filePage(@SessionAttribute(value = "isAuth", required = false) Boolean isAuth, Model model) {
         if (Boolean.TRUE.equals(isAuth)) {
-            if("/admin".equals(baseUrl)) {
+            if ("/admin".equals(baseUrl)) {
                 model.addAttribute("baseUrl", "");
-            } else if("".equals(baseUrl)) {
+            } else if ("".equals(baseUrl)) {
                 model.addAttribute("baseUrl", "/admin");
             }
 
@@ -93,9 +91,9 @@ public class AdminController {
     @GetMapping("${admin.base-url}/openapi")
     public String openApiPage(@SessionAttribute(value = "isAuth", required = false) Boolean isAuth, Model model) {
         if (Boolean.TRUE.equals(isAuth)) {
-            if("/admin".equals(baseUrl)) {
+            if ("/admin".equals(baseUrl)) {
                 model.addAttribute("baseUrl", "");
-            } else if("".equals(baseUrl)) {
+            } else if ("".equals(baseUrl)) {
                 model.addAttribute("baseUrl", "/admin");
             }
             return "views/api/api"; // 인증된 경우 Open API 페이지로 이동
@@ -109,9 +107,9 @@ public class AdminController {
     @GetMapping("${admin.base-url}/deploy")
     public String deployPage(@SessionAttribute(value = "isAuth", required = false) Boolean isAuth, Model model) {
         if (Boolean.TRUE.equals(isAuth)) {
-            if("/admin".equals(baseUrl)) {
+            if ("/admin".equals(baseUrl)) {
                 model.addAttribute("baseUrl", "");
-            } else if("".equals(baseUrl)) {
+            } else if ("".equals(baseUrl)) {
                 model.addAttribute("baseUrl", "/admin");
             }
             model.addAttribute("deployData", datalistService.getDataList());
@@ -126,9 +124,9 @@ public class AdminController {
     @GetMapping("${admin.base-url}/data")
     public String dataRequestPage(@SessionAttribute(value = "isAuth", required = false) Boolean isAuth, Model model) {
         if (Boolean.TRUE.equals(isAuth)) {
-            if("/admin".equals(baseUrl)) {
+            if ("/admin".equals(baseUrl)) {
                 model.addAttribute("baseUrl", "");
-            } else if("".equals(baseUrl)) {
+            } else if ("".equals(baseUrl)) {
                 model.addAttribute("baseUrl", "/admin");
             }
             model.addAttribute("userRequestData", userService.getAllDataApply());
@@ -136,4 +134,17 @@ public class AdminController {
         }
         return "redirect:" + baseUrl;
     }
+
+
+    @PostMapping("/release")
+    @ResponseBody
+    public boolean release() {
+        // web hook을 통해 쉘 스크립트를 실행시켜서 master 브랜치에 코드를 올린다.
+        boolean uploaded = scriptService.releaseHook();
+        log.info("uploaded = {}", uploaded);
+        if (!uploaded) return false;
+        datalistService.deployDocument();
+        return true;
+    }
+
 }

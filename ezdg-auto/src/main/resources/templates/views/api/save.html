@@ -126,6 +126,7 @@
                       <td th:text="${requestField.type}">String</td>
                       <td th:text="${requestField.name}">fieldName</td>
                       <td th:text="${requestField.description}">Description</td>
+                      <td th:text="${requestField.required}">required</td>
                     </tr>
                   </tbody>
                 </table>
@@ -187,6 +188,7 @@
             type: row.cells[0].textContent,
             name: row.cells[1].textContent,
             description: row.cells[2].textContent,
+            required: row.cells[3].textContent
           }));
 
           const responseFields = Array.from(

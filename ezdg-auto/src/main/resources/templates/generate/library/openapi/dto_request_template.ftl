@@ -8,7 +8,7 @@ public class ${className} {
     private ${field.type} ${field.name};
 
 </#list>
-// Getters and Setters
+    // Getters and Setters
 <#list fields as field>
     public ${field.type} get${field.name?cap_first}() {
     return ${field.name};

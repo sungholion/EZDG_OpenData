@@ -3,10 +3,8 @@ package com.openmind.ezdg.datalist.controller;
 import com.openmind.ezdg.datalist.service.DatalistService;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +27,12 @@ public class DatalistController {
     @GetMapping("")
     public List<Document> getDatalist() {
         return datalistService.getDataList();
+    }
+
+    @PostMapping("test")
+    public ResponseEntity<String> saveDataTest() {
+        datalistService.addDataTest();
+        return ResponseEntity.ok().body("ok");
     }
 
 }
