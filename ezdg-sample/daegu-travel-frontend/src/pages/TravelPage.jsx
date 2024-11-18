@@ -41,7 +41,7 @@ const TravelPage = () => {
         case 'hotel':
           return item.region === selectedRegion;
         case 'food':
-          return item.businessType === selectedRegion;
+          return item.businessStatus === selectedRegion;
         default:
           return false;
       }
