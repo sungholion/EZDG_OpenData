@@ -4,8 +4,22 @@ package ${packageName};
 import com.openmind.ezdg.common.AbstractAPI;
 import java.util.Date;
 import java.util.List;
+<#assign hasLocalDate = false>
+<#assign hasLocalDateTime = false>
+<#list fields as field>
+    <#if field.type == "LocalDate">
+        <#assign hasLocalDate = true>
+    </#if>
+    <#if field.type == "LocalDateTime">
+        <#assign hasLocalDateTime = true>
+    </#if>
+</#list>
+<#if hasLocalDate>
 import java.time.LocalDate;
+</#if>
+<#if hasLocalDateTime>
 import java.time.LocalDateTime;
+</#if>
 
 public class ${className}API extends AbstractAPI<${className}> {
 
@@ -35,13 +49,13 @@ public class ${className}API extends AbstractAPI<${className}> {
         return this;
     }
 
-<#elseif field.type == "Date">
-    public ${className}API ${field.name}After(Date ${field.name}After) {
+<#elseif field.type == "LocalDate">
+    public ${className}API ${field.name}After(LocalDate ${field.name}After) {
         uriBuilder.setParameter("${field.name}After", ${field.name}After.toString());
         return this;
     }
 
-    public ${className}API ${field.name}Before(Date ${field.name}Before) {
+    public ${className}API ${field.name}Before(LocalDate ${field.name}Before) {
         uriBuilder.setParameter("${field.name}Before", ${field.name}Before.toString());
         return this;
     }
