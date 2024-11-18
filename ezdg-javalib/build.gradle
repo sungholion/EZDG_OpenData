@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-//    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3' // Jackson 라이브러리 추가
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
