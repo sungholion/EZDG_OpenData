@@ -1,0 +1,40 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.5'
+	id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.daegu'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	maven {
+		url 'https://lab.ssafy.com/api/v4/projects/823781/packages/maven'
+	}
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'com.openmind:ezdg:v1.0.0'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'com.opencsv:opencsv:5.5.2'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.6.0' // swagger
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
