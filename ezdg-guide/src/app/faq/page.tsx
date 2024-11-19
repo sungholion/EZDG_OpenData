@@ -10,7 +10,7 @@ const FAQItems = [
   {
     question: "어떤 프로그래밍 언어를 지원하나요?",
     answer:
-      "현재 EZDG는 JavaScript를 통해 Node.js 환경에서 사용할 수 있습니다. React, Vue, Angular 등 주요 프론트엔드 프레임워크에서 사용이 가능하며, Java를 통해 백엔드 환경에서 사용하는 것도 가능합니다.",
+      "현재 EZDG는 Java를 통해 백엔드 환경에서 사용하는 것이 가능합니다. 추후에 Javascript로 작성 가능한 라이브러리도 제공 예정입니다.",
   },
   {
     question: "공공데이터 포털 계정이 필요한가요?",
@@ -30,14 +30,14 @@ const FAQItems = [
   {
     question: "기술 지원이나 문의는 어떻게 할 수 있나요?",
     answer:
-      "GitHub 이슈를 통해 버그 리포트나 기능 제안을 할 수 있으며, 공식 문서에서 자세한 사용법을 확인할 수 있습니다. 또한 개발자 커뮤니티에서 다른 사용자들과 정보를 공유하고 질문할 수 있습니다. 긴급한 기술 지원이 필요한 경우 이메일을 통해 문의하실 수 있습니다.",
+      "GitLab 이슈를 통해 버그 리포트나 기능 제안을 할 수 있으며, 또는 사이드바에 '데이터 추가 요청'을 통해 문의하실 수 있습니다.",
   },
 ];
 
 export default function FAQ() {
   return (
     <div className="flex flex-col items-center gap-6 sm:gap-6 text-center px-2 sm:px-4 py-8 sm:py-12 lg:py-24">
-      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold">
+      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold bg-gradient-to-r from-[#192f6a] via-[#0066cc] to-[#20b2aa] text-transparent bg-clip-text">
         FAQ
         <Separator />
       </h1>
@@ -46,7 +46,7 @@ export default function FAQ() {
           {FAQItems.map((item, index) => (
             <AccordionItem key={index} value={`item-${index}`}>
               <AccordionTrigger className="text-lg font-semibold text-left">{item.question}</AccordionTrigger>
-              <AccordionContent className="text-gray-600">{item.answer}</AccordionContent>
+              <AccordionContent className="text-gray-600 text-left">{item.answer}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

@@ -23,7 +23,6 @@ public class JavaFileLibraryGenerateService {
 
     private final CustomStringUtil customStringUtil;
 
-
     @Value("${path.java-library-project-path}")
     private String javaLibraryProjectPath;
 
@@ -32,10 +31,10 @@ public class JavaFileLibraryGenerateService {
         data.put("collectionName", dto.getTranslatedFileName());
         data.put("className", customStringUtil.capitalizeFirstLetter(customStringUtil.snakeCaseToCamelCase(dto.getTranslatedFileName())));
         List<Map<String, String>> fields = new ArrayList<>();
-        dto.getTranslatedColumns().forEach(columnInfo -> {
+        dto.getFields().forEach(columnInfo -> {
             Map<String, String> field = new HashMap<>();
-            field.put("type", columnInfo.getColumnType());
-            field.put("name", columnInfo.getColumnName());
+            field.put("type", columnInfo.getType());
+            field.put("name", columnInfo.getTranslatedName());
             fields.add(field);
         });
         data.put("fields", fields);
@@ -65,7 +64,7 @@ public class JavaFileLibraryGenerateService {
                     .append(data.get("collectionName"))
                     .append(System.getProperty("os.name").startsWith("Windows") ? "\\" : "/")
                     .append(data.get("className"))
-                    .append("DTO.java")
+                    .append(".java")
                     .toString();
 
             FileWriter writer = new FileWriter(dtoPath);

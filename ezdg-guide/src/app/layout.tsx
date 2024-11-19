@@ -4,6 +4,7 @@ import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { AppFooter } from "@/components/footer/footer";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,9 +35,12 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SidebarProvider>
           <AppSidebar />
-          <main className="w-full">
+          <main className="w-full min-h-screen flex flex-col">
             <SidebarTrigger />
-            {children}
+            <div className="flex-grow">
+              {children}
+              <Toaster />
+            </div>
             <AppFooter />
           </main>
         </SidebarProvider>

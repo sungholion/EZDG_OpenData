@@ -5,6 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -15,82 +19,80 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
+@Slf4j
 public class CodeGenerator {
     private final Configuration cfg;
+    private final ObjectMapper mapper;
+
+    @Value("${path.java-library-project-path}")
+    private String javaLibraryProjectPath;
 
     public CodeGenerator() throws IOException {
         cfg = new Configuration(Configuration.VERSION_2_3_30);
-        cfg.setDirectoryForTemplateLoading(new File("src/main/resources/templates/generate/library/openapi"));
+        //cfg.setDirectoryForTemplateLoading(new File("src/main/resources/templates/generate/library/openapi"));
+        cfg.setClassLoaderForTemplateLoading(getClass().getClassLoader(), "templates/generate/library/openapi");
+        mapper = new ObjectMapper();
     }
 
-    public void generateCode(String jsonFilePath) throws IOException, TemplateException {
-        // JSON 파일 파싱
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.readTree(new File(jsonFilePath));
-
-        // JSON 데이터 모델로 변환
-        String packageName = rootNode.get("packageName").asText();
-        String className = rootNode.get("className").asText();
-
-        Map<String, Object> dataModel = new HashMap<>();
-        dataModel.put("packageName", packageName);
-        dataModel.put("className", className);
-        dataModel.put("baseUrl", rootNode.get("baseUrl").asText());
-        dataModel.put("endpoint", rootNode.get("endpoint").asText());
-
-        // API 전체 URL 구성 (baseUrl + endpoint)
-        dataModel.put("apiUrl", rootNode.get("baseUrl").asText() + rootNode.get("endpoint").asText());
-
-        // DTO 및 API 클래스 생성 경로 설정
-        String basePackagePath = "src/main/java/" + packageName.replace(".", "/") + "/";
-        new File(basePackagePath).mkdirs();
-
-        // 요청 DTO 클래스 생성
-        Map<String, Object> requestModel = new HashMap<>(dataModel);
-        requestModel.put("className", className + "Request");
-        requestModel.put("fields", mapper.convertValue(rootNode.get("requestFields"), List.class));
-
-        Template requestDtoTemplate = cfg.getTemplate("dto_request_template.ftl");
-        try (Writer requestWriter = new FileWriter(new File(basePackagePath + className + "Request.java"))) {
-            requestDtoTemplate.process(requestModel, requestWriter);
-        }
-
-        // 응답 DTO 클래스 생성
-        Map<String, Object> responseModel = new HashMap<>(dataModel);
-        responseModel.put("className", className + "Response");
-
-        // JSON에서 responseFields를 가져오고, 없을 경우 빈 리스트로 설정
-        List<Map<String, Object>> responseFields = mapper.convertValue(rootNode.get("responseFields"), List.class);
-        if (responseFields == null) {
-            responseFields = new ArrayList<>();
-        }
-        responseModel.put("responseFields", responseFields);
-
-        Template responseDtoTemplate = cfg.getTemplate("dto_response_template.ftl");
-        try (Writer responseWriter = new FileWriter(new File(basePackagePath + className + "Response.java"))) {
-            responseDtoTemplate.process(responseModel, responseWriter);
-        }
-
-        // API 호출 클래스 생성
-        Map<String, Object> apiModel = new HashMap<>(dataModel);
-        apiModel.put("requestFields", mapper.convertValue(rootNode.get("requestFields"), List.class));
-        apiModel.put("responseFields", responseFields);
-
-        Template apiTemplate = cfg.getTemplate("api_template.ftl");
-        try (Writer apiWriter = new FileWriter(new File(basePackagePath + className + "API.java"))) {
-            apiTemplate.process(apiModel, apiWriter);
-        }
-
-        System.out.println("Generated files in: " + new File(basePackagePath).getAbsolutePath());
-    }
-
-    public static void main(String[] args) {
+    // 단일 API 스펙에 대한 코드 생성
+    public void generateCode(FastApiResponseDto apiSpec) {
+        log.info("apiSpec = {}", apiSpec.getRequestFields());
         try {
-            CodeGenerator generator = new CodeGenerator();
-            generator.generateCode("src/main/resources/api_spec.json");
-            System.out.println("코드 생성이 완료되었습니다.");
+            Map<String, Object> dataModel = new HashMap<>();
+            dataModel.put("packageName", "com.openmind.ezdg." + apiSpec.getPackageName());
+            dataModel.put("className", apiSpec.getClassName());
+            dataModel.put("baseUrl", apiSpec.getBaseUrl());
+            dataModel.put("endpoint", apiSpec.getEndpoint());
+
+            String basePackagePath = javaLibraryProjectPath
+                    + apiSpec.getPackageName().replace(".", "/")
+                    + (System.getProperty("os.name").startsWith("Windows") ? "\\" : "/");
+
+            new File(basePackagePath).mkdirs();
+
+            generateRequestDTO(dataModel, apiSpec, basePackagePath);
+            generateResponseDTO(dataModel, apiSpec, basePackagePath);
+            generateAPIClass(dataModel, apiSpec, basePackagePath);
         } catch (IOException | TemplateException e) {
-            e.printStackTrace();
+            log.error("Failed to generate code for endpoint {}: {}", apiSpec.getEndpoint(), e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void generateRequestDTO(Map<String, Object> dataModel, FastApiResponseDto apiSpec, String basePackagePath)
+            throws IOException, TemplateException {
+        Map<String, Object> requestModel = new HashMap<>(dataModel);
+        requestModel.put("className", apiSpec.getClassName() + "Request");
+        requestModel.put("fields", apiSpec.getRequestFields());
+
+        Template template = cfg.getTemplate("dto_request_template.ftl");
+        try (Writer writer = new FileWriter(new File(basePackagePath + apiSpec.getClassName() + "Request.java"))) {
+            template.process(requestModel, writer);
+        }
+    }
+
+    private void generateResponseDTO(Map<String, Object> dataModel, FastApiResponseDto apiSpec, String basePackagePath)
+            throws IOException, TemplateException {
+        Map<String, Object> responseModel = new HashMap<>(dataModel);
+        responseModel.put("className", apiSpec.getClassName() + "Response");
+        responseModel.put("responseFields", apiSpec.getResponseFields());
+
+        Template template = cfg.getTemplate("dto_response_template.ftl");
+        try (Writer writer = new FileWriter(new File(basePackagePath + apiSpec.getClassName() + "Response.java"))) {
+            template.process(responseModel, writer);
+        }
+    }
+
+    private void generateAPIClass(Map<String, Object> dataModel, FastApiResponseDto apiSpec, String basePackagePath)
+            throws IOException, TemplateException {
+        Map<String, Object> apiModel = new HashMap<>(dataModel);
+        apiModel.put("requestFields", apiSpec.getRequestFields());
+        apiModel.put("responseFields", apiSpec.getResponseFields());
+
+        Template template = cfg.getTemplate("api_template.ftl");
+        try (Writer writer = new FileWriter(new File(basePackagePath + apiSpec.getClassName() + ".java"))) {
+            template.process(apiModel, writer);
         }
     }
 }

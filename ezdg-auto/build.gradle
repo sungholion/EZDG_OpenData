@@ -37,6 +37,7 @@ dependencies {
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.6.0' // swagger
 	implementation 'com.opencsv:opencsv:5.5.2'
 	implementation 'org.freemarker:freemarker:2.3.31'
+	implementation 'com.algolia:algoliasearch:4.7.1'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -49,7 +50,9 @@ dependencies {
 	implementation 'org.freemarker:freemarker:2.3.31'
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 	testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
-
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework:spring-context'
+	implementation 'com.algolia:algoliasearch:4.7.1'
 }
 
 tasks.named('test') {

@@ -13,4 +13,5 @@ public class EzdgApplication {
 		SpringApplication.run(EzdgApplication.class, args);
 
 	}
+
 }

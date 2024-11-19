@@ -1,6 +1,6 @@
 package ${packageName};
 
-import ${packageName}.${className};
+<#--import ${packageName}.${className};-->
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -17,7 +17,7 @@ public class ${className}Service {
 
     private final MongoTemplate mongoTemplate;
 
-    public List<${className}> search(Map<String, Object> params, int page, int perPage) {
+    public List<${className}> search (Map<String, Object> params, int page, int perPage) {
         Query query = new Query();
 
         for (Map.Entry<String, Object> entry : params.entrySet()) {

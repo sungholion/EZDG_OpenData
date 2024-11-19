@@ -5,35 +5,27 @@ import { Button } from "@/components/ui/button";
 import { Copy, Check } from "lucide-react";
 import Prism from "prismjs";
 
-// 필요한 언어 import
-import "prismjs/components/prism-javascript";
-import "prismjs/components/prism-typescript";
+// Java 언어만 import
 import "prismjs/components/prism-java";
 import "prismjs/components/prism-xml-doc";
 import "prismjs/components/prism-markup";
-import "prismjs/components/prism-bash";
 import "prismjs/themes/prism-tomorrow.css";
+import "prismjs/components/prism-gradle";
 import "@/components/code-example/code-styles.css";
 
-import type { CodeLanguage } from "@/components/code-example/types";
+// 언어 타입을 Java 관련 타입으로만 제한
+type CodeLanguage = "java" | "gradle";
 
 interface CodeTabsProps {
   code: string;
   language: CodeLanguage;
 }
 
-// 언어 처리 로직을 컴포넌트 외부로 분리
-const getEffectiveLanguage = (code: string, language: CodeLanguage): string => {
-  // XML 처리 (Maven 의존성)
-  if (language === "xml") {
+// XML 처리만 남기고 단순화
+const getEffectiveLanguage = (language: CodeLanguage): string => {
+  if (language === "gradle") {
     return "markup";
   }
-
-  // npm/yarn 명령어 처리
-  if (code.includes("npm install") || code.includes("yarn add")) {
-    return "bash";
-  }
-
   return language;
 };
 
@@ -41,24 +33,22 @@ export function CodeTabs({ code, language }: CodeTabsProps) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    // 컴포넌트가 마운트될 때와 코드/언어가 변경될 때 하이라이팅
     requestAnimationFrame(() => {
       Prism.highlightAll();
     });
   }, [code, language]);
 
-  // 복사 버튼
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch (error) {
-      console.log("Failed to copy code:", error);
+      console.error("Failed to copy code:", error);
     }
   };
 
-  const currentLanguage = getEffectiveLanguage(code, language);
+  const currentLanguage = getEffectiveLanguage(language);
 
   return (
     <div className="relative group">
