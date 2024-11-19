@@ -3,7 +3,7 @@
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { JavaExample } from "@/components/installation/java";
-import { JavaScriptExample } from "@/components/installation/javascript";
+// import { JavaScriptExample } from "@/components/installation/javascript";
 
 export default function InstallationPage() {
   return (
@@ -11,9 +11,9 @@ export default function InstallationPage() {
       <h2 className="text-2xl font-bold mb-6">라이브러리 설치</h2>
       <Tabs defaultValue="java" className="w-full">
         <div className="flex items-center justify-between border-b pb-2">
-          <TabsList className="grid w-[400px] grid-cols-2">
+          <TabsList className="grid w-[200px] grid-cols-1">
             <TabsTrigger value="java">Java</TabsTrigger>
-            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+            {/* <TabsTrigger value="javascript">JavaScript</TabsTrigger> */}
           </TabsList>
         </div>
 
@@ -21,9 +21,9 @@ export default function InstallationPage() {
           <JavaExample />
         </TabsContent>
 
-        <TabsContent value="javascript" className="mt-6">
+        {/* <TabsContent value="javascript" className="mt-6">
           <JavaScriptExample />
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   );
