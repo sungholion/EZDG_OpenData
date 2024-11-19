@@ -8,7 +8,7 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-5">
+<div class="container mt-5" id="data-container" th:data-baseurl="${baseUrl}">
     <h2 class="text-center">데이터 추가 요청 현황</h2>
     <div class="mt-4">
         <table class="table table-bordered w-85 mx-auto">
@@ -36,45 +36,45 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script th:inline="javascript">
-    // const userRequestData = /*[[${userRequestData}]]*/ [];
-    const userRequestData = [
-        {
-            "id": 1,
-            "name": "trump",
-            "email": "test@email.com",
-            "publicDataName": "날씨정보",
-            "publicDataUrl": "http://data.go.kr/2323232/weather",
-            "publicDataType": "openAPI",
-            "association": "기상청",
-            "purpose": "날씨 조회 서비스 개발",
-            "additionalRequest": "없음",
-            "isAccept": true
-        },
-        {
-            "id": 2,
-            "name": "donald",
-            "email": "test@email.com",
-            "publicDataName": "상가정보",
-            "publicDataUrl": "http://data.go.kr/2323232/weather",
-            "publicDataType": "file",
-            "association": "소상공인재단",
-            "purpose": "맛집 조회 서비스 개발",
-            "additionalRequest": "없음",
-            "isAccept": true
-        },
-        {
-            "id": 3,
-            "name": "hilary",
-            "email": "test@email.com",
-            "publicDataName": "주차장정보",
-            "publicDataUrl": "http://data.go.kr/2323232/weather",
-            "publicDataType": "openAPI",
-            "association": "교통공단",
-            "purpose": "주차장 조회 서비스 개발",
-            "additionalRequest": "없음",
-            "isAccept": false
-        }
-    ]
+    const userRequestData = /*[[${userRequestData}]]*/ [];
+    // const userRequestData = [
+    //     {
+    //         "id": 1,
+    //         "name": "trump",
+    //         "email": "test@email.com",
+    //         "publicDataName": "날씨정보",
+    //         "publicDataUrl": "http://data.go.kr/2323232/weather",
+    //         "publicDataType": "openAPI",
+    //         "association": "기상청",
+    //         "purpose": "날씨 조회 서비스 개발",
+    //         "additionalRequest": "없음",
+    //         "isAccept": true
+    //     },
+    //     {
+    //         "id": 2,
+    //         "name": "donald",
+    //         "email": "test@email.com",
+    //         "publicDataName": "상가정보",
+    //         "publicDataUrl": "http://data.go.kr/2323232/weather",
+    //         "publicDataType": "file",
+    //         "association": "소상공인재단",
+    //         "purpose": "맛집 조회 서비스 개발",
+    //         "additionalRequest": "없음",
+    //         "isAccept": true
+    //     },
+    //     {
+    //         "id": 3,
+    //         "name": "hilary",
+    //         "email": "test@email.com",
+    //         "publicDataName": "주차장정보",
+    //         "publicDataUrl": "http://data.go.kr/2323232/weather",
+    //         "publicDataType": "openAPI",
+    //         "association": "교통공단",
+    //         "purpose": "주차장 조회 서비스 개발",
+    //         "additionalRequest": "없음",
+    //         "isAccept": false
+    //     }
+    // ]
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -91,13 +91,13 @@
                 <td>${data.name}</td>
                 <td>${data.email}</td>
                 <td>${data.publicDataName}</td>
-                <td>${data.publicDataUrl}</td>
+                <td>${data.publicDataLink}</td>
                 <td>${data.publicDataType}</td>
                 <td>${data.association}</td>
                 <td>${data.purpose}</td>
                 <td>${data.additionalRequest}</td>
                 <td>
-                    ${data.isAccept ? 'Yes' : `<button id="acceptBtn_${data.id}" class="btn btn-primary" onclick="sendRequest(${data.id})">처리</button>`}
+                    ${data.isAccepted ? 'Yes' : `<button id="acceptBtn_${data.id}" class="btn btn-primary" onclick="sendRequest(${data.id})">처리</button>`}
                 </td>
             `;
             columnsTable.appendChild(row);
@@ -105,9 +105,12 @@
     });
 
     function sendRequest(id) {
-        const baseUrl = document.querySelector(".container").getAttribute("th:data-baseurl") || "";
-        fetch(`${baseUrl}/accept/${id}`, {
-            method: "POST",
+        let baseUrl = document.getElementById("data-container").getAttribute("data-baseurl");
+        if (!baseUrl) {
+            baseUrl = "";
+        }
+        fetch(`${baseUrl}/users/dataAccept/${id}`, {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
