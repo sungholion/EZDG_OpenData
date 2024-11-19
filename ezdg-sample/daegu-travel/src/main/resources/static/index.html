@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daegu Travel</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .result {
+            white-space: pre-line;
+            text-align: left; /* Align text to the left for better readability */
+        }
+        img {
+            max-width: 100%; /* Adjust image size as needed */
+            height: auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Daegu Travel Course Search</h1>
+
+    <!-- Display the Daegu image -->
+    <img src="/ezdg-sample/daegu-travel/src/main/resources/static/daegu.jfif" alt="Daegu Image">
+
+    <div class="search-container">
+        <button onclick="fetchData()">대구광역시_관광코스 정보_20231215 조회하기</button>
+    </div>
+
+    <div id="results" class="result"></div>
+</div>
+
+<script>
+    function fetchData() {
+        document.getElementById('results').innerHTML = 'Loading...';
+
+        axios.get('http://localhost:8080/daeguTravel/getAllDaeguTravel')
+            .then(response => {
+                const data = response.data;
+                let formattedResult = '';
+
+                data.forEach(item => {
+                    formattedResult += `
+                            ID: ${item.id}
+                            Type: ${item.type}
+                            Title: ${item.title}
+                            Course Number: ${item.courseNum}
+                            Topic: ${item.topic}
+                            Topic Description: ${item.topicDescription}
+                            Region: ${item.region}
+                            Spot: ${item.spot}
+                            Course Description: ${item.courseDescription}
+                            Address: ${item.address}
+                            Phone: ${item.phone}
+                            Homepage: ${item.homepage}
+                            ------------------------------
+                        `;
+                });
+
+                document.getElementById('results').innerText = formattedResult;
+            })
+            .catch(error => {
+                document.getElementById('results').innerText = 'Error fetching data: ' + error;
+            });
+    }
+</script>
+</body>
+</html>

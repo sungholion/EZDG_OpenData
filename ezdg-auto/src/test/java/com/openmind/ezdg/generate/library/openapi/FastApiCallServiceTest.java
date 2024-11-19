@@ -1,5 +1,6 @@
 package com.openmind.ezdg.generate.library.openapi;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,22 +11,24 @@ import java.util.List;
 
 public class FastApiCallServiceTest {
     private RestTemplate restTemplate;
+    private ObjectMapper objectMapper;
+    private CodeGenerator codeGenerator;
     private FastApiCallService fastApiCallService;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IOException {
         restTemplate = new RestTemplate();
-        fastApiCallService = new FastApiCallService(restTemplate);
+        objectMapper = new ObjectMapper();
+        codeGenerator = new CodeGenerator();
+        fastApiCallService = new FastApiCallService(restTemplate, objectMapper, codeGenerator);
     }
 
     @Test
-    public void tableFormApi() throws IOException, TemplateException {
-        String inputUrl = "https://www.data.go.kr/data/15084084/openapi.do";
-        String filePath = fastApiCallService.tableFormApi(inputUrl);
-        System.out.println("SAVED AT : " + filePath);
+    public void swaggerFormApi() throws IOException, TemplateException {
+        String inputUrl = "https://www.data.go.kr/data/15043184/openapi.do";
+        List<FastApiResponseDto> response = fastApiCallService.swaggerFormApi(inputUrl);
+        System.out.println(response);
 
-//        CodeGenerator codeGenerator = new CodeGenerator();
-//        codeGenerator.generateCode(filePath);
     }
 
 //    @Test

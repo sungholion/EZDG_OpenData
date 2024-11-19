@@ -1,0 +1,30 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://admin:openmindd201mongo@k11d201.p.ssafy.io:27017/data?authSource=admin&retryWrites=true&w=majority
+    redis:
+      host: redis
+      port: 6379
+      cache:
+        serialization:
+          pair:
+            key: STRING
+            value: JSON
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  cache:
+    type: redis
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger
+    groups-order: DESC
+    tags-sorter: alpha
+    operations-sorter: alpha
