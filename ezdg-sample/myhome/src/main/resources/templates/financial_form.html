@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>재무 정보 조회</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        .header-title {
+            color: #343a40;
+        }
+        .select-year {
+            width: 150px;
+        }
+        .search-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card {
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .card-header {
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: #007bff;
+            color: white;
+        }
+        .card-body ul {
+            padding-left: 0;
+        }
+        .card-body .list-group-item {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body class="container mt-5">
+<h2 class="text-center mb-4"><span th:text="${corpNm}"></span> 재무 정보 조회 💸</h2>
+
+<!-- 검색 폼 -->
+<div class="row justify-content-center">
+    <form action="/submitFinForm" method="get" class="d-flex align-items-center col-md-8 col-lg-6 mb-5">
+        <label for="year" class="form-label me-2 mb-0 fw-bold">검색 연도:</label>
+        <select id="year" name="bizYear" class="form-select select-year me-2" style="width: 350px;">
+            <option value="2023" selected>2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2019</option>
+        </select>
+        <input type="hidden" name="crno" th:value="${crno}">
+        <input type="hidden" name="corpNm" th:value="${corpNm}">
+        <button type="submit" class="btn btn-primary">조회</button>
+    </form>
+</div>
+
+<!-- 결과 카드 섹션 -->
+<div class="row">
+    <div th:if="${summResponse != null}">
+        <h2 class="text-center mb-4">요약 재무제표</h2>
+        <div class="row">
+            <div th:each="item : ${summResponse.response.body.items.item}" class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>사업연도:</strong> <span th:text="${item.bizYear}"></span></li>
+                            <li class="list-group-item"><strong>매출금액:</strong> <span th:text="${item.enpSaleAmt}"></span></li>
+                            <li class="list-group-item"><strong>영업이익:</strong> <span th:text="${item.enpBzopPft}"></span></li>
+                            <li class="list-group-item"><strong>당기순이익:</strong> <span th:text="${item.enpCrtmNpf}"></span></li>
+                            <li class="list-group-item"><strong>총자산금액:</strong> <span th:text="${item.enpTastAmt}"></span></li>
+                            <li class="list-group-item"><strong>총부채금액:</strong> <span th:text="${item.enpTdbtAmt}"></span></li>
+                            <li class="list-group-item"><strong>총자본금액:</strong> <span th:text="${item.enpTcptAmt}"></span></li>
+                            <li class="list-group-item"><strong>재무제표부채비율:</strong> <span th:text="${item.fnclDebtRto}"></span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${statResponse != null}">
+        <h2 class="text-center mb-4">손익계산서</h2>
+        <div class="row">
+            <div th:each="item : ${statResponse.response.body.items.item}" class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>계정과목명:</strong> <span th:text="${item.acitNm}"></span></li>
+                            <li class="list-group-item"><strong>당분기계정과목금액:</strong> <span th:text="${item.thqrAcitAmt}"></span></li>
+                            <li class="list-group-item"><strong>당기계정과목금액:</strong> <span th:text="${item.crtmAcitAmt}"></span></li>
+                            <li class="list-group-item"><strong>전분기계정과목금액:</strong> <span th:text="${item.lsqtAcitAmt}"></span></li>
+                            <li class="list-group-item"><strong>전기계정과목금액:</strong> <span th:text="${item.pvtrAcitAmt}"></span></li>
+                            <li class="list-group-item"><strong>전전기계정과목금액:</strong> <span th:text="${item.bpvtrAcitAmt}"></span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<a href="/" class="btn btn-outline-primary me-3">홈으로</a>
+
+<!-- 오류 메시지 -->
+<div th:if="${finError != null}" class="alert alert-danger mt-4" th:text="${error}"></div>
+</body>
+</html>

@@ -3,48 +3,47 @@ import { CodeSection, type CodeExample } from "../code-example";
 const JAVA_EXAMPLES: CodeExample[] = [
   {
     title: "설치",
-    description: "Maven 의존성을 추가합니다.",
-    code: `<dependency>
-    <groupId>com.ezdg</groupId>
-    <artifactId>ezdg-core</artifactId>
-    <version>1.0.0</version>
-</dependency>`,
-    language: "xml",
-  },
-  {
-    title: "설정",
-    description: "EZDG 인스턴스를 초기화합니다.",
-    code: `import com.ezdg.core.EZDG;
+    description: "의존성을 추가합니다.",
+    code: `repositories {
+	maven {
+	  url 'https://lab.ssafy.com/api/v4/projects/823781/packages/maven'
+	}
+}
 
-public class EZDGConfig {
-    private static final EZDG ezdg = new EZDG.Builder()
-        .setApiKey("your-api-key")
-        .build();
-    
-    public static EZDG getInstance() {
-        return ezdg;
-    }
+dependencies {
+	implementation 'com.openmind:ezdg:v1.11.0'
 }`,
-    language: "java",
+    language: "kotlin",
   },
   {
     title: "사용 예제",
-    description: "EZDG를 사용하여 데이터를 변환합니다.",
-    code: `import com.ezdg.core.EZDG;
-import com.ezdg.core.transform.TransformResult;
+    description: "EZDG를 이용한 기상청 초단기실황조회(OpenAPI 데이터 형태)",
+    code: `public static void main(String[] args) {
+        VilageFcstApi api = new VilageFcstApi("YOUR_SERVICE_KEY")
+                .pageNo(1)
+                .numOfRows(10)
+                .base_date("20241112") // 예시 날짜
+                .base_time("0630") // 예시 시간
+                .nx("60")
+                .ny("127");
 
-public class Example {
-    public static void main(String[] args) {
-        EZDG ezdg = EZDGConfig.getInstance();
-        
-        TransformResult result = ezdg.transform()
-            .source("/path/to/data.csv")
-            .toApi()
-            .execute();
-            
-        String apiEndpoint = result.getEndpoint();
-    }
-}`,
+        // API 호출 및 응답 출력
+        UVilageFcstApiResponse response = api.fetch();
+        System.out.println(response);
+    }`,
+    language: "java",
+  },
+  {
+    description: "EZDG를 이용한 대구 음식점 등록현황(파일 데이터 형태)",
+    code: `public static void main(String[] args) {
+        DaeguRestaurantAPI api = new DaeguRestaurantAPI()
+                .pageNo(1)
+                .numOfRows(100);
+
+        // API 호출 및 응답 출력
+        List<DaeguRestaurant> response = api.fetch();
+        System.out.println(response);
+    }`,
     language: "java",
   },
 ];

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>API Response Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+<h1>기업기본정보조회</h1>
+
+<div class="row">
+    <div th:each="item : ${response.response.body.items.item}" class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">법인명: <span th:text="${item.corpNm}"></span></h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>법인 등록 번호:</strong> <span th:text="${item.crno}"></span></li>
+                    <li class="list-group-item"><strong>대표자 성명:</strong> <span th:text="${item.enpRprFnm}"></span></li>
+                    <li class="list-group-item"><strong>종업원 수:</strong> <span th:text="${item.enpEmpeCnt}"></span></li>
+                    <li class="list-group-item"><strong>중소기업 여부:</strong> <span th:text="${item.smenpYn}"></span></li>
+                    <li class="list-group-item"><strong>평균 근속 기간:</strong> <span th:text="${item.empeAvgCnwkTermCtt}"></span></li>
+                    <li class="list-group-item"><strong>1인 평균 급여:</strong> <span th:text="${item.enpPn1AvgSlryAmt}"></span></li>
+                    <li class="list-group-item"><strong>기본 주소:</strong> <span th:text="${item.corpDcdNm}"></span></li>
+                    <li class="list-group-item"><strong>홈페이지 URL:</strong> <span th:text="${item.enpHmpgUrl}"></span></li>
+                    <li class="list-group-item"><strong>설립 일자:</strong> <span th:text="${item.enpEstbDt}"></span></li>
+                    <li class="list-group-item"><strong>종업원 수:</strong> <span th:text="${item.enpEmpeCnt}"></span></li>
+                    <li class="list-group-item"><strong>주요 사업명:</strong> <span th:text="${item.enpMainBizNm}"></span></li>
+                    <!-- 이하 너무 많아서 생략 -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
