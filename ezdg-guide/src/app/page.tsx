@@ -2,17 +2,16 @@ import MainDescription from "@/components/main/maindescription";
 import DataDescription from "@/components/main/datadescription";
 import Languages from "@/components/main/languages";
 import Feature from "@/components/main/feature";
+import { guideAPI } from "./api/guide";
 
-export default function Home() {
+export default async function Home() {
+  const menuItems = await guideAPI.getGuideMenu();
+
   return (
     <div className="container items-center mx-auto px-8 sm:px-12 md:px-16 lg:px-32">
-      {/* 라이브러리 설명 */}
       <MainDescription />
-      {/* 제공 데이터 종류들 */}
-      <DataDescription />
-      {/* 지원 언어 */}
+      <DataDescription items={menuItems} />
       <Languages />
-      {/* 특징 설명 */}
       <Feature
         title="손쉬운 OpenAPI 활용"
         description="EZDG를 사용하면 공공데이터 OpenAPI를 쉽게 활용할 수 있습니다. 복잡한 요청 데이터 구조를 단순화하여 개발자가 필요한 정보에 빠르게 접근할 수 있습니다."
