@@ -1,5 +1,6 @@
 <h3>SSAFY 11기 2학기 자율 프로젝트</h3>
-![image](/uploads/a599f2681a5cffea8a242278a4e31d5e/image.png)
+
+![logo](https://github.com/user-attachments/assets/35617f29-eff1-43cf-a683-d2cf7b986e67)
 </br>
 
 <div align="center">
@@ -61,7 +62,9 @@
 </br>
 </br>
 <h1>Architecture</h1>
-![image](/uploads/7bba05073e56303f04d0d46d997df3ab/image.png)
+
+![arch](https://github.com/user-attachments/assets/acad0d5f-7709-4296-8595-7dda4f4ad891)
+
 
 # 소개
 
