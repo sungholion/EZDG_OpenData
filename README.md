@@ -108,31 +108,40 @@
 ## 가이드 페이지 
 
 ### 메인 페이지 
-![EZDG_-_Chrome_2024-11-18_20-43-48](/uploads/eded36693883f0fa9b1472e49af7ceef/EZDG_-_Chrome_2024-11-18_20-43-48.gif)
+![lessmain](https://github.com/user-attachments/assets/0e88fce8-0b15-48b6-b66c-948c7fb4e221)
+
+
 ### 검색 기능
-![EZDG_-_Chrome_2024-11-18_20-44-52](/uploads/4f5713af43feb223a2e0ef6ccf12880c/EZDG_-_Chrome_2024-11-18_20-44-52.gif)
+1
+
 ### 설치 가이드 
-![EZDG_-_Chrome_2024-11-18_20-45-09__1_](/uploads/73189ed9d80bbdf5ac52807829ce34c5/EZDG_-_Chrome_2024-11-18_20-45-09__1_.gif)
+![install_guilde-min](https://github.com/user-attachments/assets/4e6f199d-ebe6-4960-a431-280a27ac6120)
+
 
 ## 예시프로젝트 - 대구의 자랑
-![대구의_자랑_-_Chrome_2024-11-18_14-49-00](/uploads/f80384aecaa80ffb7851edb91d55d59a/대구의_자랑_-_Chrome_2024-11-18_14-49-00.gif)
+1
 
 ## 예시프로젝트 - Find My Company!
-![기업_기본_정보_조회_-_Chrome_2024-11-18_14-25-12](/uploads/374606ad619279dace61abe1224c9944/기업_기본_정보_조회_-_Chrome_2024-11-18_14-25-12.gif)
+1
 
 ## 관리자 페이지
 
 ### API 등록 및 공공데이터 포털 크롤링
-![api-등록-크롤링](/uploads/b02007ecd0a87f72a7a354d4ff31cd91/api-등록-크롤링.gif)
+![관리자페이지-min](https://github.com/user-attachments/assets/116e91d9-4fc9-43d9-bc17-3c614bc2346b)
+
 
 ### API 크롤링 결과 확인 및 저장
-![api-등록-결과-저장](/uploads/ec2da23a41af49a58af37b9e4f9660f9/api-등록-결과-저장.gif)
+![api크롤링결과확인및저장-min](https://github.com/user-attachments/assets/70b3c1d7-594f-4b51-b274-6a3500a4fe33)
+
 
 ### 파일 등록 
-![파일-등록-업로드](/uploads/477c1848b35249e5096d3a99de45d1af/파일-등록-업로드.gif)
+![파일등록-min](https://github.com/user-attachments/assets/75cdc4ef-8974-420a-8fc6-e3befcd01d3a)
+
 
 ### 파일 컬럼명 번역
-![파일-등록-번역](/uploads/8c690c44b1f6b12b9e9d498f6a3796a5/파일-등록-번역.gif)
+![파일컬럼명번역-min](https://github.com/user-attachments/assets/72b5bbd2-eef9-4605-a5cc-52270599a591)
+
 
 ### 라이브러리 배포
-![파일-배포-현황](/uploads/e1c7edcb48f2ec1b9b99759c40904b9b/파일-배포-현황.gif)
+![라이브러리배포-min](https://github.com/user-attachments/assets/403d3f53-2bcc-4fa3-95d1-953f10ccd31f)
+
