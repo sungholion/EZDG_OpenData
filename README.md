@@ -1,4 +1,4 @@
-<h3>SSAFY 11기 2학기 자율 프로젝트</h3>
+<h3>SSAFY 11기 2학기 자율 프로젝트 - 오픈소스</h3>
 
 ![logo](https://github.com/user-attachments/assets/35617f29-eff1-43cf-a683-d2cf7b986e67)
 </br>
